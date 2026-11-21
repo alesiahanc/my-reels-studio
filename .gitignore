@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+
+# Local backups made while updating the app
+_backup_*/
+
+# PyCharm project settings
+.idea/

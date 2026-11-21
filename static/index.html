@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reels Studio</title>
+<link rel="icon" href="data:,">
+<style>
+:root{
+  --paper:#f6f2ea; --card:#fffdf8; --ink:#231f1c; --muted:#857b70; --line:#e4dccf;
+  --accent:#c4552d; --accent-soft:#f6e1d6; --ok:#3f7d55; --warn:#a86a12;
+  --r:12px; --shadow:0 1px 2px rgba(35,31,28,.06),0 4px 14px rgba(35,31,28,.05);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font:14px/1.45 -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;background:var(--paper);color:var(--ink)}
+@font-face{font-family:"Fraunces";src:url(/fonts/Fraunces-SemiBold.woff2) format("woff2");font-weight:600;font-style:normal;font-display:block}
+@font-face{font-family:"DM Sans";src:url(/fonts/DMSans.ttf) format("truetype");font-weight:100 1000;font-style:normal;font-display:block}
+button,input,select,textarea{font:inherit;color:inherit}
+header{display:flex;align-items:center;gap:14px;padding:12px 20px;border-bottom:1px solid var(--line);background:var(--paper);position:sticky;top:0;z-index:5}
+header h1{font:600 19px/1 "Didot","Bodoni 72",Georgia,serif;letter-spacing:.2px;margin:0}
+header h1 span{color:var(--accent)}
+.pill{font-size:12px;padding:3px 9px;border-radius:99px;background:#ebe4d8;color:var(--muted)}
+.pill.ok{background:#e1efe5;color:var(--ok)} .pill.bad{background:#f7e3d0;color:var(--warn)}
+.spacer{flex:1}
+.btn{border:1px solid var(--line);background:var(--card);padding:7px 12px;border-radius:9px;cursor:pointer;box-shadow:var(--shadow);white-space:nowrap}
+.btn:hover{border-color:#cfc4b4}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.btn.primary:hover{background:#ad4823}
+.btn.primary:disabled{opacity:.5;cursor:default}
+.btn.small{padding:3px 8px;font-size:12px;box-shadow:none}
+.btn.ghost{background:transparent;box-shadow:none}
+main{display:grid;grid-template-columns:minmax(260px,1fr) minmax(330px,1.25fr) 400px;gap:16px;padding:16px 20px;align-items:start}
+section.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.panel>h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0;padding:12px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.panel>h2 .spacer{flex:1}
+.body{padding:14px}
+section.panel.sticky{position:sticky;top:70px;max-height:calc(100vh - 86px);overflow-y:auto;overscroll-behavior:contain}
+/* library */
+#drop{border:1.5px dashed #d6ccbd;border-radius:10px;padding:12px;text-align:center;color:var(--muted);font-size:13px;margin-bottom:12px;transition:.15s}
+#drop.over{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+#drop b{color:var(--ink)}
+.filters{display:flex;gap:6px;margin-bottom:10px}
+.chip{border:1px solid var(--line);background:transparent;border-radius:99px;padding:3px 10px;font-size:12px;cursor:pointer}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.tile{position:relative;border-radius:8px;overflow:hidden;background:#e9e2d6;aspect-ratio:3/4;cursor:pointer;border:2px solid transparent}
+.tile:hover{border-color:var(--accent)}
+.tile img{width:100%;height:100%;object-fit:cover;display:block}
+.tile .badge{position:absolute;left:5px;bottom:5px;background:rgba(0,0,0,.65);color:#fff;font-size:11px;padding:1px 6px;border-radius:5px}
+.tile .hdr{position:absolute;right:5px;top:5px;background:#a86a12;color:#fff;font-size:10px;padding:1px 5px;border-radius:4px}
+.tile .count{position:absolute;right:5px;bottom:5px;background:var(--accent);color:#fff;font-size:11px;min-width:18px;text-align:center;border-radius:9px;padding:0 5px}
+.tile .add{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(196,85,45,.55);color:#fff;font-weight:600;opacity:0;transition:.12s}
+.tile:hover .add{opacity:1}
+.tile .name{position:absolute;left:0;right:0;top:0;padding:3px 6px;font-size:10.5px;color:#fff;background:linear-gradient(rgba(0,0,0,.55),transparent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.uploads{font-size:12px;color:var(--muted);margin-bottom:8px}
+.empty{color:var(--muted);text-align:center;padding:24px 10px;font-size:13px}
+/* timeline */
+.hint{font-size:12.5px;color:var(--muted);margin:0 0 12px}
+.item{display:flex;gap:12px;padding:10px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;background:#fff;align-items:flex-start}
+.item.dragging{opacity:.4}
+.item.dropbefore{box-shadow:0 -3px 0 var(--accent)}
+.handle{cursor:grab;color:#b9ad9c;font-size:16px;line-height:1;padding-top:2px;user-select:none}
+.thumbwrap{position:relative;width:118px;flex:none;border-radius:6px;overflow:hidden;cursor:crosshair;background:#e9e2d6}
+.thumbwrap img{width:100%;display:block}
+.croprect{position:absolute;box-shadow:0 0 0 999px rgba(20,16,12,.55);outline:2px solid #fff;pointer-events:none}
+.dot{position:absolute;width:10px;height:10px;border:2px solid #fff;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%);pointer-events:none}
+.meta{flex:1;min-width:0}
+.meta .top{display:flex;align-items:center;gap:6px}
+.role{font-size:11px;font-weight:600;color:var(--accent);background:var(--accent-soft);padding:1px 7px;border-radius:5px;white-space:nowrap}
+.fname{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.row{display:flex;gap:8px;align-items:center;margin-top:7px;flex-wrap:wrap;font-size:12.5px}
+.row label{color:var(--muted)}
+.row input[type=text]{width:62px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:#fff}
+select{padding:4px 6px;border:1px solid var(--line);border-radius:7px;background:#fff}
+.small-muted{font-size:12px;color:var(--muted)}
+/* settings */
+.tpls{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.tpl{border:1.5px solid var(--line);border-radius:10px;padding:9px 10px;cursor:pointer;background:#fff}
+.tpl b{display:block;font-size:13.5px}
+.tpl span{font-size:11.5px;color:var(--muted);line-height:1.35;display:block;margin-top:2px}
+.tpl.on{border-color:var(--accent);background:var(--accent-soft)}
+.field{margin-bottom:12px}
+.field>label{display:block;font-size:12px;font-weight:600;margin-bottom:5px}
+.field textarea{width:100%;min-height:52px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;resize:vertical;background:#fff}
+.field input[type=text],.field input[type=number]{padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.inline{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ideas{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.ideas button{font-size:11.5px;border:1px dashed #d3c8b8;background:transparent;border-radius:99px;padding:2px 8px;cursor:pointer;color:var(--muted)}
+.ideas button:hover{color:var(--accent);border-color:var(--accent)}
+details{border-top:1px solid var(--line);padding-top:10px;margin-top:4px;margin-bottom:10px}
+summary{cursor:pointer;font-weight:600;font-size:13px;margin-bottom:8px}
+.previewbox{display:flex;gap:14px;align-items:flex-start}
+#pv{width:216px;height:384px;border-radius:10px;background:#111;flex:none;box-shadow:var(--shadow)}
+.pvside{display:flex;flex-direction:column;gap:6px;font-size:12.5px}
+.progress{height:8px;background:#eee6da;border-radius:99px;overflow:hidden;margin:10px 0 4px}
+.progress div{height:100%;width:0;background:var(--accent);transition:width .3s}
+#status{font-size:12.5px;color:var(--muted);min-height:18px}
+#status.err{color:#b23a1a;white-space:pre-wrap}
+#result video{width:100%;max-height:520px;border-radius:10px;background:#000;display:block;margin-top:10px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.warn{background:#fbecd6;color:#7c4d0c;border-radius:8px;padding:8px 10px;font-size:12.5px;margin-top:10px}
+.recent{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.recent img{height:96px;border-radius:6px;cursor:pointer;border:2px solid transparent}
+.recent img:hover{border-color:var(--accent)}
+.tips{font-size:12.5px;color:#5c544b;padding-left:18px;margin:0}
+.tips li{margin-bottom:4px}
+@media (max-width:1200px){main{grid-template-columns:1fr 1fr}.col3{grid-column:1/-1}section.panel.sticky{position:static;max-height:none;overflow:visible}}
+
+/* spot the details */
+body.spot [data-nospot]{display:none!important}
+#spotEditor{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.spot-head{display:flex;gap:10px;align-items:baseline;margin-bottom:8px;flex-wrap:wrap}
+.spot-cvwrap{background:#e9e2d6;border-radius:10px;overflow:hidden;text-align:center}
+#spotCv{max-width:100%;max-height:560px;display:block;margin:0 auto;cursor:crosshair;touch-action:none}
+.spot-row{display:flex;gap:8px;align-items:center;padding:6px 8px;border:1px solid var(--line);border-radius:9px;margin-top:6px;background:#fff;flex-wrap:wrap}
+.spot-row.sel{border-color:var(--accent);background:var(--accent-soft)}
+.spot-num{width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none}
+.spot-row.sel .spot-num{background:var(--accent)}
+.spot-label{flex:1;min-width:150px;padding:5px 8px;border:1px solid var(--line);border-radius:7px}
+.spot-row input[type=range]{width:90px;vertical-align:middle}
+.spot-settings{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;font-size:12.5px;color:var(--muted)}
+.spot-settings input,.spot-settings select{display:block;width:100%;margin-top:3px;padding:5px 8px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink)}
+.spot-empty{color:var(--muted);text-align:center;padding:14px;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Reels <span>Studio</span></h1>
+  <span id="capPill" class="pill">checking…</span>
+  <div class="spacer"></div>
+  <button class="btn" onclick="openFolder('library')">Open Library folder</button>
+  <button class="btn" onclick="openFolder('reels')">Open finished reels</button>
+</header>
+
+<main>
+  <!-- LIBRARY -->
+  <section class="panel">
+    <h2>1 · Your media <span class="spacer"></span><button class="btn small ghost" onclick="loadLibrary()" title="Refresh">↻ Refresh</button></h2>
+    <div class="body">
+      <div id="drop">Drag photos &amp; videos here, or <a href="#" onclick="pick();return false">choose files</a><br>
+        <span style="font-size:12px">Huge videos? Put them straight into the <b>Library folder</b> in Finder. No upload wait.</span></div>
+      <input type="file" id="picker" multiple accept="image/*,video/*" hidden>
+      <div class="uploads" id="uploads"></div>
+      <div class="filters">
+        <button class="chip on" data-f="all">All</button>
+        <button class="chip" data-f="photo">Photos</button>
+        <button class="chip" data-f="video">Videos</button>
+      </div>
+      <div class="grid" id="lib"></div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section class="panel">
+    <h2>2 · Reel order <span class="spacer"></span><span id="count" class="small-muted" style="text-transform:none;letter-spacing:0"></span>
+      <button class="btn small ghost" onclick="clearItems()">Clear</button></h2>
+    <div class="body">
+      <p class="hint" id="tplHint"></p>
+      <div id="items"></div>
+      <div id="spotEditor" style="display:none"></div>
+      <div id="noItems" class="empty">Click photos and videos on the left to add them here.<br>Drag ⋮⋮ to reorder. Click a thumbnail to choose what stays in the 9:16 frame.</div>
+    </div>
+  </section>
+
+  <!-- SETTINGS + RESULT -->
+  <section class="panel col3 sticky">
+    <h2>3 · Style &amp; render</h2>
+    <div class="body">
+      <div class="tpls" id="tpls"></div>
+
+      <div class="field" data-nospot>
+        <label>Length</label>
+        <div class="inline" id="durs"></div>
+      </div>
+
+      <div class="field" data-nospot>
+        <label>Hook text <span class="small-muted" style="font-weight:400">(first seconds; keep it short)</span></label>
+        <textarea id="hookText" placeholder="e.g. 40 hours in 30 seconds"></textarea>
+        <div class="ideas" id="ideas"></div>
+        <div class="inline" style="margin-top:8px">
+          <label class="small-muted">Show for</label>
+          <select id="hookSeconds"><option>1.5</option><option>2</option><option selected>2.5</option><option>3.5</option><option>5</option><option value="999">whole reel</option></select>
+          <label class="small-muted">Position</label>
+          <select id="position"><option value="top">Top</option><option value="middle">Middle</option><option value="lower">Lower</option></select>
+        </div>
+        <div class="inline" style="margin-top:6px">
+          <label class="small-muted">Text on items goes</label>
+          <select id="capPosition"><option value="top">Top</option><option value="middle">Middle</option><option value="lower" selected>Lower</option></select>
+        </div>
+      </div>
+
+      <details data-nospot>
+        <summary>Text style</summary>
+        <div class="field inline">
+          <label class="small-muted">Hook &amp; ending</label>
+          <select id="font">
+            <option value='600 {s}px Fraunces, Georgia, serif'>Fraunces</option>
+            <option value='500 {s}px "DM Sans", "Helvetica Neue", Arial, sans-serif'>DM Sans</option>
+            <option value='600 {s}px "Helvetica Neue", Helvetica, Arial, sans-serif'>Helvetica</option>
+            <option value='600 {s}px "Avenir Next", Avenir, sans-serif'>Avenir</option>
+            <option value='500 {s}px Futura, "Trebuchet MS", sans-serif'>Futura</option>
+            <option value='italic 400 {s}px Didot, "Bodoni 72", Georgia, serif'>Didot italic</option>
+            <option value='400 {s}px Georgia, serif'>Georgia</option>
+            <option value='400 {s}px "American Typewriter", "Courier New", monospace'>Typewriter</option>
+            <option value='700 {s}px "Bradley Hand", "Segoe Print", cursive'>Handwritten</option>
+          </select>
+          <select id="size"><option value="62">Small</option><option value="78" selected>Medium</option><option value="96">Large</option></select>
+        </div>
+        <div class="field inline">
+          <label class="small-muted">Text on items</label>
+          <select id="capFont">
+            <option value='500 {s}px "DM Sans", "Helvetica Neue", Arial, sans-serif'>DM Sans</option>
+            <option value='600 {s}px Fraunces, Georgia, serif'>Fraunces</option>
+            <option value='600 {s}px "Helvetica Neue", Helvetica, Arial, sans-serif'>Helvetica</option>
+          </select>
+          <select id="capSize"><option value="48">Small</option><option value="58" selected>Medium</option><option value="70">Large</option></select>
+        </div>
+        <div class="field inline">
+          <select id="tstyle"><option value="box">Box</option><option value="shadow">Shadow</option><option value="outline">Outline</option></select>
+          <label class="small-muted">Text <input type="color" id="tcolor" value="#231f1c"></label>
+          <label class="small-muted">Box <input type="color" id="bcolor" value="#ffffff"></label>
+        </div>
+        <div class="field">
+          <label>Ending text <span class="small-muted" style="font-weight:400">(optional, shown at the end)</span></label>
+          <input type="text" id="endText" style="width:100%" placeholder="e.g. Follow for part 2">
+          <div class="inline" style="margin-top:6px"><label class="small-muted">Show for the last</label>
+          <select id="endSeconds"><option>2.5</option><option>3.5</option><option>4.5</option><option>6</option></select>
+          <span class="small-muted">seconds (give the last item at least this Length)</span></div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Signature / logo <span class="small-muted" style="font-weight:400">(optional, on every frame)</span></summary>
+        <div class="field inline">
+          <input type="text" id="sigText" placeholder="@yourhandle" style="width:150px">
+          <select id="sigPos"><option value="tr">Top right</option><option value="tl">Top left</option></select>
+          <label class="btn small" style="cursor:pointer">Logo image… <input type="file" id="logoFile" accept="image/*" hidden></label>
+          <button class="btn small ghost" id="logoClear" style="display:none">Remove logo</button>
+        </div>
+      </details>
+
+      <details open data-nospot>
+        <summary>Effects</summary>
+        <div class="field inline">
+          <label class="small-muted">Between clips</label>
+          <select id="transition"><option value="cut">Cut (no effect)</option><option value="fade">Soft crossfade</option><option value="flash">White flash</option></select>
+        </div>
+        <div class="field inline">
+          <label class="small-muted">Colour look</label>
+          <select id="look"><option value="none">None</option><option value="warm">Warm</option><option value="film">Soft film (grain + vignette)</option></select>
+        </div>
+        <p class="small-muted">Crossfade makes the reel about 0.3 s shorter per cut. Flash suits fast templates (Progression), crossfade suits slow ones.</p>
+      </details>
+
+      <details data-nospot>
+        <summary>Sound &amp; framing</summary>
+        <div class="field inline">
+          <label class="small-muted">Sound</label>
+          <select id="audio"><option value="original">Original sound</option><option value="quiet">Original, quieter</option><option value="silent">Silent (add a sound in Instagram)</option></select>
+        </div>
+        <div class="field inline">
+          <label class="small-muted">New items use</label>
+          <select id="defFit"><option value="fill">Fill frame (crop)</option><option value="blur">Whole picture + blurred edges</option></select>
+        </div>
+      </details>
+
+      <div class="previewbox">
+        <canvas id="pv" width="1080" height="1920"></canvas>
+        <div class="pvside">
+          <b>Preview</b>
+          <span data-nospot><label><input type="radio" name="pvwhich" value="hook" checked> Hook</label><br>
+          <label><input type="radio" name="pvwhich" value="end"> Ending</label></span>
+          <label><input type="checkbox" id="guides" checked> Instagram UI zones</label>
+          <span class="small-muted">Shaded areas get covered by Instagram's buttons and caption.</span>
+        </div>
+      </div>
+
+      <button class="btn primary" id="renderBtn" style="width:100%;margin-top:14px;padding:11px" onclick="startRender()">Make reel</button>
+      <div class="progress"><div id="bar"></div></div>
+      <div id="status"></div>
+
+      <div id="result"></div>
+
+      <details>
+        <summary>Recent reels</summary>
+        <div class="recent" id="recent"></div>
+      </details>
+      <details>
+        <summary>Tips for reach</summary>
+        <ul class="tips">
+          <li>Show the finished piece in the first 1–2 seconds (the <b>Reveal</b> template does this).</li>
+          <li>Shorter reels (7–30 s) get rewatched and loop more often.</li>
+          <li>Add a trending sound inside Instagram when posting. Licensing is handled there.</li>
+          <li>Pick <b>cover.jpg</b> as the reel cover so your grid stays consistent.</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+</main>
+
+<script>
+const TEMPLATES = {
+  reveal:{name:"Reveal",desc:"Finished piece first, fast process, finished piece again",hint:"Put the <b>finished artwork last</b>: it opens the reel as the hook and closes it. Everything before it becomes the fast process part."},
+  timelapse:{name:"Timelapse",desc:"Your process compressed, ending on the last item",hint:"Long videos are compressed automatically. Hours of footage is fine. The last item is held for 2 s at the end."},
+  progression:{name:"Progression",desc:"Quick cuts through steps with slow zooms",hint:"Great for work-in-progress photos in order. The last item stays on screen twice as long."},
+  details:{name:"Details",desc:"Close-ups at real speed, then the full piece",hint:"Each clip plays at real speed (from the middle of its trim). Put the full artwork last."},
+  custom:{name:"Custom",desc:"Your order, your timing: each item as you set it",hint:"Items play in order. Photos show for 2.5 s and videos play their trimmed part at real speed, unless you set <b>Length</b>, <b>Speed</b> or <b>Motion</b> on an item. The Length buttons above are ignored."}
+};
+const TRANS_IN = [["","Into this: reel setting"],["cut","Into this: cut"],["fade","Into this: crossfade"],["fade_long","Into this: long crossfade"],["fadewhite","Into this: dip to white"],["zoomin","Into this: zoom through"],["circleopen","Into this: circle reveal"],["flash","Into this: white flash"]];
+const MOTIONS = [["","Motion: auto"],["in","Zoom in"],["out","Zoom out"],["pan_lr","Pan →"],["pan_rl","Pan ←"],["pan_tb","Pan ↓"],["pan_bt","Pan ↑"],["still","Still"]];
+const ZOOMS = [["","Closeness: auto"],["1","1× (whole height)"],["1.3","1.3×"],["1.6","1.6×"],["2","2×"],["2.5","2.5×"],["3","3×"]];
+const SPEEDLIST = [["","Speed: auto"],["0.25","¼× slow-mo"],["0.5","½× slow-mo"],["1","1× real"],["2","2×"],["4","4×"],["8","8×"]];
+const opts = (list,v) => list.map(([k,l]) => `<option value="${k}" ${String(v??"")===k?"selected":""}>${l}</option>`).join("");
+const DURS = [7,12,20,30,45,60];
+const IDEAS = ["40 hours in 30 seconds","Wait for the end ✨","From blank canvas to this","Watch it come to life","Process vs. result","Every layer, sped up"];
+
+let S = {items:[],template:"reveal",duration:20,hookText:"",hookSeconds:"2.5",position:"top",font:document.getElementById("font").value,
+         size:"78",capPosition:"lower",tstyle:"box",tcolor:"#231f1c",bcolor:"#ffffff",endText:"",sigText:"",sigPos:"tr",logo:null,capFont:document.getElementById("capFont").value,capSize:"58",endSeconds:"2.5",audio:"original",transition:"cut",look:"none",defFit:"fill",filter:"all"};
+let LIB = [], CAPS = {}, aspects = {}, imgCache = {};
+try{ const saved = JSON.parse(localStorage.getItem("reelsStudio")||"null");
+  if(saved){ const old = !("capFont" in saved); S = Object.assign(S,saved); if(old) S.font = '600 {s}px Fraunces, Georgia, serif'; } }catch(e){}
+// Bundled fonts must be loaded before text is drawn onto a canvas.
+const fontsReady = () => Promise.all([S.font, S.capFont].map(f => document.fonts.load(f.replace("{s}", 60), "Aa")).concat([document.fonts.ready])).catch(()=>{});
+const $ = id => document.getElementById(id);
+const save = () => { try{ localStorage.setItem("reelsStudio", JSON.stringify(S)); }catch(e){} };
+const thumbUrl = f => { const e = LIB.find(x=>x.file===f); return "/api/thumb?file="+encodeURIComponent(f)+"&v="+(e?e.mtime:0); };
+const fmt = s => { s = Math.max(0,s||0); const h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=Math.floor(s%60);
+  return h ? `${h}:${String(m).padStart(2,"0")}:${String(x).padStart(2,"0")}` : `${m}:${String(x).padStart(2,"0")}`; };
+const parseT = v => { if(v==null||String(v).trim()==="") return null; const p = String(v).trim().split(":").map(Number);
+  if(p.some(isNaN)) return null; return p.reduce((a,b)=>a*60+b,0); };
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ---------- status ---------- */
+async function loadStatus(){
+  const r = await fetch("/api/status").then(r=>r.json());
+  CAPS = r.caps;
+  const p = $("capPill");
+  if(!CAPS.ffmpeg){ p.className="pill bad"; p.textContent="FFmpeg missing: run  brew install ffmpeg"; }
+  else { p.className="pill ok"; p.textContent = "Ready" + (CAPS.hdr_tonemap ? " · HDR ok" : "") +
+    (CAPS.stabilise==="vidstab" ? " · Stabilise ok" : CAPS.stabilise ? " · Stabilise (basic)" : ""); }
+  renderItems();
+}
+function openFolder(what){ fetch("/api/open",{method:"POST",body:JSON.stringify({what})}); }
+
+/* ---------- library ---------- */
+async function loadLibrary(){
+  const r = await fetch("/api/library").then(r=>r.json());
+  LIB = r.items; S.items = S.items.filter(it => LIB.some(e=>e.file===it.file)); renderLib(); renderItems();
+}
+function renderLib(){
+  const g = $("lib"); const list = LIB.filter(e => S.filter==="all" || e.type===S.filter);
+  if(!list.length){ g.innerHTML = `<div class="empty" style="grid-column:1/-1">No media yet.</div>`; return; }
+  g.innerHTML = list.map(e => {
+    const n = S.items.filter(i=>i.file===e.file).length;
+    return `<div class="tile" data-file="${esc(e.file)}" title="${esc(e.file)}">
+      <img loading="lazy" src="${thumbUrl(e.file)}" onerror="this.style.opacity=.2">
+      <div class="name">${esc(e.file.split("/").pop())}</div>
+      ${e.type==="video" ? `<span class="badge">▶ ${fmt(e.duration)}</span>` : ""}
+      ${e.hdr && !CAPS.hdr_tonemap ? `<span class="hdr" title="HDR video: colors may look washed out">HDR</span>` : ""}
+      ${n ? `<span class="count">${n}</span>` : ""}
+      <div class="add">+ Add</div></div>`; }).join("");
+  g.querySelectorAll(".tile").forEach(t => t.onclick = () => addItem(t.dataset.file));
+}
+document.querySelectorAll(".filters .chip").forEach(c => c.onclick = () => {
+  S.filter = c.dataset.f; document.querySelectorAll(".filters .chip").forEach(x=>x.classList.toggle("on",x===c)); renderLib(); save(); });
+function addItem(file){
+  const e = LIB.find(x=>x.file===file); if(!e) return;
+  S.items.push({file, type:e.type, fx:.5, fy:.5, fit:S.defFit, start:"", end:""});
+  save(); renderItems(); renderLib(); drawPreview();
+}
+
+/* uploads */
+function pick(){ $("picker").click(); }
+$("picker").onchange = e => uploadFiles([...e.target.files]);
+const drop = $("drop");
+["dragenter","dragover"].forEach(ev => document.body.addEventListener(ev, e => { if(e.dataTransfer && [...e.dataTransfer.types].includes("Files")){ e.preventDefault(); drop.classList.add("over"); }}));
+["dragleave","drop"].forEach(ev => document.body.addEventListener(ev, e => { if(ev==="dragleave" && e.relatedTarget) return; drop.classList.remove("over"); }));
+document.body.addEventListener("drop", e => { if(e.dataTransfer && e.dataTransfer.files.length){ e.preventDefault(); uploadFiles([...e.dataTransfer.files]); }});
+async function uploadFiles(files){
+  const box = $("uploads");
+  for(const [i,f] of files.entries()){
+    await new Promise(res => {
+      const x = new XMLHttpRequest();
+      x.open("POST","/api/upload?name="+encodeURIComponent(f.name));
+      x.upload.onprogress = ev => box.textContent = `Copying ${i+1}/${files.length}: ${f.name} ${Math.round(ev.loaded/ev.total*100)}%`;
+      x.onload = () => { if(x.status!==200){ try{ box.textContent = JSON.parse(x.responseText).error; }catch(e){} } res(); };
+      x.onerror = () => { box.textContent = "Upload failed: "+f.name; res(); };
+      x.send(f);
+    });
+  }
+  if(!box.textContent.startsWith("Unsupported") && !box.textContent.startsWith("Upload failed")) box.textContent = "";
+  loadLibrary();
+}
+window.addEventListener("focus", () => loadLibrary());
+
+/* ---------- timeline ---------- */
+function roleFor(i,n){
+  const last = i===n-1;
+  switch(S.template){
+    case "reveal": return n>1 ? (last ? "Finished piece · hook + ending" : "Process") : "Timelapse";
+    case "timelapse": return n>1 && last ? "Final hold" : "Process";
+    case "progression": return last ? `Step ${i+1} · final` : `Step ${i+1}`;
+    case "details": return last ? "Full piece" : "Close-up";
+    case "custom": return `Item ${i+1}`;
+  }
+}
+function cropBox(it){
+  const a = aspects[it.file]; if(!a || it.fit==="blur") return null;
+  const t = 9/16, z = it.type==="photo" ? Math.max(1, +it.zoom || 1) : 1;
+  let w = 1, h = 1;
+  if(a > t) w = t/a; else h = a/t;
+  w /= z; h /= z;
+  return {left:(1-w)*it.fx, top:(1-h)*it.fy, w, h};
+}
+function renderItems(){
+  const box = $("items"); const n = S.items.length;
+  $("noItems").style.display = n ? "none" : "block";
+  $("count").textContent = n ? `${n} item${n>1?"s":""}` : "";
+  $("tplHint").innerHTML = TEMPLATES[S.template].hint;
+  box.innerHTML = S.items.map((it,i) => {
+    const e = LIB.find(x=>x.file===it.file) || {};
+    const c = cropBox(it);
+    const dur = e.duration || 0;
+    const s = parseT(it.start)||0, en = parseT(it.end) ?? dur, span = Math.max(0,en-s);
+    return `<div class="item" draggable="true" data-i="${i}">
+      <div class="handle" title="Drag to reorder">⋮⋮</div>
+      <div class="thumbwrap" data-i="${i}" title="Click to choose what stays in frame">
+        <img src="${thumbUrl(it.file)}" data-file="${esc(it.file)}">
+        ${c ? `<div class="croprect" style="left:${c.left*100}%;top:${c.top*100}%;width:${c.w*100}%;height:${c.h*100}%"></div><div class="dot" style="left:${(c.left+c.w/2)*100}%;top:${(c.top+c.h/2)*100}%"></div>` : ""}
+      </div>
+      <div class="meta">
+        <div class="top"><span class="role">${roleFor(i,n)}</span><span class="fname">${esc(it.file.split("/").pop())}</span></div>
+        <div class="row">
+          <select data-k="fit" data-i="${i}"><option value="fill" ${it.fit==="fill"?"selected":""}>Fill frame</option><option value="blur" ${it.fit==="blur"?"selected":""}>Whole + blur</option></select>
+          ${it.type==="video" ? `<span class="small-muted">▶ ${fmt(dur)}${e.has_audio===false?" · no sound":""}</span>` : `<span class="small-muted">Photo</span>`}
+        </div>
+        ${it.type==="video" ? `<div class="row"><label>Use from</label><input type="text" data-k="start" data-i="${i}" value="${esc(it.start)}" placeholder="0:00">
+          <label>to</label><input type="text" data-k="end" data-i="${i}" value="${esc(it.end)}" placeholder="${fmt(dur)}">
+          <span class="small-muted">${span>60 && !it.speed ? fmt(span)+" → auto timelapse" : ""}</span></div>` : ""}
+        <div class="row">
+          ${it.type==="photo"
+            ? `<select data-k="motion" data-i="${i}">${opts(MOTIONS,it.motion)}</select><select data-k="zoom" data-i="${i}" title="How close the camera gets. Use 2× or more to pan along a wide painting.">${opts(ZOOMS,it.zoom)}</select>`
+            : `<select data-k="speed" data-i="${i}" title="Play this clip at a fixed speed instead of fitting it to the reel length">${opts(SPEEDLIST,it.speed)}</select>
+               <label class="small-muted" title="Smooths out hand shake. Crops about 5% at the edges. The first render of this clip takes longer; after that it's cached. Skip it for clips with fast deliberate camera moves.">
+                 <input type="checkbox" data-k="stabilise" data-i="${i}" ${it.stabilise?"checked":""} ${CAPS.stabilise?"":"disabled"}> Stabilise</label>`}
+          <label>Length</label><input type="text" data-k="length" data-i="${i}" value="${esc(it.length||"")}" placeholder="auto" style="width:48px" title="Seconds this item stays on screen (optional)"><span class="small-muted">s</span>
+        </div>
+        ${i>0 ? `<div class="row"><select data-k="transition_in" data-i="${i}" title="How the previous item changes into this one">${opts(TRANS_IN,it.transition_in)}</select></div>` : ""}
+        <div class="row"><input type="text" data-k="caption" data-i="${i}" value="${esc(it.caption||"")}" placeholder="Text on this item (optional)" style="flex:1;min-width:0"></div>
+        ${it.type==="photo" && String(it.motion||"").startsWith("pan") ? `<div class="row"><label>Pan from</label><input type="text" data-k="pan_from" data-i="${i}" value="${esc(it.pan_from??"")}" placeholder="0" style="width:40px"><label>to</label><input type="text" data-k="pan_to" data-i="${i}" value="${esc(it.pan_to??"")}" placeholder="100" style="width:40px"><span class="small-muted">% · stop before the desk shows</span></div>` : ""}
+        ${it.type==="photo" && String(it.motion||"").startsWith("pan") && it.fit==="blur" ? `<div class="small-muted">Pans need <b>Fill frame</b>.</div>` : ""}
+        <div class="row">
+          <button class="btn small" data-act="up" data-i="${i}" ${i===0?"disabled":""}>↑</button>
+          <button class="btn small" data-act="down" data-i="${i}" ${i===n-1?"disabled":""}>↓</button>
+          <button class="btn small" data-act="dup" data-i="${i}" title="Use this file twice">Duplicate</button>
+          <button class="btn small ghost" data-act="del" data-i="${i}">Remove</button>
+        </div>
+      </div></div>`; }).join("");
+
+  box.querySelectorAll(".thumbwrap img").forEach(img => {
+    const f = img.dataset.file;
+    const done = () => { if(!aspects[f] && img.naturalWidth){ aspects[f] = img.naturalWidth/img.naturalHeight; renderItems(); drawPreview(); } };
+    img.complete ? done() : img.onload = done;
+  });
+  box.querySelectorAll(".thumbwrap").forEach(w => w.onclick = ev => {
+    const it = S.items[+w.dataset.i]; const c = cropBox(it); if(!c) return;
+    const r = w.getBoundingClientRect(); const px = (ev.clientX-r.left)/r.width, py = (ev.clientY-r.top)/r.height;
+    if(c.w<1) it.fx = Math.min(1,Math.max(0,(px - c.w/2)/(1-c.w)));
+    if(c.h<1) it.fy = Math.min(1,Math.max(0,(py - c.h/2)/(1-c.h)));
+    // (for pans, the pan direction overrides one of these; the other picks the band to follow)
+    save(); renderItems(); drawPreview();
+  });
+  box.querySelectorAll("[data-k]").forEach(el => el.onchange = () => { S.items[+el.dataset.i][el.dataset.k] = el.type==="checkbox" ? el.checked : el.value; save(); renderItems(); drawPreview(); });
+  box.querySelectorAll("[data-act]").forEach(b => b.onclick = () => {
+    const i = +b.dataset.i, a = b.dataset.act, L = S.items;
+    if(a==="up") [L[i-1],L[i]] = [L[i],L[i-1]];
+    if(a==="down") [L[i+1],L[i]] = [L[i],L[i+1]];
+    if(a==="del") L.splice(i,1);
+    if(a==="dup") L.splice(i+1,0,JSON.parse(JSON.stringify(L[i])));
+    save(); renderItems(); renderLib(); drawPreview();
+  });
+  let dragI = null;
+  box.querySelectorAll(".item").forEach(el => {
+    el.ondragstart = () => { dragI = +el.dataset.i; el.classList.add("dragging"); };
+    el.ondragend = () => { el.classList.remove("dragging"); box.querySelectorAll(".item").forEach(x=>x.classList.remove("dropbefore")); };
+    el.ondragover = e => { e.preventDefault(); box.querySelectorAll(".item").forEach(x=>x.classList.toggle("dropbefore", x===el)); };
+    el.ondrop = e => { e.preventDefault(); e.stopPropagation(); const to = +el.dataset.i; if(dragI===null||dragI===to) return;
+      const [m] = S.items.splice(dragI,1); S.items.splice(to,0,m); dragI=null; save(); renderItems(); drawPreview(); };
+  });
+}
+function clearItems(){ S.items = []; save(); renderItems(); renderLib(); drawPreview(); }
+
+/* ---------- settings ---------- */
+function renderSettings(){
+  $("tpls").innerHTML = Object.entries(TEMPLATES).map(([k,t]) => `<div class="tpl ${S.template===k?"on":""}" data-k="${k}"><b>${t.name}</b><span>${t.desc}</span></div>`).join("");
+  $("tpls").querySelectorAll(".tpl").forEach(el => el.onclick = () => { S.template = el.dataset.k; save(); renderSettings(); renderItems(); drawPreview(); });
+  $("durs").innerHTML = DURS.map(d => `<button class="chip ${+S.duration===d?"on":""}" data-d="${d}">${d}s</button>`).join("") +
+    `<input type="number" id="durCustom" min="5" max="180" value="${S.duration}" style="width:58px" title="Custom length in seconds">`;
+  $("durs").querySelectorAll(".chip").forEach(c => c.onclick = () => { S.duration = +c.dataset.d; save(); renderSettings(); });
+  $("durCustom").onchange = e => { S.duration = Math.max(5,Math.min(180,+e.target.value||20)); save(); renderSettings(); };
+  $("ideas").innerHTML = IDEAS.map(t => `<button>${esc(t)}</button>`).join("");
+  $("ideas").querySelectorAll("button").forEach(b => b.onclick = () => { S.hookText = b.textContent; $("hookText").value = S.hookText; save(); drawPreview(); });
+  $("logoClear").style.display = S.logo ? "" : "none";
+}
+const bind = [["hookText","input"],["hookSeconds","change"],["position","change"],["font","change"],["size","change"],["tstyle","change"],
+  ["tcolor","input"],["bcolor","input"],["endText","input"],["sigText","input"],["sigPos","change"],["capPosition","change"],["audio","change"],["capFont","change"],["endSeconds","change"],["capSize","change"],["transition","change"],["look","change"],["defFit","change"]];
+bind.forEach(([k,ev]) => { const el = $(k); if(S[k]!=null) el.value = S[k]; el.addEventListener(ev, () => { S[k] = el.value; save(); drawPreview(); }); });
+$("logoFile").onchange = e => { const f = e.target.files[0]; if(!f) return; const r = new FileReader();
+  r.onload = () => { S.logo = r.result; save(); renderSettings(); drawPreview(); }; r.readAsDataURL(f); };
+$("logoClear").onclick = () => { S.logo = null; save(); renderSettings(); drawPreview(); };
+document.querySelectorAll("input[name=pvwhich]").forEach(r => r.onchange = drawPreview);
+$("guides").onchange = drawPreview;
+
+/* ---------- text overlays (drawn here, burned in by FFmpeg) ---------- */
+function loadImg(src){ return new Promise(res => { if(imgCache[src]) return res(imgCache[src]);
+  const i = new Image(); i.onload = () => { imgCache[src]=i; res(i); }; i.onerror = () => res(null); i.src = src; }); }
+function wrapLines(ctx, text, maxW){
+  const out = [];
+  for(const para of String(text).split("\n")){
+    let line = "";
+    for(const w of para.split(/\s+/).filter(Boolean)){
+      const t = line ? line+" "+w : w;
+      if(ctx.measureText(t).width > maxW && line){ out.push(line); line = w; } else line = t;
+    }
+    out.push(line);
+  }
+  return out.filter((l,i,a)=>l!==""||a.length===1);
+}
+function rrect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+function textCanvas(text, pos, font, fsize){
+  pos = pos || S.position;
+  const c = document.createElement("canvas"); c.width=1080; c.height=1920; const ctx = c.getContext("2d");
+  if(!text || !text.trim()) return null;
+  const size = +(fsize || S.size); ctx.font = (font || S.font).replace("{s}", size); ctx.textAlign="center"; ctx.textBaseline="middle";
+  const lower = pos==="lower";
+  const cx = lower ? 490 : 540, maxW = lower ? 780 : 860;
+  const lines = wrapLines(ctx, text, maxW), lh = size*1.28, blockH = lines.length*lh;
+  let y0 = pos==="top" ? 290 : pos==="middle" ? 960 - blockH/2 : 1440 - blockH;
+  lines.forEach((ln,i) => {
+    const y = y0 + i*lh + lh/2, w = ctx.measureText(ln).width;
+    if(S.tstyle==="box"){ ctx.fillStyle = S.bcolor; rrect(ctx, cx-w/2-26, y-lh/2-2, w+52, lh+4, 18); ctx.fill(); }
+    if(S.tstyle==="outline"){ ctx.lineJoin="round"; ctx.lineWidth = size*0.16; ctx.strokeStyle = S.bcolor; ctx.strokeText(ln,cx,y); }
+    if(S.tstyle==="shadow"){
+      // Two shadows: a soft wide glow, then a tight one close to the letters, so the text reads on light and dark footage.
+      ctx.fillStyle = S.tcolor;
+      ctx.shadowColor="rgba(0,0,0,.45)"; ctx.shadowBlur=size*0.6; ctx.shadowOffsetY=0; ctx.fillText(ln, cx, y);
+      ctx.shadowColor="rgba(0,0,0,.6)"; ctx.shadowBlur=size*0.12; ctx.shadowOffsetY=size*0.03;
+    }
+    ctx.fillStyle = S.tcolor; ctx.fillText(ln, cx, y); ctx.shadowColor="transparent"; ctx.shadowBlur=0; ctx.shadowOffsetY=0;
+  });
+  return c;
+}
+async function watermarkCanvas(){
+  if(!S.sigText.trim() && !S.logo) return null;
+  const c = document.createElement("canvas"); c.width=1080; c.height=1920; const ctx = c.getContext("2d");
+  const right = S.sigPos==="tr"; let x = right ? 1080-56 : 56; const y = 250;
+  ctx.globalAlpha = .88;
+  if(S.logo){ const im = await loadImg(S.logo); if(im){ const h = 90, w = im.width/im.height*h; ctx.drawImage(im, right ? x-w : x, y-h/2, w, h); x = right ? x-w-16 : x+w+16; } }
+  if(S.sigText.trim()){
+    ctx.font = '600 38px "Helvetica Neue", Arial, sans-serif'; ctx.textAlign = right ? "right" : "left"; ctx.textBaseline="middle";
+    ctx.shadowColor="rgba(0,0,0,.6)"; ctx.shadowBlur=10; ctx.fillStyle="#fff"; ctx.fillText(S.sigText.trim(), x, y);
+  }
+  return c;
+}
+let pvToken = 0;
+async function drawPreview(){
+  const tok = ++pvToken; await fontsReady(); if(tok!==pvToken) return; const cv = $("pv"), ctx = cv.getContext("2d");
+  const which = document.querySelector("input[name=pvwhich]:checked").value;
+  ctx.fillStyle="#1d1a17"; ctx.fillRect(0,0,1080,1920);
+  const n = S.items.length;
+  const it = !n ? null : (which==="end" || S.template==="reveal") ? S.items[n-1] : S.items[0];
+  if(it){
+    const im = await loadImg(thumbUrl(it.file)); if(tok!==pvToken) return;
+    if(im){
+      const a = im.width/im.height, t = 9/16;
+      if(it.fit==="blur"){
+        ctx.filter="blur(30px) brightness(.85)"; drawCover(ctx,im,.5,.5); ctx.filter="none";
+        const w = a>t ? 1080 : 1920*a, h = a>t ? 1080/a : 1920; ctx.drawImage(im,(1080-w)/2,(1920-h)/2,w,h);
+      } else drawCover(ctx,im,it.fx,it.fy);
+    }
+  }
+  const tc = textCanvas(which==="end" ? S.endText : S.hookText); if(tc) ctx.drawImage(tc,0,0);
+  const wm = await watermarkCanvas(); if(tok!==pvToken) return; if(wm) ctx.drawImage(wm,0,0);
+  if($("guides").checked){
+    ctx.fillStyle="rgba(196,85,45,.28)"; ctx.fillRect(0,0,1080,210); ctx.fillRect(0,1500,1080,420); ctx.fillRect(950,980,130,520);
+    ctx.fillStyle="rgba(255,255,255,.75)"; ctx.font="600 34px -apple-system,Arial"; ctx.textAlign="left";
+    ctx.fillText("caption & username", 50, 1600); ctx.fillText("Reels header", 50, 120);
+  }
+}
+function drawCover(ctx,im,fx,fy){
+  const a = im.width/im.height, t = 9/16; let sw, sh;
+  if(a>t){ sh = im.height; sw = sh*t; } else { sw = im.width; sh = sw/t; }
+  ctx.drawImage(im,(im.width-sw)*fx,(im.height-sh)*fy,sw,sh,0,0,1080,1920);
+}
+
+/* ---------- render ---------- */
+async function startRender(){
+  if(!S.items.length){ setStatus("Add some photos or videos first.", true); return; }
+  if(!CAPS.ffmpeg){ setStatus("FFmpeg is not installed. Open Terminal and run: brew install ffmpeg", true); return; }
+  await fontsReady();
+  const hook = textCanvas(S.hookText), end = textCanvas(S.endText), wm = await watermarkCanvas();
+  const body = {template:S.template, duration:+S.duration, audio:S.audio, transition:S.transition||"cut", look:S.look||"none",
+    hook_seconds: +S.hookSeconds, end_seconds: +S.endSeconds||2.5,
+    items: S.items.map(it => ({file:it.file, fit:it.fit, fx:it.fx, fy:it.fy, start:parseT(it.start), end:parseT(it.end),
+      stabilise:!!it.stabilise, motion:it.motion||"", zoom:+it.zoom||null, pan_from:it.pan_from===""||it.pan_from==null?null:+it.pan_from, pan_to:it.pan_to===""||it.pan_to==null?null:+it.pan_to, speed:+it.speed||null, transition_in:it.transition_in||"", length:+String(it.length||"").replace(",",".")||null})),
+    captions_png: S.items.map(it => { const c = textCanvas(it.caption||"", S.capPosition, S.capFont, S.capSize); return c ? c.toDataURL("image/png") : null; }),
+    hook_png: hook ? hook.toDataURL("image/png") : null, end_png: end ? end.toDataURL("image/png") : null,
+    watermark_png: wm ? wm.toDataURL("image/png") : null};
+  const r = await fetch("/api/render",{method:"POST",body:JSON.stringify(body)});
+  if(!r.ok){ setStatus((await r.json()).error, true); return; }
+  $("renderBtn").disabled = true; $("result").innerHTML = ""; poll();
+}
+function setStatus(msg, err){ const s = $("status"); s.textContent = msg; s.className = err ? "err" : ""; }
+async function poll(){
+  const j = await fetch("/api/job").then(r=>r.json());
+  $("bar").style.width = (j.progress*100)+"%";
+  if(j.state==="running"){ setStatus(j.message + " · " + Math.round((Date.now()/1000 - j.started)) + " s"); return setTimeout(poll, 700); }
+  $("renderBtn").disabled = false;
+  if(j.state==="error"){ setStatus(j.error, true); return; }
+  if(j.state==="done"){ setStatus(`Done: ${j.result.duration} s reel in ${Math.round(Date.now()/1000 - j.started)} s.`); showResult(j.result); loadRecent(); }
+}
+function showResult(r){
+  const v = Date.now(); setTimeout(() => $("result").scrollIntoView({behavior:"smooth", block:"nearest"}), 50);
+  $("result").innerHTML = `<video src="${r.video}?v=${v}" controls playsinline loop autoplay muted></video>
+    <div class="actions">
+      <a class="btn primary" href="${r.video}?download=1">Download MP4</a>
+      <a class="btn" href="${r.cover}?download=1">Download cover</a>
+      <button class="btn" onclick="fetch('/api/open',{method:'POST',body:JSON.stringify({reel:'${r.id}'})})">Show in Finder</button>
+    </div>
+    ${r.hdr_warning ? `<div class="warn">Some clips are iPhone HDR video and this FFmpeg can't convert HDR colours, so they may look washed out. Fix: in Terminal run <code>brew install ffmpeg</code> (or turn off HDR Video in iPhone Camera settings).</div>` : ""}`;
+}
+async function loadRecent(){
+  const r = await fetch("/api/reels").then(r=>r.json());
+  $("recent").innerHTML = r.items.length ? r.items.map(x => `<img src="${x.cover}" title="${x.id}" data-id="${x.id}">`).join("") : `<span class="small-muted">None yet.</span>`;
+  $("recent").querySelectorAll("img").forEach(im => im.onclick = () => { const x = r.items.find(i=>i.id===im.dataset.id); showResult(x); });
+}
+
+/* ================= Spot the details (v5 layout) =================
+   Drawn frame by frame on a canvas (preview = export), frames are piped to FFmpeg by the server. */
+const SPOT = {cream:"#F6EAD8", ink:"#3B2418", accent:"#B26834"};
+const SPOT_TITLE_FONT = s => `600 ${s}px Fraunces, Georgia, serif`;
+const SPOT_TEXT_FONT = (s,w=500) => `${w} ${s}px "DM Sans", "Helvetica Neue", Arial, sans-serif`;
+if(!S.spot) S.spot = {title:"", endTitle:"How many did you find?", endLine:"drop your number in the comments", pace:"1"};
+if(!S.spotDetails) S.spotDetails = {};
+let spotSel = -1, spotPlay = null, spotAssetCache = {};
+
+const sEase = x => { x = Math.min(1, Math.max(0, x)); return x*x*(3-2*x); };
+const sBack = x => { x = Math.min(1, Math.max(0, x)); const c = 1.70158; return 1 + (c+1)*Math.pow(x-1,3) + c*Math.pow(x-1,2); };
+const lerp = (a,b,u) => a + (b-a)*u;
+const mediaUrl = f => "/api/media?file="+encodeURIComponent(f)+"&v="+((LIB.find(x=>x.file===f)||{}).mtime||0);
+function spotFile(){ const it = S.items.find(i => i.type==="photo"); return it ? it.file : null; }
+function spotList(){ const f = spotFile(); if(!f) return []; return S.spotDetails[f] || (S.spotDetails[f] = []); }
+function spotTitle(n){ return (S.spot.title||"").trim() || `Can you spot all ${n}?`; }
+async function spotFonts(){ try{ await Promise.all([document.fonts.load(SPOT_TITLE_FONT(80),"Aa"), document.fonts.load(SPOT_TEXT_FONT(40),"Aa"), document.fonts.load(SPOT_TEXT_FONT(40,600),"Aa")]); }catch(e){} }
+
+/* ---- timeline ---- */
+function spotTimeline(n){
+  const p = +S.spot.pace || 1, step = 0.75*p;
+  const items = Array.from({length:n}, (_,k) => k*step);
+  const listDone = (n-1)*step + 0.35;
+  const c0 = listDone + 0.7*p, R0 = c0 + 3*p, D = 1.2*p;
+  const flip = R0 + n*D, endStart = flip + 1.1, total = endStart + 3.0;
+  return {p, step, items, listDone, c0, R0, D, flip, endStart, total};
+}
+
+/* ---- layout & assets ---- */
+function wrapFit(ctx, text, maxW, fontFn, size, maxLines){
+  let s = size, lines;
+  for(;;){ ctx.font = fontFn(s); lines = wrapLines(ctx, text, maxW); if(lines.length <= maxLines || s <= 40) break; s -= 4; }
+  return {lines, size:s};
+}
+async function spotAssets(file, n){
+  const im = await loadImg(mediaUrl(file)); if(!im) throw new Error("Could not load the painting.");
+  const key = file+"|"+n+"|"+spotTitle(n);
+  if(spotAssetCache.key === key) return spotAssetCache.val;
+  const tmp = document.createElement("canvas").getContext("2d");
+  const t = wrapFit(tmp, spotTitle(n), 920, SPOT_TITLE_FONT, 86, 2);
+  const lh = t.size*1.16, titleTop = 232, titleBottom = titleTop + t.lines.length*lh;
+  const rows = Math.ceil(n/2), rowH = 74, listTop = titleBottom + 24, listBottom = listTop + rows*rowH;
+  const top = listBottom + 30, maxBottom = 1478, availH = maxBottom - top, a = im.width/im.height;
+  const w = Math.min(900, availH*a), h = w/a;
+  const L = {titleLines:t.lines, titleSize:t.size, titleLh:lh, titleTop, titleBottom, listTop, rowH,
+             x:(1080-w)/2, y: top + Math.min((availH-h)*0.3, 50), w, h};
+  // crisp display copy (step-down resize), high-res copy for the magnifier, blurred copy for the "foggy" start
+  const stepDown = (src, tw) => { let c = src, cw = src.width, ch = src.height;
+    while(cw/2 > tw){ const n2 = document.createElement("canvas"); n2.width = Math.round(cw/2); n2.height = Math.round(ch/2);
+      const g = n2.getContext("2d"); g.imageSmoothingQuality = "high"; g.drawImage(c,0,0,n2.width,n2.height); c = n2; cw = n2.width; ch = n2.height; }
+    const out = document.createElement("canvas"); out.width = Math.round(tw); out.height = Math.round(tw*src.height/src.width);
+    const g = out.getContext("2d"); g.imageSmoothingQuality = "high"; g.drawImage(c,0,0,out.width,out.height); return out; };
+  const disp = stepDown(im, w);
+  const hi = im.width > w*3.2 ? stepDown(im, w*3.2) : im;
+  const tiny = stepDown(disp, Math.max(12, w/28)), mid = document.createElement("canvas");
+  mid.width = Math.round(w/3); mid.height = Math.round(h/3);
+  const mg = mid.getContext("2d"); mg.imageSmoothingQuality = "high"; mg.drawImage(tiny,0,0,mid.width,mid.height);
+  const val = {im, L, disp, hi, blur:mid};
+  spotAssetCache = {key, val};
+  return val;
+}
+
+/* ---- one frame ---- */
+function spotScene(ctx, A, t, T, det, opt={}){
+  const {L} = A, n = det.length;
+  ctx.fillStyle = SPOT.cream; ctx.fillRect(0,0,1080,1920);
+  // title (flips at the end of the reveal)
+  const flipU = sEase((t - T.flip)/0.35);
+  const drawTitle = (text, alpha) => { if(alpha <= 0) return; ctx.save(); ctx.globalAlpha = alpha;
+    const f = wrapFit(ctx, text, 920, SPOT_TITLE_FONT, L.titleSize, L.titleLines.length);
+    ctx.font = SPOT_TITLE_FONT(f.size); ctx.fillStyle = SPOT.ink; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    const lh = f.size*1.16, y0 = L.titleTop + (L.titleBottom - L.titleTop - f.lines.length*lh)/2;
+    f.lines.forEach((ln,i) => ctx.fillText(ln, 540, y0 + i*lh + lh/2)); ctx.restore(); };
+  drawTitle(spotTitle(n), 1 - flipU);
+  drawTitle(S.spot.endTitle || "How many did you find?", flipU);
+  // checklist 2 x 3
+  det.forEach((d,k) => {
+    const a = k === 0 ? 1 : sEase((t - T.items[k])/0.3); if(a <= 0) return;
+    const col = k % 2, row = Math.floor(k/2), x = col ? 556 : 92, y = L.listTop + row*L.rowH + L.rowH/2 + (1-a)*20;
+    const tickT = T.R0 + k*T.D + 1.05*T.p, tick = sEase((t - tickT)/0.2);
+    ctx.save(); ctx.globalAlpha = a;
+    const bs = 46, pop = 1 + 0.18*Math.sin(Math.PI*Math.min(1, Math.max(0,(t-tickT)/0.25)));
+    ctx.translate(x + bs/2, y); ctx.scale(pop, pop);
+    rrect(ctx, -bs/2, -bs/2, bs, bs, 9);
+    if(tick > 0){ ctx.fillStyle = SPOT.accent; ctx.globalAlpha = a*tick; ctx.fill(); ctx.globalAlpha = a; }
+    ctx.lineWidth = 3.5; ctx.strokeStyle = tick > 0.5 ? SPOT.accent : SPOT.ink; ctx.stroke();
+    if(tick > 0){ ctx.strokeStyle = "#fff"; ctx.lineWidth = 5; ctx.lineCap = "round"; ctx.lineJoin = "round";
+      ctx.beginPath(); ctx.moveTo(-12, 1); ctx.lineTo(-4, 10); ctx.lineTo(13, -10); ctx.globalAlpha = a*tick; ctx.stroke(); }
+    ctx.restore();
+    ctx.save(); ctx.globalAlpha = a; ctx.fillStyle = SPOT.ink; ctx.textAlign = "left"; ctx.textBaseline = "middle";
+    let fs = 47; ctx.font = SPOT_TEXT_FONT(fs); const label = d.label || `detail ${k+1}`;
+    while(ctx.measureText(label).width > 400 && fs > 30){ fs -= 2; ctx.font = SPOT_TEXT_FONT(fs); }
+    ctx.fillText(label, x + bs + 16, y + 1); ctx.restore();
+  });
+  // painting: foggy at first, clearer with each checklist item, fully original on the last one
+  let prog = 0;
+  if(n <= 1) prog = sEase(t/1.0); else for(let k = 1; k < n; k++) prog += sEase((t - T.items[k])/0.45)/(n-1);
+  const fog = 1 - prog;
+  ctx.save(); ctx.shadowColor = "rgba(59,36,24,.20)"; ctx.shadowBlur = 34; ctx.shadowOffsetY = 10;
+  rrect(ctx, L.x, L.y, L.w, L.h, 22); ctx.fillStyle = "#fff"; ctx.fill(); ctx.restore();
+  ctx.save(); rrect(ctx, L.x, L.y, L.w, L.h, 22); ctx.clip();
+  ctx.drawImage(A.disp, L.x, L.y, L.w, L.h);
+  if(fog > 0.001){ ctx.globalAlpha = Math.min(1, fog*1.15); ctx.imageSmoothingQuality = "high"; ctx.drawImage(A.blur, L.x, L.y, L.w, L.h);
+    ctx.globalAlpha = 1; ctx.fillStyle = `rgba(255,255,255,${0.45*fog})`; ctx.fillRect(L.x, L.y, L.w, L.h); }
+  ctx.restore();
+  // "answers revealed in 3... 2... 1..." label on the painting
+  if(t >= T.c0 && t < T.R0 + 0.3){
+    const k = Math.min(2, Math.floor((t - T.c0)/T.p));
+    const text = "answers revealed in 3..." + (k >= 1 ? " 2..." : "") + (k >= 2 ? " 1..." : "");
+    const a = sEase((t - T.c0)/0.3) * (1 - sEase((t - T.R0)/0.3));
+    const since = (t - T.c0) - k*T.p, pulse = 1 + 0.05*Math.sin(Math.PI*Math.min(1, since/0.25));
+    ctx.save(); ctx.globalAlpha = a; ctx.font = SPOT_TEXT_FONT(42, 600);
+    const tw = ctx.measureText(text).width, ph = 76, pw = tw + 56, cx = 540, cy = L.y + 34 + ph/2;
+    ctx.translate(cx, cy); ctx.scale(pulse, pulse);
+    rrect(ctx, -pw/2, -ph/2, pw, ph, ph/2); ctx.fillStyle = "rgba(246,234,216,.95)"; ctx.fill();
+    ctx.fillStyle = SPOT.ink; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(text, 0, 2); ctx.restore();
+  }
+  // answers: magnified inside a white circle, one at a time, shrinking back to a ring
+  det.forEach((d,i) => {
+    const s0 = T.R0 + i*T.D, u = t - s0; if(u < 0) return;
+    const P = {x: L.x + d.fx*L.w, y: L.y + d.fy*L.h}, rc = Math.max(10, d.r*L.w);
+    const ringW = 7;
+    const popEnd = 0.28*T.p, holdEnd = 0.72*T.p, shrinkEnd = 1.05*T.p;
+    if(u >= shrinkEnd){ ctx.save(); ctx.strokeStyle = "#fff"; ctx.lineWidth = ringW; ctx.shadowColor = "rgba(0,0,0,.25)"; ctx.shadowBlur = 8;
+      ctx.beginPath(); ctx.arc(P.x, P.y, rc, 0, Math.PI*2); ctx.stroke(); ctx.restore(); return; }
+    const mag = +d.mag || 2.2, Rm = Math.min(250, Math.max(125, rc*2.1));
+    const C0 = {x: Math.min(Math.max(P.x, L.x + Rm*0.8), L.x + L.w - Rm*0.8), y: Math.min(Math.max(P.y, L.y + Rm*0.8), L.y + L.h - Rm*0.8)};
+    C0.x = Math.min(Math.max(C0.x, Rm + 24), 1080 - Rm - 24); C0.y = Math.min(Math.max(C0.y, 240 + Rm), 1490 - Rm);
+    let R, C, zoom, alpha = 1;
+    if(u < popEnd){ const a = u/popEnd; R = Rm*(0.45 + 0.55*sBack(a)); C = C0; zoom = mag; alpha = sEase(a*1.6); }
+    else if(u < holdEnd){ R = Rm; C = C0; zoom = mag; }
+    else { const e = sEase((u - holdEnd)/(shrinkEnd - holdEnd)); R = lerp(Rm, rc, e); C = {x: lerp(C0.x, P.x, e), y: lerp(C0.y, P.y, e)}; zoom = lerp(mag, 1, e); }
+    ctx.save(); ctx.globalAlpha = alpha;
+    ctx.shadowColor = "rgba(59,36,24,.35)"; ctx.shadowBlur = 26; ctx.shadowOffsetY = 6;
+    ctx.beginPath(); ctx.arc(C.x, C.y, R + ringW/2, 0, Math.PI*2); ctx.fillStyle = "#fff"; ctx.fill();
+    ctx.shadowColor = "transparent";
+    ctx.save(); ctx.beginPath(); ctx.arc(C.x, C.y, R, 0, Math.PI*2); ctx.clip();
+    ctx.fillStyle = SPOT.cream; ctx.fillRect(C.x - R, C.y - R, 2*R, 2*R);
+    const sc = L.w/A.hi.width*zoom;
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(A.hi, C.x - d.fx*A.hi.width*sc, C.y - d.fy*A.hi.height*sc, A.hi.width*sc, A.hi.height*sc);
+    ctx.restore();
+    ctx.strokeStyle = "#fff"; ctx.lineWidth = ringW; ctx.beginPath(); ctx.arc(C.x, C.y, R, 0, Math.PI*2); ctx.stroke();
+    ctx.restore();
+  });
+}
+function spotEndCard(ctx, t, T){
+  const u = t - T.endStart;
+  ctx.fillStyle = SPOT.cream; ctx.fillRect(0,0,1080,1920);
+  const a1 = sEase(u/0.4), a2 = sEase((u-0.35)/0.4), a3 = sEase((u-0.6)/0.4);
+  ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  const f = wrapFit(ctx, S.spot.endTitle || "How many did you find?", 900, SPOT_TITLE_FONT, 96, 3);
+  const lh = f.size*1.15, blockH = f.lines.length*lh, y0 = 880 - blockH/2;
+  ctx.save(); ctx.globalAlpha = a1; ctx.font = SPOT_TITLE_FONT(f.size); ctx.fillStyle = SPOT.ink;
+  f.lines.forEach((ln,i) => ctx.fillText(ln, 540, y0 + i*lh + lh/2 + (1-a1)*24)); ctx.restore();
+  const line = S.spot.endLine || "drop your number in the comments";
+  ctx.save(); ctx.globalAlpha = a2; ctx.fillStyle = SPOT.ink;
+  const g = wrapFit(ctx, line, 860, s => SPOT_TEXT_FONT(s), 50, 2);
+  ctx.font = SPOT_TEXT_FONT(g.size); g.lines.forEach((ln,i) => ctx.fillText(ln, 540, y0 + blockH + 70 + i*g.size*1.3 + (1-a2)*20)); ctx.restore();
+  if((S.sigText||"").trim()){ ctx.save(); ctx.globalAlpha = a3; ctx.fillStyle = SPOT.accent; ctx.font = SPOT_TEXT_FONT(44, 600);
+    ctx.fillText(S.sigText.trim(), 540, y0 + blockH + 70 + g.lines.length*g.size*1.3 + 70); ctx.restore(); }
+}
+function spotFrame(ctx, A, t, T, det){
+  if(t < T.endStart){ spotScene(ctx, A, t, T, det); return; }
+  const x = sEase((t - T.endStart)/0.45);
+  spotScene(ctx, A, t, T, det);
+  if(x > 0){ ctx.save(); ctx.globalAlpha = x; spotEndCard(ctx, t, T); ctx.restore(); }
+}
+
+/* ---- editor (middle panel) ---- */
+function renderSpotEditor(){
+  const box = $("spotEditor"); if(!box) return;
+  const on = S.template === "spot";
+  document.body.classList.toggle("spot", on);
+  box.style.display = on ? "" : "none"; if(!on) return;
+  const f = spotFile();
+  if(!f){ box.innerHTML = `<div class="spot-empty">Add your <b>painting</b> (a photo) to the list above. The first photo is used.</div>`; return; }
+  const det = spotList(), n = det.length;
+  box.innerHTML = `
+    <div class="spot-head"><b>Mark the details</b><span class="small-muted">${n}/6 · click the painting to add, drag a circle to move it</span></div>
+    <div class="spot-cvwrap"><canvas id="spotCv"></canvas></div>
+    <div id="spotRows">${det.map((d,i) => `
+      <div class="spot-row ${i===spotSel?"sel":""}" data-i="${i}">
+        <span class="spot-num">${i+1}</span>
+        <input type="text" class="spot-label" data-i="${i}" value="${esc(d.label||"")}" placeholder="what to find, e.g. a black cat" maxlength="28">
+        <label class="small-muted" title="Circle size">size <input type="range" min="2" max="20" step="0.5" value="${(d.r*100).toFixed(1)}" data-k="r" data-i="${i}"></label>
+        <select data-k="mag" data-i="${i}" title="How much the answer is magnified">${["1.6","2","2.2","2.5","3"].map(m => `<option ${String(d.mag||2.2)===m?"selected":""} value="${m}">${m}×</option>`).join("")}</select>
+        <button class="btn small ghost" data-del="${i}" title="Remove">✕</button>
+      </div>`).join("")}</div>
+    ${n ? "" : `<p class="small-muted">Tip: mix easy and well-hidden details. 6 works best.</p>`}
+    <div class="spot-settings">
+      <label>Title <input type="text" id="spTitle" value="${esc(S.spot.title||"")}" placeholder="${esc(`Can you spot all ${Math.max(n,1)}?`)}"></label>
+      <label>End title <input type="text" id="spEndTitle" value="${esc(S.spot.endTitle||"")}" placeholder="How many did you find?"></label>
+      <label>End line <input type="text" id="spEndLine" value="${esc(S.spot.endLine||"")}" placeholder="drop your number in the comments"></label>
+      <label>Pace <select id="spPace">${[["0.8","Quick"],["1","Normal"],["1.25","Relaxed"]].map(([v,l]) => `<option value="${v}" ${String(S.spot.pace)===v?"selected":""}>${l}</option>`).join("")}</select></label>
+    </div>
+    <div class="actions"><button class="btn" id="spPlay">▶ Play preview</button><span class="small-muted" id="spLen"></span></div>`;
+  if(n) $("spLen").textContent = `Reel length: ${spotTimeline(n).total.toFixed(1)} s`;
+  const save2 = () => { save(); };
+  box.querySelectorAll(".spot-label").forEach(el => el.oninput = () => { det[+el.dataset.i].label = el.value; save2(); spotEditorDraw(); spotStill(); });
+  box.querySelectorAll("[data-k]").forEach(el => el.oninput = () => { const d = det[+el.dataset.i];
+    if(el.dataset.k === "r") d.r = +el.value/100; else d.mag = +el.value; save2(); spotEditorDraw(); spotStill(); });
+  box.querySelectorAll("[data-del]").forEach(b => b.onclick = () => { det.splice(+b.dataset.del,1); spotSel = -1; save2(); renderSpotEditor(); spotStill(); });
+  box.querySelectorAll(".spot-row").forEach(r => r.onclick = e => { if(e.target.closest("input,select,button")) return; spotSel = +r.dataset.i; renderSpotEditor(); });
+  [["spTitle","title"],["spEndTitle","endTitle"],["spEndLine","endLine"]].forEach(([id,k]) => $(id).oninput = () => { S.spot[k] = $(id).value; save2(); spotStill(); });
+  $("spPace").onchange = () => { S.spot.pace = $("spPace").value; save2(); renderSpotEditor(); spotStill(); };
+  $("spPlay").onclick = spotTogglePlay;
+  spotEditorSetup();
+}
+async function spotEditorSetup(){
+  const cv = $("spotCv"); if(!cv) return; const f = spotFile();
+  const im = await loadImg(mediaUrl(f)); if(!im || !$("spotCv")) return;
+  const W = 900; cv.width = W; cv.height = Math.round(W*im.height/im.width);
+  spotEditorDraw();
+  let drag = -1;
+  const pos = e => { const r = cv.getBoundingClientRect(); return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height}; };
+  cv.onpointerdown = e => {
+    const p = pos(e), det = spotList(), asp = cv.height/cv.width;
+    let hit = -1, best = 1e9;
+    det.forEach((d,i) => { const dx = p.x - d.fx, dy = (p.y - d.fy)*asp, dist = Math.hypot(dx,dy); if(dist < d.r + 0.02 && dist < best){ best = dist; hit = i; } });
+    if(hit < 0){ if(det.length >= 6){ setStatus("6 details is the maximum. Remove one to add another.", true); return; }
+      det.push({label:"", fx:p.x, fy:p.y, r:0.06, mag:2.2}); hit = det.length-1; save(); spotSel = hit; renderSpotEditor(); spotStill();
+      setTimeout(() => { const el = document.querySelector(`.spot-label[data-i="${hit}"]`); if(el) el.focus(); }, 30); return; }
+    spotSel = hit; drag = hit; cv.setPointerCapture(e.pointerId); spotEditorDraw();
+    document.querySelectorAll(".spot-row").forEach(r => r.classList.toggle("sel", +r.dataset.i === hit));
+  };
+  cv.onpointermove = e => { if(drag < 0) return; const p = pos(e), d = spotList()[drag];
+    d.fx = Math.min(1, Math.max(0, p.x)); d.fy = Math.min(1, Math.max(0, p.y)); spotEditorDraw(); };
+  cv.onpointerup = () => { if(drag >= 0){ drag = -1; save(); spotStill(); } };
+}
+function spotEditorDraw(){
+  const cv = $("spotCv"); if(!cv) return; const im = imgCache[mediaUrl(spotFile())]; if(!im) return;
+  const g = cv.getContext("2d"); g.imageSmoothingQuality = "high"; g.drawImage(im, 0, 0, cv.width, cv.height);
+  spotList().forEach((d,i) => { const x = d.fx*cv.width, y = d.fy*cv.height, r = d.r*cv.width, sel = i === spotSel;
+    g.lineWidth = sel ? 6 : 4; g.strokeStyle = sel ? SPOT.accent : "#fff"; g.shadowColor = "rgba(0,0,0,.5)"; g.shadowBlur = 6;
+    g.beginPath(); g.arc(x, y, r, 0, Math.PI*2); g.stroke(); g.shadowBlur = 0;
+    g.fillStyle = sel ? SPOT.accent : SPOT.ink; g.beginPath(); g.arc(x + r*0.72, y - r*0.72, 20, 0, Math.PI*2); g.fill();
+    g.fillStyle = "#fff"; g.font = "700 22px -apple-system, Arial"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(i+1, x + r*0.72, y - r*0.72 + 1); });
+}
+
+/* ---- preview in the right-hand phone canvas ---- */
+function spotGuides(ctx){
+  if(!$("guides").checked) return;
+  ctx.fillStyle = "rgba(196,85,45,.28)"; ctx.fillRect(0,0,1080,210); ctx.fillRect(0,1500,1080,420); ctx.fillRect(950,980,130,520);
+}
+let spotStillTok = 0;
+async function spotStill(){
+  if(S.template !== "spot" || spotPlay) return;
+  const tok = ++spotStillTok, ctx = $("pv").getContext("2d"), f = spotFile(), det = spotList();
+  ctx.fillStyle = SPOT.cream; ctx.fillRect(0,0,1080,1920);
+  if(!f || !det.length){ ctx.fillStyle = SPOT.ink; ctx.font = SPOT_TEXT_FONT(44); ctx.textAlign = "center"; ctx.fillText(f ? "Mark some details" : "Add a painting", 540, 960); return; }
+  await spotFonts(); const A = await spotAssets(f, det.length); if(tok !== spotStillTok) return;
+  const T = spotTimeline(det.length);
+  spotScene(ctx, A, T.R0 + (Math.max(0, spotSel) + 0.5)*T.D, T, det); spotGuides(ctx);
+}
+async function spotTogglePlay(){
+  if(spotPlay){ cancelAnimationFrame(spotPlay); spotPlay = null; $("spPlay").textContent = "▶ Play preview"; spotStill(); return; }
+  const f = spotFile(), det = spotList(); if(!f || !det.length) return;
+  await spotFonts(); const A = await spotAssets(f, det.length), T = spotTimeline(det.length), ctx = $("pv").getContext("2d");
+  $("spPlay").textContent = "■ Stop"; const t0 = performance.now();
+  const step = () => { const t = (performance.now() - t0)/1000;
+    if(t > T.total){ spotPlay = null; if($("spPlay")) $("spPlay").textContent = "▶ Play preview"; spotStill(); return; }
+    spotFrame(ctx, A, t, T, det); spotGuides(ctx); spotPlay = requestAnimationFrame(step); };
+  spotPlay = requestAnimationFrame(step);
+}
+
+/* ---- export: draw every frame, send JPEGs to the server, FFmpeg encodes ---- */
+async function spotExport(){
+  const f = spotFile(), det = spotList();
+  if(!f){ setStatus("Add your painting (a photo) to the list first.", true); return; }
+  if(!det.length){ setStatus("Click the painting to mark at least one detail.", true); return; }
+  const missing = det.findIndex(d => !(d.label||"").trim());
+  if(missing >= 0){ setStatus(`Give detail ${missing+1} a name (it appears in the checklist).`, true); return; }
+  if(!CAPS.ffmpeg){ setStatus("FFmpeg is not installed. Open Terminal and run: brew install ffmpeg", true); return; }
+  if(spotPlay) spotTogglePlay();
+  $("renderBtn").disabled = true; $("result").innerHTML = ""; setStatus("Preparing…");
+  const started = Date.now();
+  try{
+    await spotFonts(); const A = await spotAssets(f, det.length), T = spotTimeline(det.length);
+    const fps = 30, N = Math.round(T.total*fps);
+    const meta = {template:"spot", painting:f, details:det, spot:S.spot};
+    const st = await fetch("/api/frames/start",{method:"POST",body:JSON.stringify(meta)}).then(r=>r.json());
+    if(st.error) throw new Error(st.error);
+    const cv = document.createElement("canvas"); cv.width = 1080; cv.height = 1920; const ctx = cv.getContext("2d");
+    const toJpeg = () => new Promise(res => cv.toBlob(b => res(b), "image/jpeg", 0.95));
+    let batch = [];
+    const flush = async () => { if(!batch.length) return; const body = new Blob(batch);
+      const r = await fetch(`/api/frames/append?id=${st.id}&n=${batch.length}`,{method:"POST",body}); batch = [];
+      if(!r.ok) throw new Error((await r.json()).error); };
+    for(let i = 0; i < N; i++){
+      spotFrame(ctx, A, i/fps, T, det); batch.push(await toJpeg());
+      if(batch.length >= 10){ await flush(); $("bar").style.width = (i/N*100)+"%"; setStatus(`Drawing frame ${i+1} of ${N} · ${Math.round((Date.now()-started)/1000)} s`); }
+    }
+    await flush();
+    // cover: title + full checklist + clear painting
+    spotScene(ctx, A, T.listDone + 0.5, T, det); const cover = await toJpeg();
+    setStatus("Finishing video…");
+    const r = await fetch(`/api/frames/finish?id=${st.id}`,{method:"POST",body:cover}).then(r=>r.json());
+    if(r.error) throw new Error(r.error);
+    $("bar").style.width = "100%";
+    setStatus(`Done: ${r.duration} s reel in ${Math.round((Date.now()-started)/1000)} s.`); showResult(r); loadRecent();
+  }catch(e){ setStatus(String(e.message||e), true); }
+  finally{ $("renderBtn").disabled = false; }
+}
+
+/* ---- hook into the existing app ---- */
+TEMPLATES.spot = {name:"Spot the details", desc:"Find-the-6 game: checklist, clearing blur, magnified answers",
+  hint:"Add <b>one painting</b> (a photo; the first photo in the list is used). Then click the painting below to mark up to 6 details and name them. Length, hook text and effects don't apply to this template."};
+const _roleFor = roleFor;
+roleFor = (i,n) => S.template === "spot" ? (S.items[i] && S.items[i].file === spotFile() ? "Painting" : "Not used") : _roleFor(i,n);
+const _renderItems = renderItems;
+renderItems = function(){ _renderItems(); renderSpotEditor(); };
+const _drawPreview = drawPreview;
+drawPreview = async function(){ if(S.template === "spot"){ spotStill(); return; } return _drawPreview(); };
+const _startRender = startRender;
+startRender = async function(){ if(S.template === "spot") return spotExport(); return _startRender(); };
+const _renderSettings = renderSettings;
+renderSettings = function(){ _renderSettings(); document.body.classList.toggle("spot", S.template === "spot"); };
+
+(async function init(){
+  renderSettings(); renderItems();
+  await loadStatus(); await loadLibrary(); drawPreview(); loadRecent();
+  const j = await fetch("/api/job").then(r=>r.json()); if(j.state==="running"){ $("renderBtn").disabled = true; poll(); }
+})();
+</script>
+</body>
+</html>
