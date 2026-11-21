@@ -376,14 +376,69 @@ class Handler(BaseHTTPRequestHandler):
                             started=time.time())
             threading.Thread(target=run_job, args=(body,), daemon=True).start()
             return self.send_json({"ok": True})
+        if url.path == "/api/shutdown":
+            if self.headers.get("X-Reels-Studio") != "1":
+                return self.send_json({"error": "forbidden"}, 403)
+            self.send_json({"ok": True})
+            threading.Thread(target=self.server.shutdown, daemon=True).start()
+            return
+        if url.path == "/api/remove":
+            # Not a delete: the file is moved to ~/ReelsStudio/Removed from library (put it back in Library to restore)
+            p = safe_lib_path(body.get("file", ""))
+            if not os.path.lexists(p):
+                return self.send_json({"error": "File not found"}, 404)
+            trash = os.path.join(HOME, "Removed from library")
+            os.makedirs(trash, exist_ok=True)
+            dest = os.path.join(trash, unique_name(trash, os.path.basename(p)))
+            shutil.move(p, dest)
+            return self.send_json({"ok": True, "moved_to": dest})
         if url.path == "/api/open":
-            target = {"library": LIBRARY, "reels": REELS}.get(body.get("what"))
+            target = {"library": LIBRARY, "reels": REELS,
+                      "removed": os.path.join(HOME, "Removed from library")}.get(body.get("what"))
+            if target and not os.path.isdir(target):
+                os.makedirs(target, exist_ok=True)
             if body.get("reel"):
                 target = os.path.join(REELS, re.sub(r"[^\w\-]", "", body["reel"]))
             if target and sys.platform == "darwin":
                 subprocess.Popen(["open", target])
             return self.send_json({"ok": True, "path": target})
         return self.send_json({"error": "not found"}, 404)
+
+
+def _port_free(port):
+    import socket
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        s.bind(("127.0.0.1", port))
+        return True
+    except OSError:
+        return False
+    finally:
+        s.close()
+
+
+def pick_port(port):
+    """Use `port`; if an older Reels Studio is still running there, ask it to stop; else use the next free port."""
+    if _port_free(port):
+        return port
+    import urllib.request
+    try:
+        req = urllib.request.Request("http://127.0.0.1:%d/api/shutdown" % port, data=b"{}", method="POST",
+                                     headers={"X-Reels-Studio": "1"})
+        urllib.request.urlopen(req, timeout=2).read()
+        for _ in range(30):
+            time.sleep(0.1)
+            if _port_free(port):
+                print("  (Stopped the Reels Studio that was already running.)")
+                return port
+    except Exception:
+        pass
+    for p in range(port + 1, port + 30):
+        if _port_free(p):
+            print("  Note: port %d is busy (probably an older Reels Studio window that is still open)." % port)
+            print("  Using port %d instead. You can close the old Terminal window.\n" % p)
+            return p
+    raise SystemExit("No free port found. Close other Reels Studio windows and try again.")
 
 
 def main():
@@ -394,8 +449,9 @@ def main():
     print("  Finished reels : %s" % REELS)
     if not caps["ffmpeg"]:
         print("\n  !! FFmpeg not found. Install it with:  brew install ffmpeg\n")
-    server = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
-    url = "http://127.0.0.1:%d" % PORT
+    port = pick_port(PORT)
+    server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
+    url = "http://127.0.0.1:%d" % port
     print("\n  Open %s  (keep this window open; press Ctrl+C to quit)\n" % url)
     if "--no-browser" not in sys.argv:
         threading.Timer(0.8, lambda: webbrowser.open(url)).start()
