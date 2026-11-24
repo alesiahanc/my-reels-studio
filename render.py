@@ -419,9 +419,9 @@ def render_video(seg, out_path, audio_mode, cache_dir=None, progress=lambda m: N
     for i, (s, ln, out) in enumerate(chunks):
         args += ["-ss", "%.3f" % s, "-t", "%.3f" % (max(ln, out) + 0.1), "-i", seg["path"]]
         speed = ln / out
-        v = "[{i}:v]{tm}setpts=(PTS-STARTPTS)/{sp:.5f},{fc},fps={fps},setsar=1,format=yuv420p," \
+        v = "[{i}:v]{tm}{cr}setpts=(PTS-STARTPTS)/{sp:.5f},{fc},fps={fps},setsar=1,format=yuv420p," \
             "tpad=stop_mode=clone:stop_duration={o:.3f},trim=duration={o:.3f},setpts=PTS-STARTPTS[v{i}]".format(
-                i=i, tm=(tonemap_chain() + ",") if hdr else "", sp=speed,
+                i=i, tm=(tonemap_chain() + ",") if hdr else "", cr=crop_filter(seg.get("crop")), sp=speed,
                 fc=frame_chain(seg.get("fit", "fill"), seg.get("fx", 0.5), seg.get("fy", 0.5), tag=str(i)),
                 fps=FPS, o=out)
         a = (audio_chain("%d:a" % i, out, volume) if use_audio else silence(out)) + "[a%d]" % i
@@ -477,6 +477,26 @@ def _fixed(item):
     return None
 
 
+def _crop(c):
+    """Crop box from the clip viewer: fractions {x, y, w, h} of the frame, or None."""
+    try:
+        x, y, w, h = (float(c[k]) for k in ("x", "y", "w", "h"))
+    except Exception:
+        return None
+    if w >= 0.995 and h >= 0.995:
+        return None
+    x, y = max(0.0, min(0.95, x)), max(0.0, min(0.95, y))
+    w, h = max(0.05, min(1 - x, w)), max(0.05, min(1 - y, h))
+    return {"x": x, "y": y, "w": w, "h": h}
+
+
+def crop_filter(c):
+    if not c:
+        return ""
+    return ("crop=w='trunc(iw*{w:.5f}/2)*2':h='trunc(ih*{h:.5f}/2)*2':x='iw*{x:.5f}':y='ih*{y:.5f}':exact=1,"
+            .format(**c))
+
+
 def _clip(item, dur, motion="in", mode="fit", use_item=True):
     """Segment showing `item` for about `dur` seconds.
 
@@ -488,7 +508,7 @@ def _clip(item, dur, motion="in", mode="fit", use_item=True):
     base = {"path": item["path"], "fit": item.get("fit", "fill"),
             "fx": float(item.get("fx", 0.5)), "fy": float(item.get("fy", 0.5)),
             "zoom": _num(item.get("zoom")), "idx": item.get("_idx"), "captioned": use_item,
-            "stabilise": bool(item.get("stabilise")),
+            "stabilise": bool(item.get("stabilise")), "crop": _crop(item.get("crop")),
             "trans_in": item.get("transition_in") or "",
             "pan_from": _pct(item.get("pan_from")), "pan_to": _pct(item.get("pan_to"))}
     if use_item:

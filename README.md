@@ -63,3 +63,31 @@ Advanced: you can set the `REELS_STUDIO_HOME` environment variable to move the L
 Choose the **Spot the details** template, add **one painting** (a photo) to the list, then click the painting to mark up to 6 things to find. Name each one; the name appears in the checklist. Drag a circle to move it, and use *size* and the zoom (e.g. 2.2×) to fit each detail. Press **▶ Play preview** to watch it, then **Make reel**.
 
 The reel follows your approved v5 format: the title and 2×3 checklist sit above a large painting (about 900 px wide). The painting starts foggy and gets clearer with each item, then "answers revealed in 3... 2... 1..." builds up on the painting. The answers pop up magnified in white circles, one at a time, and tick their boxes. The title flips to "How many did you find?", followed by an end card asking for numbers in the comments. The title, end text and pace can be changed. The reel is silent, so add music in Instagram.
+
+**Full screen layout.** For wide paintings (panoramas) the painting fills the whole screen and pans sideways from one answer to the next. The title and checklist sit on top as highlight chips. *Layout* picks this automatically for wide photos; you can also choose Framed or Full screen yourself. Two colour themes are built in (Forest and Leaf). The painting is sharp from the first frame unless you turn *Blur at start* on. *Trim edges* cuts white scan borders off. In full screen, answers are revealed left to right.
+
+**Text style and position.** *Text style: Default* uses the approved looks. *Custom* lets you choose the title and text fonts, text colour, highlights (on/off, colour, opacity) and accent colour. In both modes you can drag the title and checklist, the countdown label and the end card anywhere in the preview on the right; *Reset text positions* puts them back. Poppins (used in the approved full-screen reels) is used automatically if it's installed on your Mac; otherwise DM Sans.
+
+## Glide reels
+
+Choose **Glide**, add **one painting** (a photo), then click the painting in the order the camera should visit the spots (4–6 work best). Dashed frames show what the camera sees at each spot. Use *zoom* to go closer, ↑/↓ to change the order, and drag a spot to move it. **▶ Play preview**, then **Make reel**.
+
+By default it moves like your approved cosy corner glide: one continuous move through all the spots, then an eased zoom out to the full-screen view and a slow drift at the end. There's no text and no sound (add music in Instagram). Options:
+- *Movement:* Continuous glide or Stop at each spot (with a pause length per spot).
+- *Ending:* Zoom out, Whole painting or Stay on last spot. For the first two, **Final size** sets how big the painting is on the last frame: from *Fill screen* (no background) through *Whole fits* down to small (the painting on a soft background made from its own colours). The editor shows the final frame as an orange dashed box.
+- *Pace* and *Trim edges* (shared with Spot the details for the same painting).
+- *Text (optional):* a title from frame 1, a caption per spot and end text. *Colours: From the painting* picks the highlight and accent colours from the artwork; Forest, Leaf, Cream or Custom are also available. Drag any text in the preview to place it.
+
+## Watching, trimming, cropping and stabilising clips
+
+Hover a video in **Your media** and click the round **▶** to open the clip viewer before adding it. Videos already in the reel order have a **▶ Watch, trim & crop** button.
+- **Play** the clip and scrub through it. ◂ ▸ (or ← →) step one frame.
+- **Trim:** *Start here* / *End here* (shortcuts I and O) set the part that's used. "Play only the chosen part" loops it.
+- **Crop:** tick *Crop the frame* and drag the box (corners resize it). Free, 9:16, 4:5, 1:1 or 16:9 shapes. The thumbnail in the reel order shows the cropped picture, and *Fill frame* / the focus point then work inside the crop.
+- **Stabilise:** smooths out hand shake (crops about 5% at the edges; the first export of that clip takes longer, after that it's cached).
+- **Add to reel** (or **Save changes** for a clip already in the reel).
+
+## Clearing the media library
+
+**Clear all…** in *Your media* moves every photo and video to the *Removed from library* folder (nothing is deleted, and you can put files back). The line under the media grid shows what's in that folder; **delete permanently…** empties it for good (it asks first and only touches that folder).
+

@@ -83,6 +83,22 @@ def list_library():
     return out
 
 
+def removed_stats():
+    folder = os.path.join(HOME, "Removed from library")
+    n, size = 0, 0
+    if os.path.isdir(folder):
+        for dirpath, _dirs, files in os.walk(folder):
+            for fn in files:
+                if fn.startswith("."):
+                    continue
+                n += 1
+                try:
+                    size += os.lstat(os.path.join(dirpath, fn)).st_size
+                except OSError:
+                    pass
+    return {"count": n, "bytes": size}
+
+
 def thumb_path(rel):
     full = safe_lib_path(rel)
     st = os.stat(full)
@@ -294,9 +310,16 @@ class Handler(BaseHTTPRequestHandler):
                 return self.send_json({"caps": render.capabilities(), "library": LIBRARY, "reels": REELS,
                                        "templates": render.TEMPLATES})
             if path == "/api/library":
-                return self.send_json({"items": list_library()})
+                return self.send_json({"items": list_library(), "removed": removed_stats()})
             if path == "/api/thumb":
                 return self.send_file(thumb_path(q["file"][0]), "image/jpeg")
+            if path == "/api/video":
+                full = safe_lib_path(q["file"][0])
+                if render.media_type(full) != "video":
+                    return self.send_json({"error": "videos only"}, 400)
+                ext = os.path.splitext(full)[1].lower()
+                ctype = {".mov": "video/mp4", ".m4v": "video/mp4", ".mp4": "video/mp4", ".webm": "video/webm"}.get(ext)
+                return self.send_file(full, ctype)
             if path == "/api/media":
                 full = safe_lib_path(q["file"][0])
                 if render.media_type(full) != "photo":
@@ -382,6 +405,30 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json({"ok": True})
             threading.Thread(target=self.server.shutdown, daemon=True).start()
             return
+        if url.path in ("/api/remove_all", "/api/empty_removed"):
+            if self.headers.get("X-Reels-Studio") != "1":
+                return self.send_json({"error": "forbidden"}, 403)
+            trash = os.path.join(HOME, "Removed from library")
+            os.makedirs(trash, exist_ok=True)
+            if url.path == "/api/remove_all":
+                # Not a delete: every photo/video moves to ~/ReelsStudio/Removed from library
+                moved = 0
+                for e in list_library():
+                    p = safe_lib_path(e["file"])
+                    if os.path.lexists(p):
+                        shutil.move(p, os.path.join(trash, unique_name(trash, os.path.basename(p))))
+                        moved += 1
+                return self.send_json({"ok": True, "moved": moved})
+            # Permanent: only ever touches the Removed from library folder
+            deleted = 0
+            for name in os.listdir(trash):
+                p = os.path.join(trash, name)
+                if os.path.isdir(p) and not os.path.islink(p):
+                    shutil.rmtree(p)
+                else:
+                    os.remove(p)
+                deleted += 1
+            return self.send_json({"ok": True, "deleted": deleted})
         if url.path == "/api/remove":
             # Not a delete: the file is moved to ~/ReelsStudio/Removed from library (put it back in Library to restore)
             p = safe_lib_path(body.get("file", ""))

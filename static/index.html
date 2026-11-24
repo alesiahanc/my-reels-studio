@@ -112,10 +112,10 @@ summary{cursor:pointer;font-weight:600;font-size:13px;margin-bottom:8px}
 
 /* spot the details */
 body.spot [data-nospot]{display:none!important}
-#spotEditor{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+#spotEditor,#glideEditor{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
 .spot-head{display:flex;gap:10px;align-items:baseline;margin-bottom:8px;flex-wrap:wrap}
 .spot-cvwrap{background:#e9e2d6;border-radius:10px;overflow:hidden;text-align:center}
-#spotCv{max-width:100%;max-height:560px;display:block;margin:0 auto;cursor:crosshair;touch-action:none}
+#spotCv,#glideCv{max-width:100%;max-height:560px;display:block;margin:0 auto;cursor:crosshair;touch-action:none}
 .spot-row{display:flex;gap:8px;align-items:center;padding:6px 8px;border:1px solid var(--line);border-radius:9px;margin-top:6px;background:#fff;flex-wrap:wrap}
 .spot-row.sel{border-color:var(--accent);background:var(--accent-soft)}
 .spot-num{width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none}
@@ -125,6 +125,50 @@ body.spot [data-nospot]{display:none!important}
 .spot-settings{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;font-size:12.5px;color:var(--muted)}
 .spot-settings input,.spot-settings select{display:block;width:100%;margin-top:3px;padding:5px 8px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink)}
 .spot-empty{color:var(--muted);text-align:center;padding:14px;font-size:13px}
+
+.spot-sec{margin-top:14px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.spot-trim span{display:flex;gap:4px;margin-top:3px}
+.spot-trim span input{width:25%!important;margin-top:0!important;padding:5px 4px!important}
+.spot-trim small{font-size:10.5px}
+.spot-custom{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;padding:10px;border:1px dashed var(--line);border-radius:10px;font-size:12.5px;color:var(--muted)}
+.spot-custom select,.spot-custom input[type=range]{display:block;width:100%;margin-top:3px}
+.spot-custom select{padding:5px 8px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink)}
+.spot-custom input[type=color]{display:block;margin-top:3px;width:100%;height:30px;border:1px solid var(--line);border-radius:7px;background:#fff;padding:2px}
+.spot-custom .chk{display:flex;align-items:center;gap:6px;color:var(--ink)}
+.spot-presets{grid-column:1/-1;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.spot-move{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px;padding:8px 10px;background:var(--accent-soft);border-radius:9px;font-size:12.5px}
+.spot-move select{padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:#fff}
+
+.gl-end small{display:block;font-size:11.5px;color:var(--ink);margin-top:2px}
+.gl-end input[type=range]{display:block;width:100%;margin-top:6px}
+.gl-endbtns{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
+
+/* clip viewer */
+.modal{position:fixed;inset:0;background:rgba(30,24,18,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+.modal.open{display:flex}
+.modal-card{background:var(--card);border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.35);width:min(900px,100%);max-height:96vh;overflow:auto;padding:14px 16px}
+.cv-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.cv-head .spacer,.cv-foot .spacer{flex:1}
+.cv-stage{background:#111;border-radius:10px;display:flex;justify-content:center;align-items:center;min-height:200px;overflow:hidden}
+.cv-frame{position:relative;max-width:100%}
+.cv-frame video{display:block;background:#000}
+.cv-crop{position:absolute;box-shadow:0 0 0 9999px rgba(0,0,0,.55);outline:2px solid #fff;cursor:move;touch-action:none}
+.cv-crop span{position:absolute;width:16px;height:16px;background:#fff;border:2px solid var(--accent);border-radius:3px}
+.cv-crop span[data-h=tl]{left:-9px;top:-9px;cursor:nwse-resize}.cv-crop span[data-h=br]{right:-9px;bottom:-9px;cursor:nwse-resize}
+.cv-crop span[data-h=tr]{right:-9px;top:-9px;cursor:nesw-resize}.cv-crop span[data-h=bl]{left:-9px;bottom:-9px;cursor:nesw-resize}
+.cv-stage{overflow:visible}
+.cv-frame{overflow:hidden}
+.cv-bar{display:flex;align-items:center;gap:6px;margin:10px 0 4px}
+.cv-bar input[type=range]{flex:1;-webkit-appearance:none;appearance:none;height:8px;border-radius:99px;background:#ddd3c4;outline:none}
+.cv-bar input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--ink);border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.cv-sec{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 0;border-top:1px solid var(--line);font-size:13px}
+.cv-sec>b{width:70px}
+.cv-note{font-size:12.5px;color:var(--ink);background:var(--accent-soft);padding:2px 8px;border-radius:6px}
+#cvRatios{display:inline-flex;gap:4px}
+.cv-foot{display:flex;align-items:center;gap:8px;padding-top:10px;border-top:1px solid var(--line)}
+.tile .watch{position:absolute;left:5px;top:22px;z-index:2;width:30px;height:30px;border-radius:50%;border:none;background:rgba(255,255,255,.92);color:var(--ink);font-size:12px;padding:0 0 0 2px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.35)}
+.tile .watch:hover{background:var(--accent);color:#fff}
+#removedBar a{color:var(--accent)}
 </style>
 </head>
 <body>
@@ -140,7 +184,7 @@ body.spot [data-nospot]{display:none!important}
 <main>
   <!-- LIBRARY -->
   <section class="panel">
-    <h2>1 · Your media <span class="spacer"></span><button class="btn small ghost" onclick="loadLibrary()" title="Refresh">↻ Refresh</button></h2>
+    <h2>1 · Your media <span class="spacer"></span><button class="btn small ghost" onclick="loadLibrary()" title="Refresh">↻ Refresh</button><button class="btn small ghost" id="clearAll" onclick="clearAllMedia()" title="Move every photo and video to Removed media">Clear all…</button></h2>
     <div class="body">
       <div id="drop">Drag photos &amp; videos here, or <a href="#" onclick="pick();return false">choose files</a><br>
         <span style="font-size:12px">Huge videos? Put them straight into the <b>Library folder</b> in Finder. No upload wait.</span></div>
@@ -152,6 +196,7 @@ body.spot [data-nospot]{display:none!important}
         <button class="chip" data-f="video">Videos</button>
       </div>
       <div class="grid" id="lib"></div>
+      <div id="removedBar" class="small-muted" style="margin-top:12px"></div>
     </div>
   </section>
 
@@ -163,6 +208,7 @@ body.spot [data-nospot]{display:none!important}
       <p class="hint" id="tplHint"></p>
       <div id="items"></div>
       <div id="spotEditor" style="display:none"></div>
+      <div id="glideEditor" style="display:none"></div>
       <div id="noItems" class="empty">Click photos and videos on the left to add them here.<br>Drag ⋮⋮ to reorder. Click a thumbnail to choose what stays in the 9:16 frame.</div>
     </div>
   </section>
@@ -303,6 +349,34 @@ body.spot [data-nospot]{display:none!important}
   </section>
 </main>
 
+
+<div id="clipModal" class="modal"><div class="modal-card">
+  <div class="cv-head"><b id="cvName"></b><span class="spacer"></span><button class="btn small ghost" id="cvClose" title="Close (Esc)">✕</button></div>
+  <div id="cvStage" class="cv-stage"><div id="cvFrame" class="cv-frame"><video id="cvVideo" playsinline preload="metadata"></video>
+    <div id="cvCropBox" class="cv-crop" style="display:none"><span data-h="tl"></span><span data-h="tr"></span><span data-h="bl"></span><span data-h="br"></span></div></div></div>
+  <div id="cvMsg" class="small-muted" style="color:#b23a1a"></div>
+  <div class="cv-bar">
+    <button class="btn small" id="cvBack" title="One frame back (←)">◂</button>
+    <button class="btn small" id="cvPlay" style="min-width:80px">▶ Play</button>
+    <button class="btn small" id="cvFwd" title="One frame forward (→)">▸</button>
+    <input type="range" id="cvScrub" min="0" max="1" step="0.01" value="0">
+    <span id="cvTime" class="small-muted" style="min-width:96px;text-align:right"></span>
+  </div>
+  <div class="cv-sec"><b>Trim</b>
+    <button class="btn small" id="cvSetStart" title="Shortcut: I">⇤ Start here</button>
+    <button class="btn small" id="cvSetEnd" title="Shortcut: O">End here ⇥</button>
+    <button class="btn small ghost" id="cvClearTrim">Use whole clip</button>
+    <label class="small-muted"><input type="checkbox" id="cvLoop" checked> play only the chosen part</label>
+    <span id="cvSelTxt" class="cv-note"></span></div>
+  <div class="cv-sec"><b>Crop</b>
+    <label><input type="checkbox" id="cvCropOn"> Crop the frame</label>
+    <span id="cvRatios"><button class="chip" data-r="free">Free</button><button class="chip" data-r="9:16">9:16</button><button class="chip" data-r="4:5">4:5</button><button class="chip" data-r="1:1">1:1</button><button class="chip" data-r="16:9">16:9</button></span>
+    <span id="cvCropTxt" class="cv-note"></span></div>
+  <div class="cv-sec"><b>Stabilise</b>
+    <label title="Smooths out hand shake. Crops about 5% at the edges. The first export of this clip takes longer; after that it's cached."><input type="checkbox" id="cvStab"> Smooth out hand shake <span id="cvStabNote" class="small-muted"></span></label></div>
+  <div class="cv-foot"><span class="small-muted">Space play/pause · I/O set start/end · ←/→ one frame</span><span class="spacer"></span>
+    <button class="btn" id="cvCancel">Cancel</button><button class="btn primary" id="cvSave">Add to reel</button></div>
+</div></div>
 <script>
 const TEMPLATES = {
   reveal:{name:"Reveal",desc:"Finished piece first, fast process, finished piece again",hint:"Put the <b>finished artwork last</b>: it opens the reel as the hook and closes it. Everything before it becomes the fast process part."},
@@ -617,7 +691,7 @@ async function startRender(){
   const hook = textCanvas(S.hookText), end = textCanvas(S.endText), wm = await watermarkCanvas();
   const body = {template:S.template, duration:+S.duration, audio:S.audio, transition:S.transition||"cut", look:S.look||"none",
     hook_seconds: +S.hookSeconds, end_seconds: +S.endSeconds||2.5,
-    items: S.items.map(it => ({file:it.file, fit:it.fit, fx:it.fx, fy:it.fy, start:parseT(it.start), end:parseT(it.end),
+    items: S.items.map(it => ({file:it.file, fit:it.fit, fx:it.fx, fy:it.fy, start:parseT(it.start), end:parseT(it.end), crop:it.crop||null,
       stabilise:!!it.stabilise, motion:it.motion||"", zoom:+it.zoom||null, pan_from:it.pan_from===""||it.pan_from==null?null:+it.pan_from, pan_to:it.pan_to===""||it.pan_to==null?null:+it.pan_to, speed:+it.speed||null, transition_in:it.transition_in||"", length:+String(it.length||"").replace(",",".")||null})),
     captions_png: S.items.map(it => { const c = textCanvas(it.caption||"", S.capPosition, S.capFont, S.capSize); return c ? c.toDataURL("image/png") : null; }),
     hook_png: hook ? hook.toDataURL("image/png") : null, end_png: end ? end.toDataURL("image/png") : null,
@@ -651,104 +725,233 @@ async function loadRecent(){
   $("recent").querySelectorAll("img").forEach(im => im.onclick = () => { const x = r.items.find(i=>i.id===im.dataset.id); showResult(x); });
 }
 
-/* ================= Spot the details (v5 layout) =================
-   Drawn frame by frame on a canvas (preview = export), frames are piped to FFmpeg by the server. */
+/* ================= Spot the details: Framed (v5) + Full screen layouts =================
+   Drawn frame by frame on a canvas (preview = export); frames are piped to FFmpeg by the server. */
 const SPOT = {cream:"#F6EAD8", ink:"#3B2418", accent:"#B26834"};
-const SPOT_TITLE_FONT = s => `600 ${s}px Fraunces, Georgia, serif`;
-const SPOT_TEXT_FONT = (s,w=500) => `${w} ${s}px "DM Sans", "Helvetica Neue", Arial, sans-serif`;
-if(!S.spot) S.spot = {title:"", endTitle:"How many did you find?", endLine:"drop your number in the comments", pace:"1"};
+function fontInstalled(name){
+  const c = document.createElement("canvas").getContext("2d"), t = "abcdefghijklmnopqrstuvwxyz0123456789 WMwm";
+  c.font = "72px monospace"; const a = c.measureText(t).width; c.font = `72px "${name}", monospace`; const b = c.measureText(t).width;
+  c.font = "72px serif"; const a2 = c.measureText(t).width; c.font = `72px "${name}", serif`; return b !== a || c.measureText(t).width !== a2;
+}
+const HAS_POPPINS = fontInstalled("Poppins");
+const SANS = HAS_POPPINS ? "Poppins" : "DM Sans";
+const FONT_FAMILIES = {
+  "Fraunces": "Fraunces, Georgia, serif",
+  "DM Sans": '"DM Sans", "Helvetica Neue", Arial, sans-serif',
+  "Poppins": 'Poppins, "DM Sans", "Helvetica Neue", sans-serif',
+  "Helvetica Neue": '"Helvetica Neue", Helvetica, Arial, sans-serif',
+  "Avenir Next": '"Avenir Next", Avenir, sans-serif',
+  "Futura": 'Futura, "Trebuchet MS", sans-serif',
+  "Gill Sans": '"Gill Sans", "Gill Sans MT", sans-serif',
+  "Georgia": "Georgia, serif",
+  "Didot": 'Didot, "Bodoni 72", Georgia, serif',
+  "Baskerville": 'Baskerville, "Baskerville Old Face", Georgia, serif',
+  "American Typewriter": '"American Typewriter", "Courier New", monospace',
+  "Bradley Hand": '"Bradley Hand", "Segoe Print", cursive',
+  "Chalkboard": '"Chalkboard SE", "Comic Sans MS", cursive',
+  "Noteworthy": 'Noteworthy, "Bradley Hand", cursive'
+};
+// Built-in looks. Framed = the approved v5 reel; Forest / Leaf = the approved full-screen reels.
+const SPOT_PRESETS = {
+  framed: {titleFont:"Fraunces", textFont:"DM Sans", text:"#3B2418", chipOn:false, chipColor:"#F6EAD8", chipAlpha:95, accent:"#B26834", accentText:"#FFFFFF"},
+  forest: {titleFont:SANS, textFont:SANS, text:"#F7EFDC", chipOn:true, chipColor:"#183426", chipAlpha:87, accent:"#F2C14E", accentText:"#183426"},
+  leaf:   {titleFont:SANS, textFont:SANS, text:"#1C3E2C", chipOn:true, chipColor:"#FBF5E6", chipAlpha:92, accent:"#DE7634", accentText:"#FFFFFF"}
+};
+const SPOT_DEFAULTS = {title:"", endTitle:"How many did you find?", endLine:"drop your number in the comments", pace:"1",
+  layout:"auto", theme:"forest", blur:"auto", styleMode:"default", style:null,
+  pos:{block:{x:0,y:0}, count:{x:0,y:0}, end:{x:0,y:0}}, pvFrame:"text"};
+S.spot = Object.assign({}, SPOT_DEFAULTS, S.spot || {});
+S.spot.pos = Object.assign({block:{x:0,y:0}, count:{x:0,y:0}, end:{x:0,y:0}}, S.spot.pos || {});
 if(!S.spotDetails) S.spotDetails = {};
-let spotSel = -1, spotPlay = null, spotAssetCache = {};
+if(!S.spotTrim) S.spotTrim = {};
+let spotSel = -1, spotPlay = null, spotAssetCache = {}, spotBoxes = {};
 
 const sEase = x => { x = Math.min(1, Math.max(0, x)); return x*x*(3-2*x); };
 const sBack = x => { x = Math.min(1, Math.max(0, x)); const c = 1.70158; return 1 + (c+1)*Math.pow(x-1,3) + c*Math.pow(x-1,2); };
 const lerp = (a,b,u) => a + (b-a)*u;
+const clampN = (v,a,b) => Math.min(b, Math.max(a, v));
+const hexA = (hex, pct) => { const h = hex.replace("#",""); const n = parseInt(h.length===3 ? h.split("").map(c=>c+c).join("") : h, 16);
+  return `rgba(${n>>16&255},${n>>8&255},${n&255},${(pct/100).toFixed(3)})`; };
 const mediaUrl = f => "/api/media?file="+encodeURIComponent(f)+"&v="+((LIB.find(x=>x.file===f)||{}).mtime||0);
 function spotFile(){ const it = S.items.find(i => i.type==="photo"); return it ? it.file : null; }
 function spotList(){ const f = spotFile(); if(!f) return []; return S.spotDetails[f] || (S.spotDetails[f] = []); }
+function spotTrim(){ const f = spotFile(); return Object.assign({t:0,b:0,l:0,r:0}, (f && S.spotTrim[f]) || {}); }
 function spotTitle(n){ return (S.spot.title||"").trim() || `Can you spot all ${n}?`; }
-async function spotFonts(){ try{ await Promise.all([document.fonts.load(SPOT_TITLE_FONT(80),"Aa"), document.fonts.load(SPOT_TEXT_FONT(40),"Aa"), document.fonts.load(SPOT_TEXT_FONT(40,600),"Aa")]); }catch(e){} }
+function spotEndTitle(){ return (S.spot.endTitle||"").trim() || "How many did you find?"; }
+function spotEndLine(){ return (S.spot.endLine||"").trim() || "drop your number in the comments"; }
 
-/* ---- timeline ---- */
-function spotTimeline(n){
-  const p = +S.spot.pace || 1, step = 0.75*p;
-  const items = Array.from({length:n}, (_,k) => k*step);
-  const listDone = (n-1)*step + 0.35;
-  const c0 = listDone + 0.7*p, R0 = c0 + 3*p, D = 1.2*p;
-  const flip = R0 + n*D, endStart = flip + 1.1, total = endStart + 3.0;
-  return {p, step, items, listDone, c0, R0, D, flip, endStart, total};
+/* ---- layout / style resolution ---- */
+function spotIsFull(im){
+  if(S.spot.layout === "full") return true;
+  if(S.spot.layout === "framed") return false;
+  if(!im) return false;
+  const tr = spotTrim(), a = (im.width*(1 - (tr.l+tr.r)/100)) / (im.height*(1 - (tr.t+tr.b)/100));
+  return a >= (9/16)*1.3;
 }
-
-/* ---- layout & assets ---- */
+function spotBlurOn(full){ return S.spot.blur === "on" || (S.spot.blur === "auto" && !full); }
+function spotDefaultStyle(full){ return Object.assign({}, full ? SPOT_PRESETS[S.spot.theme] || SPOT_PRESETS.forest : SPOT_PRESETS.framed); }
+function spotStyle(full){
+  const st = S.spot.styleMode === "custom" && S.spot.style ? Object.assign(spotDefaultStyle(full), S.spot.style) : spotDefaultStyle(full);
+  const fam = n => FONT_FAMILIES[n] || FONT_FAMILIES["DM Sans"];
+  const tw = st.titleFont === "Fraunces" ? 600 : 700;
+  return Object.assign(st, {
+    titleF: s => `${tw} ${s}px ${fam(st.titleFont)}`,
+    textF: (s, w=500) => `${w} ${s}px ${fam(st.textFont)}`,
+    chip: hexA(st.chipColor, st.chipAlpha), veil: hexA(st.chipColor, 59)
+  });
+}
+async function spotFonts(R){
+  const list = [R.titleF(80), R.textF(40), R.textF(40,600), R.textF(40,700)];
+  try{ await Promise.all(list.map(f => document.fonts.load(f, "Aa"))); }catch(e){}
+}
 function wrapFit(ctx, text, maxW, fontFn, size, maxLines){
   let s = size, lines;
-  for(;;){ ctx.font = fontFn(s); lines = wrapLines(ctx, text, maxW); if(lines.length <= maxLines || s <= 40) break; s -= 4; }
+  for(;;){ ctx.font = fontFn(s); lines = wrapLines(ctx, text, maxW); if(lines.length <= maxLines || s <= 30) break; s -= 4; }
   return {lines, size:s};
+}
+function fitSize(ctx, text, maxW, fontFn, size, min=24){ let s = size; ctx.font = fontFn(s);
+  while(ctx.measureText(text).width > maxW && s > min){ s -= 2; ctx.font = fontFn(s); } return s; }
+const boxUnion = (a,b) => !a ? b : !b ? a : {x:Math.min(a.x,b.x), y:Math.min(a.y,b.y), w:Math.max(a.x+a.w,b.x+b.w)-Math.min(a.x,b.x), h:Math.max(a.y+a.h,b.y+b.h)-Math.min(a.y,b.y)};
+
+/* ---- assets ---- */
+function stepDown(src, tw, sx=0, sy=0, sw=src.width, sh=src.height){
+  let c = document.createElement("canvas"); c.width = Math.round(sw); c.height = Math.round(sh);
+  c.getContext("2d").drawImage(src, sx, sy, sw, sh, 0, 0, c.width, c.height);
+  let cw = c.width, ch = c.height;
+  while(cw/2 > tw){ const n2 = document.createElement("canvas"); n2.width = Math.round(cw/2); n2.height = Math.round(ch/2);
+    const g = n2.getContext("2d"); g.imageSmoothingQuality = "high"; g.drawImage(c,0,0,n2.width,n2.height); c = n2; cw = n2.width; ch = n2.height; }
+  if(Math.abs(cw - tw) < 1) return c;
+  const out = document.createElement("canvas"); out.width = Math.max(1, Math.round(tw)); out.height = Math.max(1, Math.round(tw*ch/cw));
+  const g = out.getContext("2d"); g.imageSmoothingQuality = "high"; g.drawImage(c,0,0,out.width,out.height); return out;
+}
+function reflectPad(src, pad){
+  const w = src.width, h = src.height, c = document.createElement("canvas"); c.width = w + 2*pad; c.height = h + 2*pad;
+  const g = c.getContext("2d"); g.drawImage(src, pad, pad);
+  const m = (sx,sy,sw,sh, dx,dy, fx,fy) => { if(sw<=0||sh<=0) return; g.save(); g.translate(dx + (fx?sw:0), dy + (fy?sh:0)); g.scale(fx?-1:1, fy?-1:1); g.drawImage(c, sx,sy,sw,sh, 0,0,sw,sh); g.restore(); };
+  const p = Math.min(pad, w, h);
+  m(pad,pad, p,h, pad-p,pad, true,false);            // left
+  m(pad+w-p,pad, p,h, pad+w,pad, true,false);        // right
+  m(0,pad, c.width,p, 0,pad-p, false,true);           // top (incl. corners)
+  m(0,pad+h-p, c.width,p, 0,pad+h, false,true);       // bottom
+  return c;
 }
 async function spotAssets(file, n){
   const im = await loadImg(mediaUrl(file)); if(!im) throw new Error("Could not load the painting.");
-  const key = file+"|"+n+"|"+spotTitle(n);
+  const full = spotIsFull(im), blur = spotBlurOn(full), R = spotStyle(full), tr = spotTrim();
+  const key = [file, n, spotTitle(n), full, blur, JSON.stringify(tr), R.titleFont, S.spot.layout].join("|");
   if(spotAssetCache.key === key) return spotAssetCache.val;
-  const tmp = document.createElement("canvas").getContext("2d");
-  const t = wrapFit(tmp, spotTitle(n), 920, SPOT_TITLE_FONT, 86, 2);
-  const lh = t.size*1.16, titleTop = 232, titleBottom = titleTop + t.lines.length*lh;
-  const rows = Math.ceil(n/2), rowH = 74, listTop = titleBottom + 24, listBottom = listTop + rows*rowH;
-  const top = listBottom + 30, maxBottom = 1478, availH = maxBottom - top, a = im.width/im.height;
-  const w = Math.min(900, availH*a), h = w/a;
-  const L = {titleLines:t.lines, titleSize:t.size, titleLh:lh, titleTop, titleBottom, listTop, rowH,
+  const cx = im.width*tr.l/100, cy = im.height*tr.t/100, cw = im.width*(1-(tr.l+tr.r)/100), ch = im.height*(1-(tr.t+tr.b)/100);
+  const val = {im, full, blur, cw, ch};
+  // high-res copy for the magnified circles, padded by reflection so circles near an edge never show black
+  const hiW = Math.min(cw, Math.sqrt(14e6*cw/ch));
+  const hiBase = stepDown(im, hiW, cx, cy, cw, ch);
+  val.hk = hiBase.width / cw; val.pad = Math.round(Math.min(hiBase.width, hiBase.height) * 0.25);
+  val.hi = reflectPad(hiBase, val.pad);
+  if(full){
+    const a = cw/ch;
+    const G = a <= 9/16 ? {DW:1080, DH:1080/a} : {DW:1920*a, DH:1920};
+    G.oy = -(G.DH - 1920)/2; G.maxOff = Math.max(0, G.DW - 1080);
+    // display copy at the reel's height (bounded so Safari's canvas limit is never hit)
+    const pw = Math.min(G.DW, cw, Math.sqrt(15e6*cw/ch));
+    val.pan = stepDown(hiBase, Math.max(pw, Math.min(G.DW, hiBase.width)));
+    if(val.pan.width * val.pan.height > 15e6) val.pan = stepDown(hiBase, Math.sqrt(15e6*cw/ch));
+    if(blur){ const t1 = stepDown(val.pan, Math.max(16, val.pan.width/28)); val.blurCv = stepDown(t1, val.pan.width/3); }
+    val.G = G;
+  } else {
+    const tmp = document.createElement("canvas").getContext("2d");
+    const t = wrapFit(tmp, spotTitle(n), 920, R.titleF, 86, 2);
+    const lh = t.size*1.16, titleTop = 232, titleBottom = titleTop + t.lines.length*lh;
+    const rows = Math.ceil(n/2), rowH = 74, listTop = titleBottom + 24, listBottom = listTop + rows*rowH;
+    const top = listBottom + 30, maxBottom = 1478, availH = maxBottom - top, a = cw/ch;
+    const w = Math.min(900, availH*a), h = w/a;
+    val.L = {titleLines:t.lines, titleSize:t.size, titleLh:lh, titleTop, titleBottom, listTop, rowH,
              x:(1080-w)/2, y: top + Math.min((availH-h)*0.3, 50), w, h};
-  // crisp display copy (step-down resize), high-res copy for the magnifier, blurred copy for the "foggy" start
-  const stepDown = (src, tw) => { let c = src, cw = src.width, ch = src.height;
-    while(cw/2 > tw){ const n2 = document.createElement("canvas"); n2.width = Math.round(cw/2); n2.height = Math.round(ch/2);
-      const g = n2.getContext("2d"); g.imageSmoothingQuality = "high"; g.drawImage(c,0,0,n2.width,n2.height); c = n2; cw = n2.width; ch = n2.height; }
-    const out = document.createElement("canvas"); out.width = Math.round(tw); out.height = Math.round(tw*src.height/src.width);
-    const g = out.getContext("2d"); g.imageSmoothingQuality = "high"; g.drawImage(c,0,0,out.width,out.height); return out; };
-  const disp = stepDown(im, w);
-  const hi = im.width > w*3.2 ? stepDown(im, w*3.2) : im;
-  const tiny = stepDown(disp, Math.max(12, w/28)), mid = document.createElement("canvas");
-  mid.width = Math.round(w/3); mid.height = Math.round(h/3);
-  const mg = mid.getContext("2d"); mg.imageSmoothingQuality = "high"; mg.drawImage(tiny,0,0,mid.width,mid.height);
-  const val = {im, L, disp, hi, blur:mid};
+    val.disp = stepDown(hiBase, w);
+    if(blur){ const tiny = stepDown(val.disp, Math.max(12, w/28)); val.blur = stepDown(tiny, w/3); }
+  }
   spotAssetCache = {key, val};
   return val;
 }
 
-/* ---- one frame ---- */
-function spotScene(ctx, A, t, T, det, opt={}){
-  const {L} = A, n = det.length;
-  ctx.fillStyle = SPOT.cream; ctx.fillRect(0,0,1080,1920);
-  // title (flips at the end of the reveal)
-  const flipU = sEase((t - T.flip)/0.35);
-  const drawTitle = (text, alpha) => { if(alpha <= 0) return; ctx.save(); ctx.globalAlpha = alpha;
-    const f = wrapFit(ctx, text, 920, SPOT_TITLE_FONT, L.titleSize, L.titleLines.length);
-    ctx.font = SPOT_TITLE_FONT(f.size); ctx.fillStyle = SPOT.ink; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    const lh = f.size*1.16, y0 = L.titleTop + (L.titleBottom - L.titleTop - f.lines.length*lh)/2;
-    f.lines.forEach((ln,i) => ctx.fillText(ln, 540, y0 + i*lh + lh/2)); ctx.restore(); };
-  drawTitle(spotTitle(n), 1 - flipU);
-  drawTitle(S.spot.endTitle || "How many did you find?", flipU);
-  // checklist 2 x 3
-  det.forEach((d,k) => {
-    const a = k === 0 ? 1 : sEase((t - T.items[k])/0.3); if(a <= 0) return;
-    const col = k % 2, row = Math.floor(k/2), x = col ? 556 : 92, y = L.listTop + row*L.rowH + L.rowH/2 + (1-a)*20;
-    const tickT = T.R0 + k*T.D + 1.05*T.p, tick = sEase((t - tickT)/0.2);
-    ctx.save(); ctx.globalAlpha = a;
-    const bs = 46, pop = 1 + 0.18*Math.sin(Math.PI*Math.min(1, Math.max(0,(t-tickT)/0.25)));
-    ctx.translate(x + bs/2, y); ctx.scale(pop, pop);
-    rrect(ctx, -bs/2, -bs/2, bs, bs, 9);
-    if(tick > 0){ ctx.fillStyle = SPOT.accent; ctx.globalAlpha = a*tick; ctx.fill(); ctx.globalAlpha = a; }
-    ctx.lineWidth = 3.5; ctx.strokeStyle = tick > 0.5 ? SPOT.accent : SPOT.ink; ctx.stroke();
-    if(tick > 0){ ctx.strokeStyle = "#fff"; ctx.lineWidth = 5; ctx.lineCap = "round"; ctx.lineJoin = "round";
-      ctx.beginPath(); ctx.moveTo(-12, 1); ctx.lineTo(-4, 10); ctx.lineTo(13, -10); ctx.globalAlpha = a*tick; ctx.stroke(); }
-    ctx.restore();
-    ctx.save(); ctx.globalAlpha = a; ctx.fillStyle = SPOT.ink; ctx.textAlign = "left"; ctx.textBaseline = "middle";
-    let fs = 47; ctx.font = SPOT_TEXT_FONT(fs); const label = d.label || `detail ${k+1}`;
-    while(ctx.measureText(label).width > 400 && fs > 30){ fs -= 2; ctx.font = SPOT_TEXT_FONT(fs); }
-    ctx.fillText(label, x + bs + 16, y + 1); ctx.restore();
+/* ---- timeline ---- */
+function spotTimeline(n, A, det){
+  const p = +S.spot.pace || 1, step = 0.75*p;
+  const items = Array.from({length:n}, (_,k) => k*step);
+  const listDone = (n-1)*step + 0.35, c0 = listDone + 0.7*p, R0 = c0 + 3*p;
+  if(!A || !A.full){
+    const D = 1.2*p, flip = R0 + n*D, endStart = flip + 1.1, total = endStart + 3.0;
+    return {full:false, p, step, items, listDone, c0, R0, D, flip, endStart, total};
+  }
+  const G = A.G, target = d => clampN(d.fx*G.DW - 540, 0, G.maxOff);
+  const slots = []; let prev = null;
+  det.forEach((d,i) => {
+    const to = target(d);
+    if(i === 0){ slots.push({s:R0, e:R0, from:to, to}); prev = slots[0]; return; }
+    const s = prev.e + 1.15*p, dist = Math.abs(to - prev.to);
+    const tr = dist < 80 ? 0 : clampN(dist/900*0.9, 0.55, 1.1);
+    const sl = {s, e:s + tr, from:prev.to, to}; slots.push(sl); prev = sl;
   });
-  // painting: foggy at first, clearer with each checklist item, fully original on the last one
+  const lastE = slots.length ? slots[slots.length-1].e : R0;
+  const endStart = lastE + 1.10*p + 0.5, total = endStart + 3.2;
+  return {full:true, p, step, items, listDone, c0, R0, flip:R0, slots, endStart, total, startOff:G.maxOff};
+}
+function spotOffset(t, T){
+  if(!T.slots.length) return 0;
+  if(t < T.R0) return lerp(T.startOff, T.slots[0].to, sEase(t/T.R0));
+  let off = T.slots[0].to;
+  for(const sl of T.slots){ if(t < sl.s) break; off = sl.e > sl.s ? lerp(sl.from, sl.to, sEase((t - sl.s)/(sl.e - sl.s))) : sl.to; }
+  return off;
+}
+
+/* ---- shared drawing helpers ---- */
+function drawMagnifier(ctx, A, d, u, P, rc, C0, T){
+  const ringW = 7, popEnd = (T.full ? 0.30 : 0.28)*T.p, holdEnd = (T.full ? 0.78 : 0.72)*T.p, shrinkEnd = (T.full ? 1.10 : 1.05)*T.p;
+  const mag = +d.mag || 2.2, Rm = T.full ? clampN(2.0*rc, 130, 210) : Math.min(250, Math.max(125, rc*2.1));
+  let R, C, zoom, alpha = 1;
+  if(u < popEnd){ const a = u/popEnd; R = Rm*(0.45 + 0.55*sBack(a)); C = C0; zoom = mag; alpha = sEase(a*1.6); }
+  else if(u < holdEnd){ R = Rm; C = C0; zoom = mag; }
+  else { const e = sEase((u - holdEnd)/(shrinkEnd - holdEnd)); R = lerp(Rm, rc, e); C = {x: lerp(C0.x, P.x, e), y: lerp(C0.y, P.y, e)}; zoom = lerp(mag, 1, e); }
+  ctx.save(); ctx.globalAlpha = alpha;
+  ctx.shadowColor = "rgba(30,20,10,.35)"; ctx.shadowBlur = 26; ctx.shadowOffsetY = 6;
+  ctx.beginPath(); ctx.arc(C.x, C.y, R + ringW/2, 0, Math.PI*2); ctx.fillStyle = "#fff"; ctx.fill();
+  ctx.shadowColor = "transparent";
+  ctx.save(); ctx.beginPath(); ctx.arc(C.x, C.y, R, 0, Math.PI*2); ctx.clip();
+  const pxPer = (T.full ? A.G.DW : A.L.w) / A.cw;           // reel px per source px at zoom 1
+  const sc = pxPer*zoom/A.hk;
+  const ix = A.pad + d.fx*A.cw*A.hk, iy = A.pad + d.fy*A.ch*A.hk;
+  ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(A.hi, C.x - ix*sc, C.y - iy*sc, A.hi.width*sc, A.hi.height*sc);
+  ctx.restore();
+  ctx.strokeStyle = "#fff"; ctx.lineWidth = ringW; ctx.beginPath(); ctx.arc(C.x, C.y, R, 0, Math.PI*2); ctx.stroke();
+  ctx.restore();
+  return Rm;
+}
+function drawRing(ctx, x, y, r, w){
+  ctx.save(); ctx.strokeStyle = "#fff"; ctx.lineWidth = w; ctx.shadowColor = "rgba(0,0,0,.28)"; ctx.shadowBlur = 8;
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.stroke(); ctx.restore();
+}
+function drawCheckbox(ctx, cx, cy, bs, tick, t, tickT, R, a, strokeCol){
+  const pop = 1 + 0.18*Math.sin(Math.PI*clampN((t-tickT)/0.25, 0, 1));
+  ctx.save(); ctx.globalAlpha = a; ctx.translate(cx, cy); ctx.scale(pop, pop);
+  rrect(ctx, -bs/2, -bs/2, bs, bs, bs*0.2);
+  if(tick > 0){ ctx.fillStyle = R.accent; ctx.globalAlpha = a*tick; ctx.fill(); ctx.globalAlpha = a; }
+  ctx.lineWidth = bs >= 40 ? 3.5 : 3; ctx.strokeStyle = tick > 0.5 ? R.accent : strokeCol; ctx.stroke();
+  if(tick > 0){ const k = bs/46; ctx.strokeStyle = R.accentText; ctx.lineWidth = 5*k; ctx.lineCap = "round"; ctx.lineJoin = "round";
+    ctx.beginPath(); ctx.moveTo(-12*k, 1*k); ctx.lineTo(-4*k, 10*k); ctx.lineTo(13*k, -10*k); ctx.globalAlpha = a*tick; ctx.stroke(); }
+  ctx.restore();
+}
+function countdownText(t, T){ const k = Math.min(2, Math.floor((t - T.c0)/T.p));
+  return {k, text: "answers revealed in 3..." + (k >= 1 ? " 2..." : "") + (k >= 2 ? " 1..." : "")}; }
+
+/* ---- Framed (v5) frame ---- */
+function spotSceneFramed(ctx, A, t, T, det, R){
+  const {L} = A, n = det.length, pos = S.spot.pos, bx = pos.block.x, by = pos.block.y;
+  ctx.fillStyle = SPOT.cream; ctx.fillRect(0,0,1080,1920);
+  spotBoxes = {};
+  // painting
   let prog = 0;
   if(n <= 1) prog = sEase(t/1.0); else for(let k = 1; k < n; k++) prog += sEase((t - T.items[k])/0.45)/(n-1);
-  const fog = 1 - prog;
+  const fog = A.blur ? 1 - prog : 0;
   ctx.save(); ctx.shadowColor = "rgba(59,36,24,.20)"; ctx.shadowBlur = 34; ctx.shadowOffsetY = 10;
   rrect(ctx, L.x, L.y, L.w, L.h, 22); ctx.fillStyle = "#fff"; ctx.fill(); ctx.restore();
   ctx.save(); rrect(ctx, L.x, L.y, L.w, L.h, 22); ctx.clip();
@@ -756,71 +959,202 @@ function spotScene(ctx, A, t, T, det, opt={}){
   if(fog > 0.001){ ctx.globalAlpha = Math.min(1, fog*1.15); ctx.imageSmoothingQuality = "high"; ctx.drawImage(A.blur, L.x, L.y, L.w, L.h);
     ctx.globalAlpha = 1; ctx.fillStyle = `rgba(255,255,255,${0.45*fog})`; ctx.fillRect(L.x, L.y, L.w, L.h); }
   ctx.restore();
-  // "answers revealed in 3... 2... 1..." label on the painting
-  if(t >= T.c0 && t < T.R0 + 0.3){
-    const k = Math.min(2, Math.floor((t - T.c0)/T.p));
-    const text = "answers revealed in 3..." + (k >= 1 ? " 2..." : "") + (k >= 2 ? " 1..." : "");
-    const a = sEase((t - T.c0)/0.3) * (1 - sEase((t - T.R0)/0.3));
-    const since = (t - T.c0) - k*T.p, pulse = 1 + 0.05*Math.sin(Math.PI*Math.min(1, since/0.25));
-    ctx.save(); ctx.globalAlpha = a; ctx.font = SPOT_TEXT_FONT(42, 600);
-    const tw = ctx.measureText(text).width, ph = 76, pw = tw + 56, cx = 540, cy = L.y + 34 + ph/2;
-    ctx.translate(cx, cy); ctx.scale(pulse, pulse);
-    rrect(ctx, -pw/2, -ph/2, pw, ph, ph/2); ctx.fillStyle = "rgba(246,234,216,.95)"; ctx.fill();
-    ctx.fillStyle = SPOT.ink; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(text, 0, 2); ctx.restore();
+  // title (flips at the end of the reveal)
+  const flipU = sEase((t - T.flip)/0.35);
+  ctx.save(); ctx.translate(bx, by);
+  let titleBox = null;
+  const drawTitle = (text, alpha, other) => { if(alpha <= 0 && !R.chipOn) return;
+    const f = wrapFit(ctx, text, 920, R.titleF, L.titleSize, L.titleLines.length);
+    const lh = f.size*1.16, y0 = L.titleTop + (L.titleBottom - L.titleTop - f.lines.length*lh)/2;
+    if(alpha <= 0) return;
+    ctx.save(); ctx.globalAlpha = alpha; ctx.font = R.titleF(f.size); ctx.fillStyle = R.text; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    f.lines.forEach((ln,i) => ctx.fillText(ln, 540, y0 + i*lh + lh/2)); ctx.restore(); };
+  if(R.chipOn){ // one highlight behind the title, sized for the longer title
+    let w = 0; [spotTitle(n), spotEndTitle()].forEach(tx => { const f = wrapFit(ctx, tx, 920, R.titleF, L.titleSize, L.titleLines.length); ctx.font = R.titleF(f.size); f.lines.forEach(l => w = Math.max(w, ctx.measureText(l).width)); });
+    const h = L.titleBottom - L.titleTop + 20; ctx.save(); ctx.fillStyle = R.chip; rrect(ctx, 540 - w/2 - 32, L.titleTop - 10, w + 64, h, 26); ctx.fill(); ctx.restore();
+    titleBox = {x:540 - w/2 - 32 + bx, y:L.titleTop - 10 + by, w:w+64, h};
   }
-  // answers: magnified inside a white circle, one at a time, shrinking back to a ring
+  drawTitle(spotTitle(n), 1 - flipU); drawTitle(spotEndTitle(), flipU);
+  if(!titleBox){ titleBox = {x:80+bx, y:L.titleTop+by, w:920, h:L.titleBottom-L.titleTop}; }
+  // checklist 2 x 3
+  let listBox = null;
+  det.forEach((d,k) => {
+    const a = k === 0 ? 1 : sEase((t - T.items[k])/0.3);
+    const col = k % 2, row = Math.floor(k/2), x = col ? 556 : 92, y = L.listTop + row*L.rowH + L.rowH/2 + (1-a)*20;
+    const label = d.label || `detail ${k+1}`, bs = 46;
+    const fs = fitSize(ctx, label, 400, s => R.textF(s), 47, 30);
+    ctx.font = R.textF(fs); const tw = ctx.measureText(label).width;
+    const box = {x:x - 12 + bx, y:L.listTop + row*L.rowH + 6 + by, w:bs + 16 + tw + 26, h:L.rowH - 12};
+    listBox = boxUnion(listBox, box);
+    if(a <= 0) return;
+    if(R.chipOn){ ctx.save(); ctx.globalAlpha = a; ctx.fillStyle = R.chip; rrect(ctx, x - 12, y - (L.rowH-12)/2, box.w, L.rowH - 12, 18); ctx.fill(); ctx.restore(); }
+    const tickT = T.R0 + k*T.D + 1.05*T.p, tick = sEase((t - tickT)/0.2);
+    drawCheckbox(ctx, x + bs/2, y, bs, tick, t, tickT, R, a, R.text);
+    ctx.save(); ctx.globalAlpha = a; ctx.fillStyle = R.text; ctx.textAlign = "left"; ctx.textBaseline = "middle"; ctx.font = R.textF(fs);
+    ctx.fillText(label, x + bs + 16, y + 1); ctx.restore();
+  });
+  ctx.restore();
+  spotBoxes.block = boxUnion(titleBox, listBox);
+  // "answers revealed in 3... 2... 1..." label on the painting
+  const cdx = pos.count.x, cdy = pos.count.y;
+  {
+    const show = t >= T.c0 && t < T.R0 + 0.3, {k, text} = countdownText(Math.max(t, T.c0), T);
+    ctx.font = R.textF(42, 600); const tw = ctx.measureText(text).width, ph = 76, pw = tw + 56, cx = 540 + cdx, cy = L.y + 34 + ph/2 + cdy;
+    spotBoxes.count = {x:cx - pw/2, y:cy - ph/2, w:pw, h:ph};
+    if(show){
+      const a = sEase((t - T.c0)/0.3) * (1 - sEase((t - T.R0)/0.3));
+      const since = (t - T.c0) - k*T.p, pulse = 1 + 0.05*Math.sin(Math.PI*Math.min(1, since/0.25));
+      ctx.save(); ctx.globalAlpha = a; ctx.translate(cx, cy); ctx.scale(pulse, pulse);
+      rrect(ctx, -pw/2, -ph/2, pw, ph, ph/2); ctx.fillStyle = hexA(R.chipColor, 95); ctx.fill();
+      ctx.fillStyle = R.text; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(text, 0, 2); ctx.restore();
+    }
+  }
+  // answers
   det.forEach((d,i) => {
     const s0 = T.R0 + i*T.D, u = t - s0; if(u < 0) return;
     const P = {x: L.x + d.fx*L.w, y: L.y + d.fy*L.h}, rc = Math.max(10, d.r*L.w);
-    const ringW = 7;
-    const popEnd = 0.28*T.p, holdEnd = 0.72*T.p, shrinkEnd = 1.05*T.p;
-    if(u >= shrinkEnd){ ctx.save(); ctx.strokeStyle = "#fff"; ctx.lineWidth = ringW; ctx.shadowColor = "rgba(0,0,0,.25)"; ctx.shadowBlur = 8;
-      ctx.beginPath(); ctx.arc(P.x, P.y, rc, 0, Math.PI*2); ctx.stroke(); ctx.restore(); return; }
-    const mag = +d.mag || 2.2, Rm = Math.min(250, Math.max(125, rc*2.1));
-    const C0 = {x: Math.min(Math.max(P.x, L.x + Rm*0.8), L.x + L.w - Rm*0.8), y: Math.min(Math.max(P.y, L.y + Rm*0.8), L.y + L.h - Rm*0.8)};
-    C0.x = Math.min(Math.max(C0.x, Rm + 24), 1080 - Rm - 24); C0.y = Math.min(Math.max(C0.y, 240 + Rm), 1490 - Rm);
-    let R, C, zoom, alpha = 1;
-    if(u < popEnd){ const a = u/popEnd; R = Rm*(0.45 + 0.55*sBack(a)); C = C0; zoom = mag; alpha = sEase(a*1.6); }
-    else if(u < holdEnd){ R = Rm; C = C0; zoom = mag; }
-    else { const e = sEase((u - holdEnd)/(shrinkEnd - holdEnd)); R = lerp(Rm, rc, e); C = {x: lerp(C0.x, P.x, e), y: lerp(C0.y, P.y, e)}; zoom = lerp(mag, 1, e); }
-    ctx.save(); ctx.globalAlpha = alpha;
-    ctx.shadowColor = "rgba(59,36,24,.35)"; ctx.shadowBlur = 26; ctx.shadowOffsetY = 6;
-    ctx.beginPath(); ctx.arc(C.x, C.y, R + ringW/2, 0, Math.PI*2); ctx.fillStyle = "#fff"; ctx.fill();
-    ctx.shadowColor = "transparent";
-    ctx.save(); ctx.beginPath(); ctx.arc(C.x, C.y, R, 0, Math.PI*2); ctx.clip();
-    ctx.fillStyle = SPOT.cream; ctx.fillRect(C.x - R, C.y - R, 2*R, 2*R);
-    const sc = L.w/A.hi.width*zoom;
-    ctx.imageSmoothingQuality = "high";
-    ctx.drawImage(A.hi, C.x - d.fx*A.hi.width*sc, C.y - d.fy*A.hi.height*sc, A.hi.width*sc, A.hi.height*sc);
-    ctx.restore();
-    ctx.strokeStyle = "#fff"; ctx.lineWidth = ringW; ctx.beginPath(); ctx.arc(C.x, C.y, R, 0, Math.PI*2); ctx.stroke();
-    ctx.restore();
+    if(u >= 1.05*T.p){ drawRing(ctx, P.x, P.y, rc, 7); return; }
+    const Rm = Math.min(250, Math.max(125, rc*2.1));
+    const C0 = {x: clampN(P.x, L.x + Rm*0.8, L.x + L.w - Rm*0.8), y: clampN(P.y, L.y + Rm*0.8, L.y + L.h - Rm*0.8)};
+    C0.x = clampN(C0.x, Rm + 24, 1080 - Rm - 24); C0.y = clampN(C0.y, 240 + Rm, 1490 - Rm);
+    drawMagnifier(ctx, A, d, u, P, rc, C0, T);
   });
 }
-function spotEndCard(ctx, t, T){
-  const u = t - T.endStart;
+function spotEndCardFramed(ctx, t, T, R){
+  const u = t - T.endStart, ex = S.spot.pos.end.x, ey = S.spot.pos.end.y;
   ctx.fillStyle = SPOT.cream; ctx.fillRect(0,0,1080,1920);
   const a1 = sEase(u/0.4), a2 = sEase((u-0.35)/0.4), a3 = sEase((u-0.6)/0.4);
   ctx.textAlign = "center"; ctx.textBaseline = "middle";
-  const f = wrapFit(ctx, S.spot.endTitle || "How many did you find?", 900, SPOT_TITLE_FONT, 96, 3);
-  const lh = f.size*1.15, blockH = f.lines.length*lh, y0 = 880 - blockH/2;
-  ctx.save(); ctx.globalAlpha = a1; ctx.font = SPOT_TITLE_FONT(f.size); ctx.fillStyle = SPOT.ink;
-  f.lines.forEach((ln,i) => ctx.fillText(ln, 540, y0 + i*lh + lh/2 + (1-a1)*24)); ctx.restore();
-  const line = S.spot.endLine || "drop your number in the comments";
-  ctx.save(); ctx.globalAlpha = a2; ctx.fillStyle = SPOT.ink;
-  const g = wrapFit(ctx, line, 860, s => SPOT_TEXT_FONT(s), 50, 2);
-  ctx.font = SPOT_TEXT_FONT(g.size); g.lines.forEach((ln,i) => ctx.fillText(ln, 540, y0 + blockH + 70 + i*g.size*1.3 + (1-a2)*20)); ctx.restore();
-  if((S.sigText||"").trim()){ ctx.save(); ctx.globalAlpha = a3; ctx.fillStyle = SPOT.accent; ctx.font = SPOT_TEXT_FONT(44, 600);
-    ctx.fillText(S.sigText.trim(), 540, y0 + blockH + 70 + g.lines.length*g.size*1.3 + 70); ctx.restore(); }
+  const f = wrapFit(ctx, spotEndTitle(), 900, R.titleF, 96, 3);
+  const lh = f.size*1.15, blockH = f.lines.length*lh, y0 = 880 - blockH/2 + ey;
+  ctx.font = R.titleF(f.size); let w = 0; f.lines.forEach(l => w = Math.max(w, ctx.measureText(l).width));
+  if(R.chipOn){ ctx.save(); ctx.globalAlpha = a1; ctx.fillStyle = R.chip; rrect(ctx, 540 + ex - w/2 - 34, y0 - 16, w + 68, blockH + 32, 34); ctx.fill(); ctx.restore(); }
+  ctx.save(); ctx.globalAlpha = a1; ctx.font = R.titleF(f.size); ctx.fillStyle = R.text;
+  f.lines.forEach((ln,i) => ctx.fillText(ln, 540 + ex, y0 + i*lh + lh/2 + (1-a1)*24)); ctx.restore();
+  ctx.save(); ctx.globalAlpha = a2; ctx.fillStyle = R.text;
+  const g = wrapFit(ctx, spotEndLine(), 860, s => R.textF(s), 50, 2);
+  ctx.font = R.textF(g.size); g.lines.forEach((ln,i) => ctx.fillText(ln, 540 + ex, y0 + blockH + 70 + i*g.size*1.3 + (1-a2)*20)); ctx.restore();
+  let bottom = y0 + blockH + 70 + g.lines.length*g.size*1.3;
+  if((S.sigText||"").trim()){ ctx.save(); ctx.globalAlpha = a3; ctx.fillStyle = R.accent; ctx.font = R.textF(44, 600);
+    ctx.fillText(S.sigText.trim(), 540 + ex, bottom + 50); ctx.restore(); bottom += 80; }
+  spotBoxes.end = {x:540 + ex - Math.max(w, 400)/2 - 34, y:y0 - 16, w:Math.max(w, 400) + 68, h:bottom - y0 + 16};
 }
-function spotFrame(ctx, A, t, T, det){
-  if(t < T.endStart){ spotScene(ctx, A, t, T, det); return; }
-  const x = sEase((t - T.endStart)/0.45);
-  spotScene(ctx, A, t, T, det);
-  if(x > 0){ ctx.save(); ctx.globalAlpha = x; spotEndCard(ctx, t, T); ctx.restore(); }
+
+/* ---- Full screen frame ---- */
+function chipText(ctx, text, cx, cy, h, r, font, fill, col, alpha, padX=32, minW=0){
+  ctx.font = font; const w = Math.max(minW, ctx.measureText(text).width + padX*2);
+  if(alpha > 0){ ctx.save(); ctx.globalAlpha = alpha;
+    if(fill){ ctx.fillStyle = fill; rrect(ctx, cx - w/2, cy - h/2, w, h, r); ctx.fill(); }
+    else { ctx.shadowColor = "rgba(0,0,0,.55)"; ctx.shadowBlur = 14; ctx.shadowOffsetY = 2; }
+    ctx.fillStyle = col; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.font = font; ctx.fillText(text, cx, cy + 2); ctx.restore(); }
+  return {x:cx - w/2, y:cy - h/2, w, h};
+}
+function spotSceneFull(ctx, A, t, T, det, R){
+  const G = A.G, n = det.length, pos = S.spot.pos, bx = pos.block.x, by = pos.block.y;
+  spotBoxes = {};
+  const off = spotOffset(t, T);
+  // painting fills the frame (sub-pixel source rect = smooth pans)
+  ctx.fillStyle = "#000"; ctx.fillRect(0,0,1080,1920);
+  const k = A.pan.width / G.DW;
+  ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(A.pan, off*k, -G.oy*k, 1080*k, 1920*k, 0, 0, 1080, 1920);
+  if(A.blur && A.blurCv){
+    let prog = 0; if(n <= 1) prog = sEase(t/1.0); else for(let i = 1; i < n; i++) prog += sEase((t - T.items[i])/0.45)/(n-1);
+    const fog = 1 - prog;
+    if(fog > 0.001){ const kb = A.blurCv.width / G.DW; ctx.save(); ctx.globalAlpha = Math.min(1, fog*1.15);
+      ctx.drawImage(A.blurCv, off*kb, -G.oy*kb, 1080*kb, 1920*kb, 0, 0, 1080, 1920); ctx.globalAlpha = 1;
+      ctx.fillStyle = `rgba(255,255,255,${0.35*fog})`; ctx.fillRect(0,0,1080,1920); ctx.restore(); }
+  }
+  // end card veil
+  const ue = t - T.endStart, veil = sEase(ue/0.6);
+  // text block geometry (needed first so circles can avoid it)
+  const titleFont = R.titleF(fitSize(ctx, [spotTitle(n), spotEndTitle()].sort((a,b)=>b.length-a.length)[0], 1080 - 64 - 120, R.titleF, 62, 36));
+  ctx.font = titleFont; const titleW = Math.max(ctx.measureText(spotTitle(n)).width, ctx.measureText(spotEndTitle()).width) + 64;
+  const tcx = 540 + bx, tcy = 1196 + by;
+  const titleBox = {x:tcx - titleW/2, y:tcy - 46, w:titleW, h:92};
+  const rowsY = [1296, 1360, 1424], colX = [60, 506];
+  const chips = det.map((d,i) => { const label = d.label || `detail ${i+1}`; const fs = fitSize(ctx, label, 360, s => R.textF(s), 36, 24);
+    ctx.font = R.textF(fs); const w = 14 + 32 + 12 + ctx.measureText(label).width + 18;
+    return {label, fs, x:colX[i%2] + bx, y:rowsY[Math.floor(i/2)] + by + (Math.floor(i/2) >= 3 ? (Math.floor(i/2)-2)*64 : 0), w}; });
+  let block = titleBox; chips.forEach(c => block = boxUnion(block, {x:c.x, y:c.y - 28, w:c.w, h:56}));
+  spotBoxes.block = block;
+  // rings (move with the painting), then the active magnifier
+  const P = d => ({x: d.fx*G.DW - off, y: d.fy*G.DH + G.oy});
+  det.forEach((d,i) => {
+    const sl = T.slots[i]; if(!sl) return; const u = t - sl.e; if(u < 0) return;
+    const p = P(d), rc = Math.max(10, d.r*G.DW);
+    if(u >= 1.10*T.p){ drawRing(ctx, p.x, p.y, rc, 6); return; }
+    const Rm = clampN(2.0*rc, 130, 210);
+    // keep the pop-up circle clear of the text block
+    // free bands above and below the text block (default block: circles stay in y 170-1160, as in the spec)
+    const topBand = [170 + Rm, Math.min(1160, block.y - 14) - Rm], botBand = [block.y + block.h + 14 + Rm, 1460 - Rm];
+    const fits = b => b[1] >= b[0];
+    let band = (p.y < block.y + block.h/2) ? (fits(topBand) ? topBand : botBand) : (fits(botBand) ? botBand : topBand);
+    if(!fits(band)) band = [170 + Rm, 170 + Rm];
+    const C0 = {x: clampN(p.x, 24 + Rm, 1056 - Rm), y: clampN(p.y, band[0], band[1])};
+    drawMagnifier(ctx, A, d, u, p, rc, C0, T);
+  });
+  if(veil > 0){ ctx.save(); ctx.globalAlpha = veil; ctx.fillStyle = R.veil; ctx.fillRect(0,0,1080,1920); ctx.restore(); }
+  // title chip (crossfades to the end title when the reveal starts) + checklist chips
+  const textA = 1 - veil, flipU = sEase((t - T.flip)/0.35);
+  if(textA > 0){
+    if(R.chipOn){ ctx.save(); ctx.globalAlpha = textA; ctx.fillStyle = R.chip; rrect(ctx, titleBox.x, titleBox.y, titleBox.w, 92, 26); ctx.fill(); ctx.restore(); }
+    [[spotTitle(n), 1 - flipU], [spotEndTitle(), flipU]].forEach(([tx, a]) => { if(a <= 0) return; ctx.save(); ctx.globalAlpha = a*textA;
+      if(!R.chipOn){ ctx.shadowColor = "rgba(0,0,0,.6)"; ctx.shadowBlur = 16; }
+      ctx.font = titleFont; ctx.fillStyle = R.text; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(tx, tcx, tcy + 2); ctx.restore(); });
+  }
+  { // checklist stays on the end card (only the title fades), as in the approved reels
+    chips.forEach((c,i) => {
+      const a = (i === 0 ? 1 : sEase((t - T.items[i])/0.3)); if(a <= 0) return;
+      const y = c.y + (1 - (i === 0 ? 1 : sEase((t - T.items[i])/0.3)))*18;
+      ctx.save(); ctx.globalAlpha = a;
+      if(R.chipOn){ ctx.fillStyle = R.chip; rrect(ctx, c.x, y - 28, c.w, 56, 18); ctx.fill(); }
+      else { ctx.shadowColor = "rgba(0,0,0,.6)"; ctx.shadowBlur = 12; }
+      ctx.fillStyle = R.text; ctx.font = R.textF(c.fs); ctx.textAlign = "left"; ctx.textBaseline = "middle"; ctx.fillText(c.label, c.x + 14 + 32 + 12, y + 1);
+      ctx.restore();
+      const sl = T.slots[i], tickT = sl ? sl.e + 1.10*T.p : 1e9, tick = sEase((t - tickT)/0.2);
+      drawCheckbox(ctx, c.x + 14 + 16, y, 32, tick, t, tickT, R, a, R.text);
+    });
+  }
+  // countdown pill
+  {
+    const show = t >= T.c0 && t < T.R0 + 0.35, {k, text} = countdownText(Math.max(t, T.c0), T);
+    const cx = 540 + pos.count.x, cy = 230 + pos.count.y, font = R.textF(40);
+    ctx.font = font; const pw = ctx.measureText(text).width + 64;
+    spotBoxes.count = {x:cx - pw/2, y:cy - 35, w:pw, h:70};
+    if(show){ const a = sEase((t - T.c0)/0.3) * (1 - sEase((t - T.R0)/0.35));
+      const since = (t - T.c0) - k*T.p, pulse = 1 + 0.05*Math.sin(Math.PI*Math.min(1, since/0.25));
+      ctx.save(); ctx.translate(cx, cy); ctx.scale(pulse, pulse); chipText(ctx, text, 0, 0, 70, 35, font, R.accent, R.accentText, a); ctx.restore(); }
+  }
+  // end card
+  {
+    const ex = pos.end.x, ey = pos.end.y;
+    const qf = R.titleF(fitSize(ctx, spotEndTitle(), 1080 - 68 - 80, R.titleF, 76, 40)), lf = R.textF(fitSize(ctx, spotEndLine(), 1080 - 64 - 80, s => R.textF(s), 40, 26));
+    const a1 = sEase((ue - 0.2)/0.4), a2 = sEase((ue - 0.55)/0.4);
+    const qb = chipText(ctx, spotEndTitle(), 540 + ex, 760 + ey, 132, 34, qf, R.chipOn ? R.chip : null, R.text, ue > 0 ? a1 : 0, 34);
+    const lb = chipText(ctx, spotEndLine(), 540 + ex, 880 + ey, 70, 35, lf, R.accent, R.accentText, ue > 0 ? a2 : 0, 32);
+    let eb = boxUnion(qb, lb);
+    if((S.sigText||"").trim()){ const a3 = sEase((ue - 0.8)/0.4); ctx.font = R.textF(40, 600);
+      const sb = {x:540 + ex - 200, y:950 + ey, w:400, h:50};
+      if(ue > 0 && a3 > 0){ ctx.save(); ctx.globalAlpha = a3; ctx.fillStyle = R.chipOn ? R.text : "#fff"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        ctx.shadowColor = "rgba(0,0,0,.4)"; ctx.shadowBlur = 8; ctx.fillText(S.sigText.trim(), 540 + ex, 975 + ey); ctx.restore(); }
+      eb = boxUnion(eb, sb); }
+    spotBoxes.end = eb;
+  }
+}
+
+function spotFrame(ctx, A, t, T, det, R){
+  if(A.full){ spotSceneFull(ctx, A, t, T, det, R); return; }
+  spotSceneFramed(ctx, A, t, T, det, R);
+  if(t >= T.endStart){ const x = sEase((t - T.endStart)/0.45); if(x > 0){ ctx.save(); ctx.globalAlpha = x; spotEndCardFramed(ctx, t, T, R); ctx.restore(); } }
+}
+function spotSortIfFull(){
+  const f = spotFile(); if(!f) return; const im = imgCache[mediaUrl(f)];
+  if(spotIsFull(im)){ const det = spotList(), sel = det[spotSel]; det.sort((a,b) => a.fx - b.fx); spotSel = sel ? det.indexOf(sel) : -1; }
 }
 
 /* ---- editor (middle panel) ---- */
+const fontOpts = v => Object.keys(FONT_FAMILIES).map(k => `<option value="${k}" ${v===k?"selected":""}>${k}${k==="Poppins" && !HAS_POPPINS ? " (not installed)" : ""}</option>`).join("");
 function renderSpotEditor(){
   const box = $("spotEditor"); if(!box) return;
   const on = S.template === "spot";
@@ -828,92 +1162,203 @@ function renderSpotEditor(){
   box.style.display = on ? "" : "none"; if(!on) return;
   const f = spotFile();
   if(!f){ box.innerHTML = `<div class="spot-empty">Add your <b>painting</b> (a photo) to the list above. The first photo is used.</div>`; return; }
-  const det = spotList(), n = det.length;
+  const im = imgCache[mediaUrl(f)];
+  if(!im){ box.innerHTML = `<div class="spot-empty">Loading painting…</div>`; loadImg(mediaUrl(f)).then(() => renderSpotEditor()); return; }
+  spotSortIfFull();
+  const det = spotList(), n = det.length, full = spotIsFull(im), tr = spotTrim(), sp = S.spot;
+  const custom = sp.styleMode === "custom", st = spotStyle(full);
+  const layoutAuto = (() => { const save = sp.layout; sp.layout = "auto"; const r = spotIsFull(im); sp.layout = save; return r ? "Full screen" : "Framed"; })();
   box.innerHTML = `
     <div class="spot-head"><b>Mark the details</b><span class="small-muted">${n}/6 · click the painting to add, drag a circle to move it</span></div>
     <div class="spot-cvwrap"><canvas id="spotCv"></canvas></div>
+    ${full && n > 1 ? `<p class="small-muted" style="margin:6px 0 0">Full screen: answers are revealed left to right, so the list follows each detail's position.</p>` : ""}
     <div id="spotRows">${det.map((d,i) => `
       <div class="spot-row ${i===spotSel?"sel":""}" data-i="${i}">
         <span class="spot-num">${i+1}</span>
         <input type="text" class="spot-label" data-i="${i}" value="${esc(d.label||"")}" placeholder="what to find, e.g. a black cat" maxlength="28">
-        <label class="small-muted" title="Circle size">size <input type="range" min="2" max="20" step="0.5" value="${(d.r*100).toFixed(1)}" data-k="r" data-i="${i}"></label>
-        <select data-k="mag" data-i="${i}" title="How much the answer is magnified">${["1.6","2","2.2","2.5","3"].map(m => `<option ${String(d.mag||2.2)===m?"selected":""} value="${m}">${m}×</option>`).join("")}</select>
-        <button class="btn small ghost" data-del="${i}" title="Remove">✕</button>
+        <label class="small-muted" title="Circle size">size <input type="range" min="0.3" max="20" step="0.1" value="${(d.r*100).toFixed(1)}" data-k="r" data-i="${i}"></label>
+        <select data-k="mag" data-i="${i}" title="How much the answer is magnified">${["1.6","2","2.2","2.4","2.6","3"].map(m => `<option ${String(d.mag||2.2)===m?"selected":""} value="${m}">${m}×</option>`).join("")}</select>
+        <button class="btn small ghost" data-del="${i}" title="Remove this detail">✕</button>
       </div>`).join("")}</div>
     ${n ? "" : `<p class="small-muted">Tip: mix easy and well-hidden details. 6 works best.</p>`}
+
+    <div class="spot-sec">Layout</div>
     <div class="spot-settings">
-      <label>Title <input type="text" id="spTitle" value="${esc(S.spot.title||"")}" placeholder="${esc(`Can you spot all ${Math.max(n,1)}?`)}"></label>
-      <label>End title <input type="text" id="spEndTitle" value="${esc(S.spot.endTitle||"")}" placeholder="How many did you find?"></label>
-      <label>End line <input type="text" id="spEndLine" value="${esc(S.spot.endLine||"")}" placeholder="drop your number in the comments"></label>
-      <label>Pace <select id="spPace">${[["0.8","Quick"],["1","Normal"],["1.25","Relaxed"]].map(([v,l]) => `<option value="${v}" ${String(S.spot.pace)===v?"selected":""}>${l}</option>`).join("")}</select></label>
+      <label>Layout <select id="spLayout">
+        <option value="auto" ${sp.layout==="auto"?"selected":""}>Auto (${layoutAuto})</option>
+        <option value="framed" ${sp.layout==="framed"?"selected":""}>Framed (v5)</option>
+        <option value="full" ${sp.layout==="full"?"selected":""}>Full screen</option></select></label>
+      <label>Blur at start <select id="spBlur">
+        <option value="auto" ${sp.blur==="auto"?"selected":""}>Auto (${full ? "off" : "on"})</option>
+        <option value="on" ${sp.blur==="on"?"selected":""}>On</option><option value="off" ${sp.blur==="off"?"selected":""}>Off</option></select></label>
+      <label>Pace <select id="spPace">${[["0.8","Quick"],["1","Normal"],["1.25","Relaxed"]].map(([v,l]) => `<option value="${v}" ${String(sp.pace)===v?"selected":""}>${l}</option>`).join("")}</select></label>
+      <label class="spot-trim">Trim edges, % <span>
+        ${[["t","top"],["b","bottom"],["l","left"],["r","right"]].map(([k,l]) => `<input type="number" min="0" max="25" step="0.5" value="${tr[k]}" data-trim="${k}" title="${l}" placeholder="${l}">`).join("")}</span>
+        <small>top · bottom · left · right</small></label>
+    </div>
+
+    <div class="spot-sec">Text</div>
+    <div class="spot-settings">
+      <label>Title <input type="text" id="spTitle" value="${esc(sp.title||"")}" placeholder="${esc(`Can you spot all ${Math.max(n,1)}?`)}"></label>
+      <label>End title <input type="text" id="spEndTitle" value="${esc(sp.endTitle||"")}" placeholder="How many did you find?"></label>
+      <label>End line <input type="text" id="spEndLine" value="${esc(sp.endLine||"")}" placeholder="drop your number in the comments"></label>
+      <label>Text style <select id="spStyleMode">
+        <option value="default" ${!custom?"selected":""}>Default${full ? "" : " (v5 cream)"}</option>
+        <option value="custom" ${custom?"selected":""}>Custom</option></select></label>
+      ${full && !custom ? `<label>Colour theme <select id="spTheme"><option value="forest" ${sp.theme==="forest"?"selected":""}>Forest</option><option value="leaf" ${sp.theme==="leaf"?"selected":""}>Leaf</option></select></label>` : ""}
+    </div>
+    ${custom ? `
+    <div class="spot-custom">
+      <label>Title font <select data-st="titleFont">${fontOpts(st.titleFont)}</select></label>
+      <label>Text font <select data-st="textFont">${fontOpts(st.textFont)}</select></label>
+      <label>Text colour <input type="color" data-st="text" value="${st.text}"></label>
+      <label class="chk"><input type="checkbox" data-st="chipOn" ${st.chipOn?"checked":""}> Highlights behind text</label>
+      <label>Highlight colour <input type="color" data-st="chipColor" value="${st.chipColor}" ${st.chipOn?"":"disabled"}></label>
+      <label>Highlight opacity <input type="range" min="20" max="100" step="1" data-st="chipAlpha" value="${st.chipAlpha}" ${st.chipOn?"":"disabled"}></label>
+      <label>Accent (ticks, pills) <input type="color" data-st="accent" value="${st.accent}"></label>
+      <label>Text on accent <input type="color" data-st="accentText" value="${st.accentText}"></label>
+      <div class="spot-presets">Start from: ${[["framed","Cream (v5)"],["forest","Forest"],["leaf","Leaf"]].map(([k,l]) => `<button class="btn small" data-preset="${k}">${l}</button>`).join("")}</div>
+    </div>` : ""}
+    <div class="spot-move">
+      <span>Drag the text in the preview on the right to place it anywhere.</span>
+      <span>Preview <select id="spPv">
+        <option value="text" ${sp.pvFrame==="text"?"selected":""}>Title, list &amp; countdown</option>
+        <option value="answer" ${sp.pvFrame==="answer"?"selected":""}>Selected answer</option>
+        <option value="end" ${sp.pvFrame==="end"?"selected":""}>End card</option></select></span>
+      <button class="btn small" id="spResetPos">Reset text positions</button>
     </div>
     <div class="actions"><button class="btn" id="spPlay">▶ Play preview</button><span class="small-muted" id="spLen"></span></div>`;
-  if(n) $("spLen").textContent = `Reel length: ${spotTimeline(n).total.toFixed(1)} s`;
-  const save2 = () => { save(); };
-  box.querySelectorAll(".spot-label").forEach(el => el.oninput = () => { det[+el.dataset.i].label = el.value; save2(); spotEditorDraw(); spotStill(); });
+  if(n) spotAssets(f, n).then(A => { if($("spLen")) $("spLen").textContent = `Reel length: ${spotTimeline(n, A, det).total.toFixed(1)} s`; }).catch(()=>{});
+  const redraw = () => { save(); spotEditorDraw(); spotStill(); };
+  box.querySelectorAll(".spot-label").forEach(el => el.oninput = () => { det[+el.dataset.i].label = el.value; redraw(); });
   box.querySelectorAll("[data-k]").forEach(el => el.oninput = () => { const d = det[+el.dataset.i];
-    if(el.dataset.k === "r") d.r = +el.value/100; else d.mag = +el.value; save2(); spotEditorDraw(); spotStill(); });
-  box.querySelectorAll("[data-del]").forEach(b => b.onclick = () => { det.splice(+b.dataset.del,1); spotSel = -1; save2(); renderSpotEditor(); spotStill(); });
-  box.querySelectorAll(".spot-row").forEach(r => r.onclick = e => { if(e.target.closest("input,select,button")) return; spotSel = +r.dataset.i; renderSpotEditor(); });
-  [["spTitle","title"],["spEndTitle","endTitle"],["spEndLine","endLine"]].forEach(([id,k]) => $(id).oninput = () => { S.spot[k] = $(id).value; save2(); spotStill(); });
-  $("spPace").onchange = () => { S.spot.pace = $("spPace").value; save2(); renderSpotEditor(); spotStill(); };
+    if(el.dataset.k === "r") d.r = +el.value/100; else d.mag = +el.value; redraw(); });
+  box.querySelectorAll("[data-del]").forEach(b => b.onclick = () => { det.splice(+b.dataset.del,1); spotSel = -1; save(); renderSpotEditor(); spotStill(); });
+  box.querySelectorAll(".spot-row").forEach(r => r.onclick = e => { if(e.target.closest("input,select,button")) return; spotSel = +r.dataset.i; S.spot.pvFrame = "answer"; save(); renderSpotEditor(); spotStill(); });
+  [["spTitle","title"],["spEndTitle","endTitle"],["spEndLine","endLine"]].forEach(([id,k]) => $(id).oninput = () => { S.spot[k] = $(id).value; save(); spotStill(); });
+  const sel = (id, k, rerender=true) => { const el = $(id); if(el) el.onchange = () => { S.spot[k] = el.value; save(); if(rerender) renderSpotEditor(); spotStill(); }; };
+  sel("spLayout","layout"); sel("spBlur","blur"); sel("spPace","pace"); sel("spTheme","theme"); sel("spPv","pvFrame");
+  $("spStyleMode").onchange = () => { const v = $("spStyleMode").value;
+    if(v === "custom" && !S.spot.style){ S.spot.style = spotDefaultStyle(full); }
+    S.spot.styleMode = v; save(); renderSpotEditor(); spotStill(); };
+  box.querySelectorAll("[data-st]").forEach(el => el.oninput = el.onchange = () => {
+    const k = el.dataset.st; S.spot.style = S.spot.style || spotDefaultStyle(full);
+    S.spot.style[k] = el.type === "checkbox" ? el.checked : el.type === "range" ? +el.value : el.value;
+    save(); if(k === "chipOn") renderSpotEditor(); spotStill(); });
+  box.querySelectorAll("[data-preset]").forEach(b => b.onclick = () => { S.spot.style = Object.assign({}, SPOT_PRESETS[b.dataset.preset]); save(); renderSpotEditor(); spotStill(); });
+  box.querySelectorAll("[data-trim]").forEach(el => el.onchange = () => spotSetTrim(el.dataset.trim, +el.value || 0));
+  $("spResetPos").onclick = () => { S.spot.pos = {block:{x:0,y:0}, count:{x:0,y:0}, end:{x:0,y:0}}; save(); spotStill(); };
   $("spPlay").onclick = spotTogglePlay;
   spotEditorSetup();
+}
+function spotSetTrim(k, v){
+  const f = spotFile(), im = imgCache[mediaUrl(f)]; if(!f || !im) return;
+  const old = spotTrim(), nw = Object.assign({}, old, {[k]: clampN(v, 0, 25)});
+  const ow = 1 - (old.l+old.r)/100, oh = 1 - (old.t+old.b)/100, nW = 1 - (nw.l+nw.r)/100, nH = 1 - (nw.t+nw.b)/100;
+  spotList().forEach(d => { // keep each detail on the same spot of the painting
+    const ux = old.l/100 + d.fx*ow, uy = old.t/100 + d.fy*oh;
+    d.fx = clampN((ux - nw.l/100)/nW, 0, 1); d.fy = clampN((uy - nw.t/100)/nH, 0, 1); d.r = d.r*ow/nW; });
+  ((S.glideStops||{})[f] || []).forEach(d => {
+    const ux = old.l/100 + d.fx*ow, uy = old.t/100 + d.fy*oh;
+    d.fx = clampN((ux - nw.l/100)/nW, 0, 1); d.fy = clampN((uy - nw.t/100)/nH, 0, 1); });
+  S.spotTrim[f] = nw; save(); renderSpotEditor(); spotStill();
+  if(typeof renderGlideEditor === "function"){ renderGlideEditor(); glideStill(); }
 }
 async function spotEditorSetup(){
   const cv = $("spotCv"); if(!cv) return; const f = spotFile();
   const im = await loadImg(mediaUrl(f)); if(!im || !$("spotCv")) return;
-  const W = 900; cv.width = W; cv.height = Math.round(W*im.height/im.width);
+  const W = Math.min(1400, Math.max(900, im.width/im.height > 2 ? 1400 : 900)); cv.width = W; cv.height = Math.round(W*im.height/im.width);
   spotEditorDraw();
   let drag = -1;
+  const tr = () => spotTrim();
+  const toTrim = p => { const t = tr(), w = 1 - (t.l+t.r)/100, h = 1 - (t.t+t.b)/100; return {x: clampN((p.x - t.l/100)/w, 0, 1), y: clampN((p.y - t.t/100)/h, 0, 1), w, h}; };
   const pos = e => { const r = cv.getBoundingClientRect(); return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height}; };
   cv.onpointerdown = e => {
-    const p = pos(e), det = spotList(), asp = cv.height/cv.width;
+    const q = toTrim(pos(e)), det = spotList(), asp = (cv.height*q.h)/(cv.width*q.w);
     let hit = -1, best = 1e9;
-    det.forEach((d,i) => { const dx = p.x - d.fx, dy = (p.y - d.fy)*asp, dist = Math.hypot(dx,dy); if(dist < d.r + 0.02 && dist < best){ best = dist; hit = i; } });
+    det.forEach((d,i) => { const dx = q.x - d.fx, dy = (q.y - d.fy)*asp, dist = Math.hypot(dx,dy); if(dist < d.r + 0.015 && dist < best){ best = dist; hit = i; } });
     if(hit < 0){ if(det.length >= 6){ setStatus("6 details is the maximum. Remove one to add another.", true); return; }
-      det.push({label:"", fx:p.x, fy:p.y, r:0.06, mag:2.2}); hit = det.length-1; save(); spotSel = hit; renderSpotEditor(); spotStill();
-      setTimeout(() => { const el = document.querySelector(`.spot-label[data-i="${hit}"]`); if(el) el.focus(); }, 30); return; }
+      const full = spotIsFull(im), r = full ? Math.min(0.06, 0.02 * (im.height/im.width) * 3) : 0.06;
+      const d = {label:"", fx:q.x, fy:q.y, r: Math.max(0.006, r), mag:2.2}; det.push(d); spotSel = det.length - 1;
+      spotSortIfFull(); save(); S.spot.pvFrame = "answer"; renderSpotEditor(); spotStill();
+      setTimeout(() => { const el = document.querySelector(`.spot-label[data-i="${spotSel}"]`); if(el) el.focus(); }, 30); return; }
     spotSel = hit; drag = hit; cv.setPointerCapture(e.pointerId); spotEditorDraw();
     document.querySelectorAll(".spot-row").forEach(r => r.classList.toggle("sel", +r.dataset.i === hit));
   };
-  cv.onpointermove = e => { if(drag < 0) return; const p = pos(e), d = spotList()[drag];
-    d.fx = Math.min(1, Math.max(0, p.x)); d.fy = Math.min(1, Math.max(0, p.y)); spotEditorDraw(); };
-  cv.onpointerup = () => { if(drag >= 0){ drag = -1; save(); spotStill(); } };
+  cv.onpointermove = e => { if(drag < 0) return; const q = toTrim(pos(e)), d = spotList()[drag]; d.fx = q.x; d.fy = q.y; spotEditorDraw(); };
+  cv.onpointerup = () => { if(drag >= 0){ drag = -1; const before = spotList().map(d => d); spotSortIfFull(); save();
+    if(before.some((d,i) => spotList()[i] !== d)) renderSpotEditor(); spotStill(); } };
 }
 function spotEditorDraw(){
   const cv = $("spotCv"); if(!cv) return; const im = imgCache[mediaUrl(spotFile())]; if(!im) return;
-  const g = cv.getContext("2d"); g.imageSmoothingQuality = "high"; g.drawImage(im, 0, 0, cv.width, cv.height);
-  spotList().forEach((d,i) => { const x = d.fx*cv.width, y = d.fy*cv.height, r = d.r*cv.width, sel = i === spotSel;
-    g.lineWidth = sel ? 6 : 4; g.strokeStyle = sel ? SPOT.accent : "#fff"; g.shadowColor = "rgba(0,0,0,.5)"; g.shadowBlur = 6;
+  const g = cv.getContext("2d"), t = spotTrim(), W = cv.width, H = cv.height;
+  g.imageSmoothingQuality = "high"; g.drawImage(im, 0, 0, W, H);
+  const x0 = W*t.l/100, y0 = H*t.t/100, w = W*(1-(t.l+t.r)/100), h = H*(1-(t.t+t.b)/100);
+  g.fillStyle = "rgba(60,60,60,.6)"; g.fillRect(0,0,W,y0); g.fillRect(0,y0+h,W,H-y0-h); g.fillRect(0,y0,x0,h); g.fillRect(x0+w,y0,W-x0-w,h);
+  const k = Math.max(1, W/900);
+  spotList().forEach((d,i) => { const x = x0 + d.fx*w, y = y0 + d.fy*h, r = d.r*w, sel = i === spotSel;
+    g.lineWidth = (sel ? 6 : 4)*k; g.strokeStyle = sel ? SPOT.accent : "#fff"; g.shadowColor = "rgba(0,0,0,.5)"; g.shadowBlur = 6;
     g.beginPath(); g.arc(x, y, r, 0, Math.PI*2); g.stroke(); g.shadowBlur = 0;
-    g.fillStyle = sel ? SPOT.accent : SPOT.ink; g.beginPath(); g.arc(x + r*0.72, y - r*0.72, 20, 0, Math.PI*2); g.fill();
-    g.fillStyle = "#fff"; g.font = "700 22px -apple-system, Arial"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(i+1, x + r*0.72, y - r*0.72 + 1); });
+    const bx = x + r*0.72, by = y - r*0.72;
+    g.fillStyle = sel ? SPOT.accent : SPOT.ink; g.beginPath(); g.arc(bx, by, 20*k, 0, Math.PI*2); g.fill();
+    g.fillStyle = "#fff"; g.font = `700 ${22*k}px -apple-system, Arial`; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(i+1, bx, by + 1); });
 }
 
-/* ---- preview in the right-hand phone canvas ---- */
+/* ---- preview in the right-hand phone canvas (drag text here) ---- */
 function spotGuides(ctx){
   if(!$("guides").checked) return;
   ctx.fillStyle = "rgba(196,85,45,.28)"; ctx.fillRect(0,0,1080,210); ctx.fillRect(0,1500,1080,420); ctx.fillRect(950,980,130,520);
 }
-let spotStillTok = 0;
+let spotStillTok = 0, spotLastStill = null;
 async function spotStill(){
   if(S.template !== "spot" || spotPlay) return;
   const tok = ++spotStillTok, ctx = $("pv").getContext("2d"), f = spotFile(), det = spotList();
-  ctx.fillStyle = SPOT.cream; ctx.fillRect(0,0,1080,1920);
-  if(!f || !det.length){ ctx.fillStyle = SPOT.ink; ctx.font = SPOT_TEXT_FONT(44); ctx.textAlign = "center"; ctx.fillText(f ? "Mark some details" : "Add a painting", 540, 960); return; }
-  await spotFonts(); const A = await spotAssets(f, det.length); if(tok !== spotStillTok) return;
-  const T = spotTimeline(det.length);
-  spotScene(ctx, A, T.R0 + (Math.max(0, spotSel) + 0.5)*T.D, T, det); spotGuides(ctx);
+  if(!f || !det.length){ ctx.fillStyle = SPOT.cream; ctx.fillRect(0,0,1080,1920); ctx.fillStyle = SPOT.ink; ctx.font = '500 44px "DM Sans", Arial'; ctx.textAlign = "center"; ctx.fillText(f ? "Mark some details" : "Add a painting", 540, 960); return; }
+  const im = await loadImg(mediaUrl(f)); const R = spotStyle(spotIsFull(im));
+  await spotFonts(R); const A = await spotAssets(f, det.length); if(tok !== spotStillTok) return;
+  const T = spotTimeline(det.length, A, det);
+  let t;
+  if(S.spot.pvFrame === "end") t = T.endStart + 2.5;
+  else if(S.spot.pvFrame === "answer" && spotSel >= 0 && det[spotSel]) t = A.full ? T.slots[spotSel].e + 0.5*T.p : T.R0 + (spotSel + 0.5)*T.D;
+  else t = T.c0 + 2.3*T.p;
+  spotLastStill = {A, T, det, R, t};
+  spotFrame(ctx, A, t, T, det, R); spotGuides(ctx);
+  if(S.spot.pvFrame !== "answer"){ // show what can be dragged
+    ctx.save(); ctx.setLineDash([14, 10]); ctx.lineWidth = 3; ctx.strokeStyle = "rgba(255,255,255,.85)";
+    const keys = S.spot.pvFrame === "end" ? ["end"] : ["block","count"];
+    keys.forEach(k => { const b = spotBoxes[k]; if(b) ctx.strokeRect(b.x - 8, b.y - 8, b.w + 16, b.h + 16); }); ctx.restore();
+  }
 }
+(function spotPreviewDrag(){
+  const cv = $("pv"); if(!cv) return; let drag = null;
+  const pt = e => { const r = cv.getBoundingClientRect(); return {x:(e.clientX - r.left)/r.width*1080, y:(e.clientY - r.top)/r.height*1920}; };
+  const hit = p => { const keys = S.spot.pvFrame === "end" ? ["end"] : ["count","block"];
+    for(const k of keys){ const b = spotBoxes[k]; if(b && p.x >= b.x - 12 && p.x <= b.x + b.w + 12 && p.y >= b.y - 12 && p.y <= b.y + b.h + 12) return k; } return null; };
+  cv.addEventListener("pointerdown", e => { if(S.template !== "spot" || spotPlay || S.spot.pvFrame === "answer") return;
+    const p = pt(e), k = hit(p); if(!k) return; drag = {k, p, start:Object.assign({}, S.spot.pos[k])}; cv.setPointerCapture(e.pointerId); e.preventDefault(); });
+  cv.addEventListener("pointermove", e => {
+    if(S.template !== "spot") { cv.style.cursor = ""; return; }
+    const p = pt(e);
+    if(!drag){ cv.style.cursor = (!spotPlay && S.spot.pvFrame !== "answer" && hit(p)) ? "grab" : ""; return; }
+    cv.style.cursor = "grabbing";
+    const b0 = spotBoxes[drag.k]; let nx = drag.start.x + (p.x - drag.p.x), ny = drag.start.y + (p.y - drag.p.y);
+    if(b0){ const cur = S.spot.pos[drag.k], bx = b0.x - cur.x, byy = b0.y - cur.y; // keep it on screen
+      nx = clampN(nx, -bx, 1080 - b0.w - bx); ny = clampN(ny, -byy, 1920 - b0.h - byy); }
+    S.spot.pos[drag.k] = {x:Math.round(nx), y:Math.round(ny)};
+    if(spotLastStill){ const {A,T,det,R,t} = spotLastStill; const ctx = cv.getContext("2d"); spotFrame(ctx, A, t, T, det, R); spotGuides(ctx); }
+  });
+  const end = () => { if(drag){ drag = null; cv.style.cursor = ""; save(); spotStill(); } };
+  cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end);
+})();
 async function spotTogglePlay(){
   if(spotPlay){ cancelAnimationFrame(spotPlay); spotPlay = null; $("spPlay").textContent = "▶ Play preview"; spotStill(); return; }
   const f = spotFile(), det = spotList(); if(!f || !det.length) return;
-  await spotFonts(); const A = await spotAssets(f, det.length), T = spotTimeline(det.length), ctx = $("pv").getContext("2d");
+  const im = await loadImg(mediaUrl(f)), R = spotStyle(spotIsFull(im));
+  await spotFonts(R); const A = await spotAssets(f, det.length), T = spotTimeline(det.length, A, det), ctx = $("pv").getContext("2d");
   $("spPlay").textContent = "■ Stop"; const t0 = performance.now();
   const step = () => { const t = (performance.now() - t0)/1000;
     if(t > T.total){ spotPlay = null; if($("spPlay")) $("spPlay").textContent = "▶ Play preview"; spotStill(); return; }
-    spotFrame(ctx, A, t, T, det); spotGuides(ctx); spotPlay = requestAnimationFrame(step); };
+    spotFrame(ctx, A, t, T, det, R); spotGuides(ctx); spotPlay = requestAnimationFrame(step); };
   spotPlay = requestAnimationFrame(step);
 }
 
@@ -929,9 +1374,10 @@ async function spotExport(){
   $("renderBtn").disabled = true; $("result").innerHTML = ""; setStatus("Preparing…");
   const started = Date.now();
   try{
-    await spotFonts(); const A = await spotAssets(f, det.length), T = spotTimeline(det.length);
+    const im = await loadImg(mediaUrl(f)), R = spotStyle(spotIsFull(im));
+    await spotFonts(R); const A = await spotAssets(f, det.length), T = spotTimeline(det.length, A, det);
     const fps = 30, N = Math.round(T.total*fps);
-    const meta = {template:"spot", painting:f, details:det, spot:S.spot};
+    const meta = {template:"spot", painting:f, details:det, spot:S.spot, trim:spotTrim(), layout:A.full ? "full" : "framed"};
     const st = await fetch("/api/frames/start",{method:"POST",body:JSON.stringify(meta)}).then(r=>r.json());
     if(st.error) throw new Error(st.error);
     const cv = document.createElement("canvas"); cv.width = 1080; cv.height = 1920; const ctx = cv.getContext("2d");
@@ -941,12 +1387,11 @@ async function spotExport(){
       const r = await fetch(`/api/frames/append?id=${st.id}&n=${batch.length}`,{method:"POST",body}); batch = [];
       if(!r.ok) throw new Error((await r.json()).error); };
     for(let i = 0; i < N; i++){
-      spotFrame(ctx, A, i/fps, T, det); batch.push(await toJpeg());
+      spotFrame(ctx, A, i/fps, T, det, R); batch.push(await toJpeg());
       if(batch.length >= 10){ await flush(); $("bar").style.width = (i/N*100)+"%"; setStatus(`Drawing frame ${i+1} of ${N} · ${Math.round((Date.now()-started)/1000)} s`); }
     }
     await flush();
-    // cover: title + full checklist + clear painting
-    spotScene(ctx, A, T.listDone + 0.5, T, det); const cover = await toJpeg();
+    spotFrame(ctx, A, T.listDone + 0.5, T, det, R); const cover = await toJpeg();
     setStatus("Finishing video…");
     const r = await fetch(`/api/frames/finish?id=${st.id}`,{method:"POST",body:cover}).then(r=>r.json());
     if(r.error) throw new Error(r.error);
@@ -957,8 +1402,8 @@ async function spotExport(){
 }
 
 /* ---- hook into the existing app ---- */
-TEMPLATES.spot = {name:"Spot the details", desc:"Find-the-6 game: checklist, clearing blur, magnified answers",
-  hint:"Add <b>one painting</b> (a photo; the first photo in the list is used). Then click the painting below to mark up to 6 details and name them. Length, hook text and effects don't apply to this template."};
+TEMPLATES.spot = {name:"Spot the details", desc:"Find-the-6 game: framed or full-screen panorama, magnified answers",
+  hint:"Add <b>one painting</b> (a photo; the first photo in the list is used). Then click the painting below to mark up to 6 details and name them. Wide paintings use the full-screen layout automatically. Length, hook text and effects don't apply to this template."};
 const _roleFor = roleFor;
 roleFor = (i,n) => S.template === "spot" ? (S.items[i] && S.items[i].file === spotFile() ? "Painting" : "Not used") : _roleFor(i,n);
 const _renderItems = renderItems;
@@ -969,6 +1414,639 @@ const _startRender = startRender;
 startRender = async function(){ if(S.template === "spot") return spotExport(); return _startRender(); };
 const _renderSettings = renderSettings;
 renderSettings = function(){ _renderSettings(); document.body.classList.toggle("spot", S.template === "spot"); };
+
+/* ================= Glide: the camera glides between spots on one painting =================
+   Default motion matches nov_cosy_corner_glide.mp4: one continuous move through the spots (no stops),
+   easing into a zoom out to the full-screen view, then a slow 2.3 s drift. Text is optional. */
+const GLIDE_DEFAULTS = {title:"", endTitle:"", endLine:"", pace:"1", flow:"continuous", ending:"zoomout",
+  theme:"painting", styleMode:"default", style:null, pvFrame:"stop",
+  pos:{title:{x:0,y:0}, caption:{x:0,y:0}, end:{x:0,y:0}}};
+S.glide = Object.assign({}, GLIDE_DEFAULTS, S.glide || {});
+S.glide.pos = Object.assign({title:{x:0,y:0}, caption:{x:0,y:0}, end:{x:0,y:0}}, S.glide.pos || {});
+if(!S.glideStops) S.glideStops = {};
+let glideSel = -1, glidePlay = null, glideCache = {}, glideBoxes = {}, glideLastStill = null;
+function glideStops(){ const f = spotFile(); if(!f) return []; return S.glideStops[f] || (S.glideStops[f] = []); }
+
+/* ---- colours taken from the painting ---- */
+function paintingPalette(src){
+  const N = 64, c = document.createElement("canvas"); c.width = N; c.height = N; const g = c.getContext("2d");
+  g.drawImage(src, 0, 0, N, N); const d = g.getImageData(0, 0, N, N).data;
+  let r = 0, gg = 0, b = 0, n = 0; const vivid = [];
+  for(let i = 0; i < d.length; i += 4){ const R = d[i], G = d[i+1], B = d[i+2]; r += R; gg += G; b += B; n++;
+    const mx = Math.max(R,G,B), mn = Math.min(R,G,B), v = mx/255, s = mx ? (mx-mn)/mx : 0; vivid.push([s*Math.min(1, v*1.4), R, G, B]); }
+  vivid.sort((a,b) => b[0]-a[0]); const top = vivid.slice(0, Math.max(8, Math.round(vivid.length*0.04)));
+  let acc = [0,1,2].map(k => top.reduce((a,p) => a + p[k+1], 0)/top.length);
+  const mean = [r/n, gg/n, b/n], lum = a => (0.299*a[0] + 0.587*a[1] + 0.114*a[2])/255;
+  const hex = a => "#" + a.map(x => Math.round(clampN(x,0,255)).toString(16).padStart(2,"0")).join("");
+  // deep version of the painting's own average colour for the highlights, warm light text, vivid accent
+  let dark = mean.map(x => x*0.34); const dl = lum(dark); if(dl > 0.22) dark = dark.map(x => x*0.22/dl);
+  if(lum(acc) < 0.42) acc = acc.map(x => x + (255-x)*0.4);
+  const text = mean.map(x => 247*0.9 + x*0.1);
+  return {chipColor:hex(dark), chipAlpha:86, text:hex(text), accent:hex(acc), accentText: lum(acc) > 0.6 ? hex(dark) : "#FFFFFF"};
+}
+function glidePreset(pal){
+  const th = S.glide.theme;
+  if(th === "painting") return Object.assign({titleFont:SANS, textFont:SANS, chipOn:true}, pal);
+  if(th === "cream") return Object.assign({}, SPOT_PRESETS.framed, {titleFont:SANS, textFont:SANS, chipOn:true});
+  return Object.assign({}, SPOT_PRESETS[th] || SPOT_PRESETS.forest);
+}
+function glideStyle(pal){
+  const st = S.glide.styleMode === "custom" && S.glide.style ? Object.assign(glidePreset(pal), S.glide.style) : glidePreset(pal);
+  const fam = k => FONT_FAMILIES[k] || FONT_FAMILIES["DM Sans"], tw = st.titleFont === "Fraunces" ? 600 : 700;
+  return Object.assign(st, {titleF: s => `${tw} ${s}px ${fam(st.titleFont)}`, textF: (s, w=500) => `${w} ${s}px ${fam(st.textFont)}`,
+    chip: hexA(st.chipColor, st.chipAlpha)});
+}
+
+/* ---- assets ---- */
+async function glideAssets(f){
+  const im = await loadImg(mediaUrl(f)); if(!im) throw new Error("Could not load the painting.");
+  const tr = spotTrim(), key = f + JSON.stringify(tr);
+  if(glideCache.key === key) return glideCache.val;
+  const cx = im.width*tr.l/100, cy = im.height*tr.t/100, cw = im.width*(1-(tr.l+tr.r)/100), ch = im.height*(1-(tr.t+tr.b)/100);
+  const base = stepDown(im, Math.min(cw, Math.sqrt(14e6*cw/ch)), cx, cy, cw, ch);
+  const levels = [base]; while(levels[levels.length-1].height > 1000) { const l = levels[levels.length-1]; levels.push(stepDown(l, l.width/2)); }
+  const small = levels[levels.length-1], tiny = stepDown(small, 40), bg = stepDown(tiny, 270);
+  const s0 = Math.max(1080/cw, 1920/ch), sf = Math.min(1080/cw, 1920/ch);
+  const val = {im, cw, ch, levels, bg, s0, sf, pal: paintingPalette(small)};
+  glideCache = {key, val};
+  return val;
+}
+
+/* ---- camera ---- */
+// a view = {x, y (fractions of the trimmed painting), z (zoom, 1 = painting just fills the screen)}
+function glideClamp(A, v){
+  const sc = A.s0*v.z; let cx = v.x*A.cw, cy = v.y*A.ch;
+  cx = A.cw*sc >= 1080 ? clampN(cx, 540/sc, A.cw - 540/sc) : A.cw/2;
+  cy = A.ch*sc >= 1920 ? clampN(cy, 960/sc, A.ch - 960/sc) : A.ch/2;
+  return {cx, cy, sc};
+}
+function glideKnots(A, stops){
+  const K = stops.map(s => ({x:s.fx, y:s.fy, z:+s.zoom || 2.4, hold:+(s.hold ?? 1.2), stop:s}));
+  if(S.glide.ending !== "last") K.push({x:0.5, y:0.5, z:glideEndFit(A)*A.sf/A.s0, hold:0, end:true});
+  // plan the path through where the camera can actually be (spots near an edge are clamped), so it never waits at an edge
+  K.forEach(k => { const v = glideClamp(A, k); k.x = v.cx/A.cw; k.y = v.cy/A.ch; });
+  return K;
+}
+// final size: 1 = the whole painting just fits the screen; cover = the painting fills the screen (no background)
+function glideEndCover(A){ return A.s0/A.sf; }
+function glideEndFit(A){
+  const cover = glideEndCover(A); let f = S.glide.endFit;
+  if(f == null || !isFinite(f)) f = S.glide.ending === "whole" ? 0.9 : cover;
+  return clampN(f, 0.3, cover);
+}
+function glideEndLabel(A){
+  const f = glideEndFit(A), cover = glideEndCover(A);
+  if(f >= cover*0.995) return "fills the screen";
+  if(Math.abs(f - 1) < 0.02) return "whole painting just fits";
+  if(f > 1) return `${Math.round(f*100)}% (edges cropped)`;
+  return `${Math.round(f*100)}% of full size, on a soft background`;
+}
+function glideDist(A, a, b){
+  const sc = A.s0*Math.sqrt(a.z*b.z), pa = glideClamp(A, a), pb = glideClamp(A, b);
+  return Math.hypot((pa.cx - pb.cx)*sc, (pa.cy - pb.cy)*sc) + Math.abs(Math.log(b.z/a.z))*900;
+}
+function glideTimeline(A, stops){
+  const p = +S.glide.pace || 1, K = glideKnots(A, stops), cont = S.glide.flow === "continuous";
+  const arrive = [], leave = []; let t = 0;
+  K.forEach((k,i) => {
+    if(i > 0){ const d = glideDist(A, K[i-1], k); t += k.end ? 2.9*p : clampN(1.6 + d/700, 2.4, 5.5)*p; }
+    const h = (!cont && !k.end) ? ((i === 0 ? 0.4 : 0) + k.hold*p) : 0;
+    arrive[i] = t; t += h; leave[i] = t;
+  });
+  const total = t + (S.glide.ending === "last" ? 2.0*p : 2.3*p);
+  return {p, K, cont, arrive, leave, glideEnd: t, total};
+}
+function glideView(A, T, t){
+  const K = T.K, n = K.length; if(!n) return {x:.5, y:.5, z:1};
+  const P = K.map(k => [k.x, k.y, Math.log(k.z)]);
+  const end = T.glideEnd;
+  if(t >= end){ // slow final drift
+    const u = clampN((t - end)/(T.total - end), 0, 1), k = K[n-1];
+    return {x:k.x, y:k.y, z:k.z*(1 + 0.025*sEase(u))};
+  }
+  if(!T.cont){
+    for(let i = 0; i < n; i++){
+      if(t <= T.leave[i]){ if(t >= T.arrive[i] || i === 0){ const h = T.leave[i] - T.arrive[i], u = h > 0 ? clampN((t - T.arrive[i])/h, 0, 1) : 0;
+          return {x:K[i].x, y:K[i].y, z:K[i].z*(1 + 0.03*sEase(u))}; }
+        const e = sEase((t - T.leave[i-1])/(T.arrive[i] - T.leave[i-1])), a = K[i-1], z0 = Math.log(a.z*1.03);
+        return {x:lerp(a.x, K[i].x, e), y:lerp(a.y, K[i].y, e), z:Math.exp(lerp(z0, P[i][2], e))}; }
+    }
+    const k = K[n-1]; return {x:k.x, y:k.y, z:k.z};
+  }
+  // continuous: cubic Hermite through every spot, starting and finishing at rest
+  const ts = T.arrive; let i = 0; while(i < n-2 && t > ts[i+1]) i++;
+  if(n === 1) return {x:K[0].x, y:K[0].y, z:K[0].z*(1 + 0.03*clampN(t/T.total,0,1))};
+  const t0 = ts[i], t1 = ts[i+1], h = t1 - t0, u = clampN((t - t0)/h, 0, 1);
+  const tan = j => { if(j === 0 || j === n-1) return [0,0,0]; const dt = ts[j+1] - ts[j-1]; return [0,1,2].map(c => (P[j+1][c] - P[j-1][c])/dt*0.85); };
+  const m0 = tan(i), m1 = tan(i+1);
+  const h00 = 2*u*u*u - 3*u*u + 1, h10 = u*u*u - 2*u*u + u, h01 = -2*u*u*u + 3*u*u, h11 = u*u*u - u*u;
+  const v = [0,1,2].map(c => h00*P[i][c] + h10*h*m0[c] + h01*P[i+1][c] + h11*h*m1[c]);
+  return {x:v[0], y:v[1], z:Math.exp(v[2])};
+}
+function glideDrawPainting(ctx, A, view){
+  const {cx, cy, sc} = glideClamp(A, view);
+  const dx = 540 - cx*sc, dy = 960 - cy*sc, dw = A.cw*sc, dh = A.ch*sc;
+  if(dw < 1080 - 0.5 || dh < 1920 - 0.5){ // painting smaller than the screen: soft background from its own colours
+    ctx.drawImage(A.bg, 0, 0, 1080, 1920); ctx.fillStyle = "rgba(0,0,0,.18)"; ctx.fillRect(0,0,1080,1920);
+    ctx.save(); ctx.shadowColor = "rgba(0,0,0,.35)"; ctx.shadowBlur = 40; ctx.shadowOffsetY = 12; ctx.fillStyle = "#000"; ctx.fillRect(dx, dy, dw, dh); ctx.restore();
+  }
+  let L = A.levels[0]; // smallest image that is still sharp at this zoom
+  for(let j = A.levels.length - 1; j >= 0; j--){ const l = A.levels[j]; if(sc*A.cw/l.width <= 1.5){ L = l; break; } }
+  const k = L.width/A.cw;
+  const sx = Math.max(0, -dx/sc), sy = Math.max(0, -dy/sc), ex = Math.min(A.cw, (1080 - dx)/sc), ey = Math.min(A.ch, (1920 - dy)/sc);
+  ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(L, sx*k, sy*k, (ex - sx)*k, (ey - sy)*k, dx + sx*sc, dy + sy*sc, (ex - sx)*sc, (ey - sy)*sc);
+}
+
+/* ---- one frame ---- */
+function glideFrame(ctx, A, T, t, stops, R){
+  glideBoxes = {};
+  ctx.fillStyle = "#000"; ctx.fillRect(0,0,1080,1920);
+  glideDrawPainting(ctx, A, glideView(A, T, t));
+  const pos = S.glide.pos, K = T.K;
+  // title: from frame 1 until the camera reaches the second spot
+  const title = (S.glide.title||"").trim();
+  { const out = K.length > 1 ? T.arrive[Math.min(1, K.length-1)] - 0.6 : T.total - 0.5;
+    const a = title ? 1 - sEase((t - out)/0.45) : 0;
+    const f = R.titleF(fitSize(ctx, title || "Title", 1080 - 64 - 120, R.titleF, 66, 36));
+    glideBoxes.title = chipText(ctx, title || " ", 540 + pos.title.x, 300 + pos.title.y, 108, 30, f, R.chipOn ? R.chip : null, R.text, a, 34); }
+  // caption per spot, shown while the camera is on that spot
+  let capBox = null;
+  K.forEach((k,i) => { if(k.end) return; const cap = (k.stop.caption||"").trim(); if(!cap) return;
+    const a0 = T.arrive[i] - (T.cont ? 0.9*T.p : 0.15), a1 = T.cont ? T.arrive[i] + 1.0*T.p : T.leave[i];
+    const a = sEase((t - a0)/0.35) * (1 - sEase((t - a1)/0.35));
+    const f = R.textF(fitSize(ctx, cap, 820, s => R.textF(s), 48, 28), 600);
+    const b = chipText(ctx, cap, 540 + pos.caption.x, 1330 + pos.caption.y, 88, 28, f, R.chipOn ? R.chip : null, R.text, a, 32);
+    if(a > 0.01 || !capBox) capBox = b; });
+  glideBoxes.caption = capBox || {x:540 - 200 + pos.caption.x, y:1330 - 44 + pos.caption.y, w:400, h:88};
+  // end text on the final view
+  { const et = (S.glide.endTitle||"").trim(), el = (S.glide.endLine||"").trim(), sig = (S.sigText||"").trim();
+    const ue = t - (T.glideEnd - (S.glide.ending === "last" ? 0 : 0.6*T.p)), ex = pos.end.x;
+    let ey = pos.end.y;
+    const kEnd = T.K[T.K.length-1];
+    if(kEnd && kEnd.end && A.ch*glideClamp(A, kEnd).sc < 1900){ // keep the end text above a small final painting
+      const k = kEnd, v = glideClamp(A, k), top = 960 - v.cy*v.sc;
+      const bottom = sig ? 1015 : el ? 930 : 842, bh = bottom - 718, pb = top + A.ch*v.sc;
+      if(top - 36 - bh >= 230) ey += top - 36 - bottom;          // room above the painting (below Instagram's header)
+      else if(pb + 36 + bh <= 1460) ey += pb + 36 - 718; }        // else below it (above the caption area); else stay on top of it
+    const a1 = sEase(ue/0.45), a2 = sEase((ue - 0.3)/0.45), a3 = sEase((ue - 0.55)/0.45);
+    const qf = R.titleF(fitSize(ctx, et || "End", 1080 - 68 - 100, R.titleF, 72, 36)), lf = R.textF(fitSize(ctx, el || "line", 1080 - 64 - 100, s => R.textF(s), 40, 26));
+    let eb = chipText(ctx, et || " ", 540 + ex, 780 + ey, 124, 32, qf, R.chipOn ? R.chip : null, R.text, et && ue > 0 ? a1 : 0, 34);
+    if(el) eb = boxUnion(eb, chipText(ctx, el, 540 + ex, 895 + ey, 70, 35, lf, R.accent, R.accentText, ue > 0 ? a2 : 0, 32));
+    if(sig){ ctx.font = R.textF(40, 600); const sb = {x:540 + ex - 200, y:950 + ey, w:400, h:56};
+      if(ue > 0 && a3 > 0) chipText(ctx, sig, 540 + ex, 985 + ey, 60, 30, R.textF(38, 600), R.chipOn ? R.chip : null, R.text, a3, 24);
+      eb = boxUnion(eb, sb); }
+    glideBoxes.end = eb; }
+}
+
+/* ---- editor ---- */
+function renderGlideEditor(){
+  const box = $("glideEditor"); if(!box) return;
+  const on = S.template === "glide";
+  document.body.classList.toggle("spot", S.template === "spot" || on);
+  box.style.display = on ? "" : "none"; if(!on) return;
+  const f = spotFile();
+  if(!f){ box.innerHTML = `<div class="spot-empty">Add your <b>painting</b> (a photo) to the list above. The first photo is used.</div>`; return; }
+  const im = imgCache[mediaUrl(f)];
+  if(!im){ box.innerHTML = `<div class="spot-empty">Loading painting…</div>`; loadImg(mediaUrl(f)).then(() => renderGlideEditor()); return; }
+  const st = glideStops(), n = st.length, g = S.glide, tr = spotTrim(), custom = g.styleMode === "custom";
+  const pal = glideCache.val && glideCache.key === f + JSON.stringify(tr) ? glideCache.val.pal : SPOT_PRESETS.forest;
+  const cs = glideStyle(pal);
+  box.innerHTML = `
+    <div class="spot-head"><b>Camera spots</b><span class="small-muted">${n}/8 · click the painting in the order the camera should visit, drag a spot to move it</span></div>
+    <div class="spot-cvwrap"><canvas id="glideCv"></canvas></div>
+    <p class="small-muted" style="margin:6px 0 0">The dashed frames show what the camera sees at each spot. 4–6 spots work best.</p>
+    <div>${st.map((s,i) => `
+      <div class="spot-row ${i===glideSel?"sel":""}" data-i="${i}">
+        <span class="spot-num">${i+1}</span>
+        <input type="text" class="spot-label" data-gi="${i}" data-gk="caption" value="${esc(s.caption||"")}" placeholder="caption (optional)" maxlength="40">
+        <label class="small-muted" title="How close the camera gets">zoom <input type="range" min="1" max="5" step="0.1" value="${(+s.zoom||2.4).toFixed(1)}" data-gi="${i}" data-gk="zoom"></label>
+        ${g.flow === "stops" ? `<select data-gi="${i}" data-gk="hold" title="Pause at this spot">${["0.6","1","1.2","1.6","2","3"].map(v => `<option value="${v}" ${String(s.hold ?? 1.2)===v?"selected":""}>${v} s</option>`).join("")}</select>` : ""}
+        <button class="btn small" data-gmove="-1" data-gi="${i}" ${i===0?"disabled":""} title="Visit earlier">↑</button>
+        <button class="btn small" data-gmove="1" data-gi="${i}" ${i===n-1?"disabled":""} title="Visit later">↓</button>
+        <button class="btn small ghost" data-gdel="${i}" title="Remove this spot">✕</button>
+      </div>`).join("")}</div>
+
+    <div class="spot-sec">Motion</div>
+    <div class="spot-settings">
+      <label>Movement <select id="glFlow"><option value="continuous" ${g.flow==="continuous"?"selected":""}>Continuous glide</option><option value="stops" ${g.flow==="stops"?"selected":""}>Stop at each spot</option></select></label>
+      <label>Ending <select id="glEnding">
+        <option value="zoomout" ${g.ending==="zoomout"?"selected":""}>Zoom out</option>
+        <option value="whole" ${g.ending==="whole"?"selected":""}>Whole painting</option>
+        <option value="last" ${g.ending==="last"?"selected":""}>Stay on last spot</option></select></label>
+      ${g.ending !== "last" ? `<label class="gl-end">Final size <input type="range" id="glEndFit" min="0" max="1000" step="1">
+        <small id="glEndLbl">&nbsp;</small>
+        <span class="gl-endbtns"><button class="btn small" data-endf="cover">Fill screen</button><button class="btn small" data-endf="1">Whole fits</button><button class="btn small" data-endf="0.6">Small</button></span></label>` : ""}
+      <label>Pace <select id="glPace">${[["1.3","Slow"],["1","Normal"],["0.75","Fast"]].map(([v,l]) => `<option value="${v}" ${String(g.pace)===v?"selected":""}>${l}</option>`).join("")}</select></label>
+      <label class="spot-trim">Trim edges, % <span>
+        ${[["t","top"],["b","bottom"],["l","left"],["r","right"]].map(([k,l]) => `<input type="number" min="0" max="25" step="0.5" value="${tr[k]}" data-trim="${k}" title="${l}" placeholder="${l}">`).join("")}</span>
+        <small>top · bottom · left · right</small></label>
+    </div>
+
+    <div class="spot-sec">Text <span style="text-transform:none;letter-spacing:0;font-weight:400">(all optional)</span></div>
+    <div class="spot-settings">
+      <label>Title (from frame 1) <input type="text" id="glTitle" value="${esc(g.title||"")}" placeholder="e.g. a walk through my cosy corner"></label>
+      <label>End title <input type="text" id="glEndTitle" value="${esc(g.endTitle||"")}" placeholder="e.g. the whole corner"></label>
+      <label>End line <input type="text" id="glEndLine" value="${esc(g.endLine||"")}" placeholder="e.g. which spot is your favourite?"></label>
+      <label>Colours <select id="glTheme">
+        <option value="painting" ${g.theme==="painting"&&!custom?"selected":""}>From the painting</option>
+        <option value="forest" ${g.theme==="forest"&&!custom?"selected":""}>Forest</option>
+        <option value="leaf" ${g.theme==="leaf"&&!custom?"selected":""}>Leaf</option>
+        <option value="cream" ${g.theme==="cream"&&!custom?"selected":""}>Cream</option>
+        <option value="custom" ${custom?"selected":""}>Custom…</option></select></label>
+    </div>
+    ${custom ? `
+    <div class="spot-custom">
+      <label>Title font <select data-gs="titleFont">${fontOpts(cs.titleFont)}</select></label>
+      <label>Text font <select data-gs="textFont">${fontOpts(cs.textFont)}</select></label>
+      <label>Text colour <input type="color" data-gs="text" value="${cs.text}"></label>
+      <label class="chk"><input type="checkbox" data-gs="chipOn" ${cs.chipOn?"checked":""}> Highlights behind text</label>
+      <label>Highlight colour <input type="color" data-gs="chipColor" value="${cs.chipColor}" ${cs.chipOn?"":"disabled"}></label>
+      <label>Highlight opacity <input type="range" min="20" max="100" step="1" data-gs="chipAlpha" value="${cs.chipAlpha}" ${cs.chipOn?"":"disabled"}></label>
+      <label>Accent (end line) <input type="color" data-gs="accent" value="${cs.accent}"></label>
+      <label>Text on accent <input type="color" data-gs="accentText" value="${cs.accentText}"></label>
+      <div class="spot-presets">Start from: ${[["painting","From the painting"],["forest","Forest"],["leaf","Leaf"],["cream","Cream"]].map(([k,l]) => `<button class="btn small" data-gpreset="${k}">${l}</button>`).join("")}</div>
+    </div>` : ""}
+    <div class="spot-move">
+      <span>Drag the title, caption or end text in the preview on the right to place it anywhere.</span>
+      <span>Preview <select id="glPv"><option value="stop" ${g.pvFrame==="stop"?"selected":""}>Selected spot</option><option value="end" ${g.pvFrame==="end"?"selected":""}>Ending</option></select></span>
+      <button class="btn small" id="glResetPos">Reset text positions</button>
+    </div>
+    <div class="actions"><button class="btn" id="glPlay">▶ Play preview</button><span class="small-muted" id="glLen"></span></div>`;
+  if(n) glideAssets(f).then(A => { if($("glLen")) $("glLen").textContent = `Reel length: ${glideTimeline(A, st).total.toFixed(1)} s`; }).catch(()=>{});
+  const redraw = () => { save(); glideEditorDraw(); glideStill(); };
+  box.querySelectorAll("[data-gk]").forEach(el => el.oninput = el.onchange = () => { const s = st[+el.dataset.gi], k = el.dataset.gk;
+    s[k] = k === "caption" ? el.value : +el.value; redraw(); if(k === "zoom" || k === "hold") glideAssets(f).then(A => { if($("glLen")) $("glLen").textContent = `Reel length: ${glideTimeline(A, st).total.toFixed(1)} s`; }); });
+  box.querySelectorAll("[data-gdel]").forEach(b => b.onclick = () => { st.splice(+b.dataset.gdel, 1); glideSel = -1; save(); renderGlideEditor(); glideStill(); });
+  box.querySelectorAll("[data-gmove]").forEach(b => b.onclick = () => { const i = +b.dataset.gi, j = i + +b.dataset.gmove; [st[i], st[j]] = [st[j], st[i]]; glideSel = j; save(); renderGlideEditor(); glideStill(); });
+  box.querySelectorAll(".spot-row").forEach(r => r.onclick = e => { if(e.target.closest("input,select,button")) return; glideSel = +r.dataset.i; S.glide.pvFrame = "stop"; save(); renderGlideEditor(); glideStill(); });
+  [["glTitle","title"],["glEndTitle","endTitle"],["glEndLine","endLine"]].forEach(([id,k]) => $(id).oninput = () => { S.glide[k] = $(id).value; save(); glideStill(); });
+  const sel = (id, k) => { const el = $(id); if(el) el.onchange = () => { S.glide[k] = el.value; save(); renderGlideEditor(); glideStill(); }; };
+  sel("glFlow","flow"); sel("glPace","pace"); sel("glPv","pvFrame");
+  $("glEnding").onchange = () => { S.glide.ending = $("glEnding").value; S.glide.endFit = null; if(S.glide.ending !== "last") S.glide.pvFrame = "end"; save(); renderGlideEditor(); glideStill(); };
+  if($("glEndFit")) glideAssets(f).then(A => {
+    const sl = $("glEndFit"); if(!sl) return; const lo = Math.log(0.3), hi = Math.log(glideEndCover(A));
+    const toPos = v => Math.round((Math.log(v) - lo)/(hi - lo)*1000), fromPos = p => Math.exp(lo + (hi - lo)*p/1000);
+    const show = () => { sl.value = toPos(glideEndFit(A)); $("glEndLbl").textContent = glideEndLabel(A);
+      if($("glLen")) $("glLen").textContent = `Reel length: ${glideTimeline(A, st).total.toFixed(1)} s`; };
+    show();
+    sl.oninput = () => { S.glide.endFit = fromPos(+sl.value); if(Math.abs(S.glide.endFit - 1) < 0.03) S.glide.endFit = 1;
+      S.glide.pvFrame = "end"; if($("glPv")) $("glPv").value = "end"; save(); show(); glideEditorDraw(); glideStill(); };
+    box.querySelectorAll("[data-endf]").forEach(b => b.onclick = e => { e.preventDefault(); const v = b.dataset.endf;
+      S.glide.endFit = v === "cover" ? glideEndCover(A) : +v; S.glide.pvFrame = "end"; if($("glPv")) $("glPv").value = "end"; save(); show(); glideEditorDraw(); glideStill(); });
+  }).catch(()=>{});
+  $("glTheme").onchange = () => { const v = $("glTheme").value;
+    if(v === "custom"){ if(!S.glide.style){ const A = glideCache.val; S.glide.style = Object.assign({}, glidePreset(A ? A.pal : SPOT_PRESETS.forest)); } S.glide.styleMode = "custom"; }
+    else { S.glide.theme = v; S.glide.styleMode = "default"; }
+    save(); renderGlideEditor(); glideStill(); };
+  box.querySelectorAll("[data-gs]").forEach(el => el.oninput = el.onchange = () => { const k = el.dataset.gs;
+    S.glide.style = S.glide.style || Object.assign({}, cs);
+    S.glide.style[k] = el.type === "checkbox" ? el.checked : el.type === "range" ? +el.value : el.value;
+    save(); if(k === "chipOn") renderGlideEditor(); glideStill(); });
+  box.querySelectorAll("[data-gpreset]").forEach(b => b.onclick = () => { const k = b.dataset.gpreset, A = glideCache.val;
+    const keep = S.glide.theme; S.glide.theme = k; S.glide.style = Object.assign({}, glidePreset(A ? A.pal : SPOT_PRESETS.forest)); S.glide.theme = keep;
+    ["titleF","textF","chip"].forEach(x => delete S.glide.style[x]); save(); renderGlideEditor(); glideStill(); });
+  box.querySelectorAll("[data-trim]").forEach(el => el.onchange = () => spotSetTrim(el.dataset.trim, +el.value || 0));
+  $("glResetPos").onclick = () => { S.glide.pos = {title:{x:0,y:0}, caption:{x:0,y:0}, end:{x:0,y:0}}; save(); glideStill(); };
+  $("glPlay").onclick = glideTogglePlay;
+  glideEditorSetup();
+}
+async function glideEditorSetup(){
+  const cv = $("glideCv"); if(!cv) return; const f = spotFile();
+  const im = await loadImg(mediaUrl(f)); if(!im || !$("glideCv")) return;
+  const W = im.width/im.height > 2 ? 1400 : 900; cv.width = W; cv.height = Math.round(W*im.height/im.width);
+  try{ await glideAssets(f); }catch(e){}
+  glideEditorDraw();
+  let drag = -1;
+  const toTrim = p => { const t = spotTrim(), w = 1 - (t.l+t.r)/100, h = 1 - (t.t+t.b)/100; return {x: clampN((p.x - t.l/100)/w, 0, 1), y: clampN((p.y - t.t/100)/h, 0, 1)}; };
+  const pos = e => { const r = cv.getBoundingClientRect(); return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height}; };
+  cv.onpointerdown = e => {
+    const q = toTrim(pos(e)), st = glideStops(), asp = cv.height/cv.width;
+    let hit = -1, best = 1e9;
+    st.forEach((s,i) => { const dist = Math.hypot(q.x - s.fx, (q.y - s.fy)*asp); if(dist < 0.035 && dist < best){ best = dist; hit = i; } });
+    if(hit < 0){ if(st.length >= 8){ setStatus("8 spots is the maximum. Remove one to add another.", true); return; }
+      st.push({fx:q.x, fy:q.y, zoom:2.4, hold:1.2, caption:""}); glideSel = st.length - 1; save(); S.glide.pvFrame = "stop"; renderGlideEditor(); glideStill(); return; }
+    glideSel = hit; drag = hit; cv.setPointerCapture(e.pointerId); glideEditorDraw();
+    document.querySelectorAll("#glideEditor .spot-row").forEach(r => r.classList.toggle("sel", +r.dataset.i === hit));
+  };
+  cv.onpointermove = e => { if(drag < 0) return; const q = toTrim(pos(e)), s = glideStops()[drag]; s.fx = q.x; s.fy = q.y; glideEditorDraw(); };
+  cv.onpointerup = () => { if(drag >= 0){ drag = -1; save(); glideStill(); } };
+}
+function glideEditorDraw(){
+  const cv = $("glideCv"); if(!cv) return; const im = imgCache[mediaUrl(spotFile())]; if(!im) return;
+  const g = cv.getContext("2d"), t = spotTrim(), W = cv.width, H = cv.height, A = glideCache.val;
+  g.imageSmoothingQuality = "high"; g.drawImage(im, 0, 0, W, H);
+  const x0 = W*t.l/100, y0 = H*t.t/100, w = W*(1-(t.l+t.r)/100), h = H*(1-(t.t+t.b)/100);
+  g.fillStyle = "rgba(60,60,60,.6)"; g.fillRect(0,0,W,y0); g.fillRect(0,y0+h,W,H-y0-h); g.fillRect(0,y0,x0,h); g.fillRect(x0+w,y0,W-x0-w,h);
+  const st = glideStops(), k = Math.max(1, W/900);
+  // what the camera sees at each spot
+  if(A) st.forEach((s,i) => { const v = glideClamp(A, {x:s.fx, y:s.fy, z:+s.zoom || 2.4}), vw = 1080/v.sc, vh = 1920/v.sc;
+    const rx = x0 + (v.cx - vw/2)/A.cw*w, ry = y0 + (v.cy - vh/2)/A.ch*h;
+    g.save(); g.setLineDash([10*k, 7*k]); g.lineWidth = 2.5*k; g.strokeStyle = i === glideSel ? SPOT.accent : "rgba(255,255,255,.9)";
+    g.shadowColor = "rgba(0,0,0,.5)"; g.shadowBlur = 4; g.strokeRect(rx, ry, vw/A.cw*w, vh/A.ch*h); g.restore(); });
+  // final view (what the last frame shows)
+  if(A && S.glide.ending !== "last" && st.length){ const fe = glideEndFit(A), z = fe*A.sf/A.s0, v = glideClamp(A, {x:.5, y:.5, z});
+    const vw = Math.min(A.cw, 1080/v.sc), vh = Math.min(A.ch, 1920/v.sc), rx = x0 + (v.cx - vw/2)/A.cw*w, ry = y0 + (v.cy - vh/2)/A.ch*h;
+    g.save(); g.lineWidth = 3.5*k; g.strokeStyle = SPOT.accent; g.setLineDash([16*k, 8*k]); g.strokeRect(rx + 2*k, ry + 2*k, vw/A.cw*w - 4*k, vh/A.ch*h - 4*k);
+    g.setLineDash([]); g.font = `700 ${20*k}px -apple-system, Arial`; const lbl = fe < 0.995 ? `end · ${Math.round(fe*100)}%` : "end";
+    const tw = g.measureText(lbl).width + 16*k; g.fillStyle = SPOT.accent; g.fillRect(rx + 2*k, ry + 2*k, tw, 30*k);
+    g.fillStyle = "#fff"; g.textAlign = "left"; g.textBaseline = "middle"; g.fillText(lbl, rx + 10*k, ry + 17*k); g.restore(); }
+  // path in visiting order
+  if(st.length > 1){ g.save(); g.lineWidth = 4*k; g.strokeStyle = "rgba(255,255,255,.85)"; g.shadowColor = "rgba(0,0,0,.5)"; g.shadowBlur = 5; g.beginPath();
+    st.forEach((s,i) => { const x = x0 + s.fx*w, y = y0 + s.fy*h; i ? g.lineTo(x, y) : g.moveTo(x, y); }); g.stroke(); g.restore(); }
+  st.forEach((s,i) => { const x = x0 + s.fx*w, y = y0 + s.fy*h, sel = i === glideSel;
+    g.fillStyle = sel ? SPOT.accent : SPOT.ink; g.strokeStyle = "#fff"; g.lineWidth = 3*k; g.beginPath(); g.arc(x, y, 20*k, 0, Math.PI*2); g.fill(); g.stroke();
+    g.fillStyle = "#fff"; g.font = `700 ${22*k}px -apple-system, Arial`; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(i+1, x, y + 1); });
+}
+
+/* ---- preview (drag text here) ---- */
+let glideStillTok = 0;
+async function glideStill(){
+  if(S.template !== "glide" || glidePlay) return;
+  const tok = ++glideStillTok, ctx = $("pv").getContext("2d"), f = spotFile(), st = glideStops();
+  if(!f || !st.length){ ctx.fillStyle = "#1d1a17"; ctx.fillRect(0,0,1080,1920); ctx.fillStyle = "#fff"; ctx.font = '500 44px "DM Sans", Arial'; ctx.textAlign = "center"; ctx.fillText(f ? "Click the painting to add spots" : "Add a painting", 540, 960); return; }
+  const A = await glideAssets(f); const R = glideStyle(A.pal); await spotFonts(R); if(tok !== glideStillTok) return;
+  const T = glideTimeline(A, st);
+  let t;
+  if(S.glide.pvFrame === "end") t = T.total - 0.3;
+  else { const i = glideSel >= 0 && glideSel < st.length ? glideSel : 0; t = i === 0 ? 0.3 : (T.cont ? T.arrive[i] : (T.arrive[i] + T.leave[i])/2); }
+  glideLastStill = {A, T, st, R, t};
+  glideFrame(ctx, A, T, t, st, R); spotGuides(ctx);
+  ctx.save(); ctx.setLineDash([14, 10]); ctx.lineWidth = 3; ctx.strokeStyle = "rgba(255,255,255,.85)";
+  const keys = S.glide.pvFrame === "end" ? ["end"] : ["title","caption"];
+  keys.forEach(k => { const b = glideBoxes[k]; if(b) ctx.strokeRect(b.x - 8, b.y - 8, b.w + 16, b.h + 16); }); ctx.restore();
+}
+(function glidePreviewDrag(){
+  const cv = $("pv"); if(!cv) return; let drag = null;
+  const pt = e => { const r = cv.getBoundingClientRect(); return {x:(e.clientX - r.left)/r.width*1080, y:(e.clientY - r.top)/r.height*1920}; };
+  const hit = p => { const keys = S.glide.pvFrame === "end" ? ["end"] : ["title","caption"];
+    for(const k of keys){ const b = glideBoxes[k]; if(b && p.x >= b.x - 12 && p.x <= b.x + b.w + 12 && p.y >= b.y - 12 && p.y <= b.y + b.h + 12) return k; } return null; };
+  cv.addEventListener("pointerdown", e => { if(S.template !== "glide" || glidePlay) return;
+    const p = pt(e), k = hit(p); if(!k) return; drag = {k, p, start:Object.assign({}, S.glide.pos[k])}; cv.setPointerCapture(e.pointerId); e.preventDefault(); });
+  cv.addEventListener("pointermove", e => {
+    if(S.template !== "glide") return; const p = pt(e);
+    if(!drag){ cv.style.cursor = (!glidePlay && hit(p)) ? "grab" : ""; return; }
+    cv.style.cursor = "grabbing";
+    const b0 = glideBoxes[drag.k], cur = S.glide.pos[drag.k]; let nx = drag.start.x + (p.x - drag.p.x), ny = drag.start.y + (p.y - drag.p.y);
+    if(b0){ const bx = b0.x - cur.x, by = b0.y - cur.y; nx = clampN(nx, -bx, 1080 - b0.w - bx); ny = clampN(ny, -by, 1920 - b0.h - by); }
+    S.glide.pos[drag.k] = {x:Math.round(nx), y:Math.round(ny)};
+    if(glideLastStill){ const {A,T,st,R,t} = glideLastStill, ctx = cv.getContext("2d"); glideFrame(ctx, A, T, t, st, R); spotGuides(ctx); }
+  });
+  const end = () => { if(drag){ drag = null; cv.style.cursor = ""; save(); glideStill(); } };
+  cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end);
+})();
+async function glideTogglePlay(){
+  if(glidePlay){ cancelAnimationFrame(glidePlay); glidePlay = null; $("glPlay").textContent = "▶ Play preview"; glideStill(); return; }
+  const f = spotFile(), st = glideStops(); if(!f || !st.length) return;
+  const A = await glideAssets(f), R = glideStyle(A.pal); await spotFonts(R);
+  const T = glideTimeline(A, st), ctx = $("pv").getContext("2d");
+  $("glPlay").textContent = "■ Stop"; const t0 = performance.now();
+  const step = () => { const t = (performance.now() - t0)/1000;
+    if(t > T.total){ glidePlay = null; if($("glPlay")) $("glPlay").textContent = "▶ Play preview"; glideStill(); return; }
+    glideFrame(ctx, A, T, t, st, R); spotGuides(ctx); glidePlay = requestAnimationFrame(step); };
+  glidePlay = requestAnimationFrame(step);
+}
+
+/* ---- export ---- */
+async function glideExport(){
+  const f = spotFile(), st = glideStops();
+  if(!f){ setStatus("Add your painting (a photo) to the list first.", true); return; }
+  if(st.length < 2){ setStatus("Click the painting to add at least 2 camera spots (4–6 work best).", true); return; }
+  if(!CAPS.ffmpeg){ setStatus("FFmpeg is not installed. Open Terminal and run: brew install ffmpeg", true); return; }
+  if(glidePlay) glideTogglePlay();
+  $("renderBtn").disabled = true; $("result").innerHTML = ""; setStatus("Preparing…");
+  const started = Date.now();
+  try{
+    const A = await glideAssets(f), R = glideStyle(A.pal); await spotFonts(R);
+    const T = glideTimeline(A, st), fps = 30, N = Math.round(T.total*fps);
+    const meta = {template:"glide", painting:f, stops:st, glide:S.glide, trim:spotTrim()};
+    const sres = await fetch("/api/frames/start",{method:"POST",body:JSON.stringify(meta)}).then(r=>r.json());
+    if(sres.error) throw new Error(sres.error);
+    const cv = document.createElement("canvas"); cv.width = 1080; cv.height = 1920; const ctx = cv.getContext("2d");
+    const toJpeg = () => new Promise(res => cv.toBlob(b => res(b), "image/jpeg", 0.95));
+    let batch = [];
+    const flush = async () => { if(!batch.length) return; const body = new Blob(batch);
+      const r = await fetch(`/api/frames/append?id=${sres.id}&n=${batch.length}`,{method:"POST",body}); batch = [];
+      if(!r.ok) throw new Error((await r.json()).error); };
+    for(let i = 0; i < N; i++){
+      glideFrame(ctx, A, T, i/fps, st, R); batch.push(await toJpeg());
+      if(batch.length >= 10){ await flush(); $("bar").style.width = (i/N*100)+"%"; setStatus(`Drawing frame ${i+1} of ${N} · ${Math.round((Date.now()-started)/1000)} s`); }
+    }
+    await flush();
+    glideFrame(ctx, A, T, 0.5, st, R); const cover = await toJpeg();
+    setStatus("Finishing video…");
+    const r = await fetch(`/api/frames/finish?id=${sres.id}`,{method:"POST",body:cover}).then(r=>r.json());
+    if(r.error) throw new Error(r.error);
+    $("bar").style.width = "100%";
+    setStatus(`Done: ${r.duration} s reel in ${Math.round((Date.now()-started)/1000)} s.`); showResult(r); loadRecent();
+  }catch(e){ setStatus(String(e.message||e), true); }
+  finally{ $("renderBtn").disabled = false; }
+}
+
+/* ---- hook into the existing app ---- */
+TEMPLATES.glide = {name:"Glide", desc:"Camera glides over one painting, spot to spot, then zooms out",
+  hint:"Add <b>one painting</b> (a photo; the first photo in the list is used). Then click the painting below in the order the camera should visit the spots (4–6 work best). Length, hook text and effects don't apply to this template."};
+const _roleForG = roleFor;
+roleFor = (i,n) => S.template === "glide" ? (S.items[i] && S.items[i].file === spotFile() ? "Painting" : "Not used") : _roleForG(i,n);
+const _renderItemsG = renderItems;
+renderItems = function(){ _renderItemsG(); renderGlideEditor(); };
+const _drawPreviewG = drawPreview;
+drawPreview = async function(){ if(S.template === "glide"){ glideStill(); return; } return _drawPreviewG(); };
+const _startRenderG = startRender;
+startRender = async function(){ if(S.template === "glide") return glideExport(); return _startRenderG(); };
+const _renderSettingsG = renderSettings;
+renderSettings = function(){ _renderSettingsG(); document.body.classList.toggle("spot", S.template === "spot" || S.template === "glide"); };
+
+/* ================= Clip viewer: watch a video, trim it, crop it, stabilise it ================= */
+let CV = null; // {file, idx (item index or -1 for a new item), start, end, crop, stabilise, dur}
+const fmtD = s => { s = Math.max(0, s||0); const m = Math.floor(s/60), x = s - m*60; return `${m}:${x < 10 ? "0" : ""}${x.toFixed(1)}`; };
+const CROP_RATIOS = {free:null, "9:16":9/16, "4:5":4/5, "1:1":1, "16:9":16/9};
+function openClip(file, idx){
+  const e = LIB.find(x => x.file === file); if(!e || e.type !== "video") return;
+  const it = idx >= 0 ? S.items[idx] : null;
+  CV = {file, idx, dur:e.duration || 0, start: it ? parseT(it.start) : null, end: it ? parseT(it.end) : null,
+        crop: it && it.crop ? Object.assign({}, it.crop) : null, stabilise: it ? !!it.stabilise : false, ratio:"free", loopSel:true};
+  $("cvName").textContent = file.split("/").pop();
+  $("cvSave").textContent = idx >= 0 ? "Save changes" : "Add to reel";
+  $("cvStab").checked = CV.stabilise; $("cvStab").disabled = !CAPS.stabilise;
+  $("cvStabNote").textContent = CAPS.stabilise === "vidstab" ? "" : CAPS.stabilise ? "(basic mode)" : "(needs FFmpeg)";
+  $("cvCropOn").checked = !!CV.crop; $("cvLoop").checked = CV.loopSel;
+  document.querySelectorAll("#cvRatios .chip").forEach(c => c.classList.toggle("on", c.dataset.r === CV.ratio));
+  $("cvMsg").textContent = "";
+  const v = $("cvVideo"); v.src = "/api/video?file=" + encodeURIComponent(file) + "&v=" + (e.mtime||0);
+  v.muted = false; v.load();
+  $("clipModal").classList.add("open");
+  cvSyncUI();
+}
+function closeClip(){ const v = $("cvVideo"); v.pause(); v.removeAttribute("src"); v.load(); $("clipModal").classList.remove("open"); CV = null; }
+function cvLayout(){
+  const v = $("cvVideo"), st = $("cvStage"); if(!v.videoWidth) return;
+  const maxW = st.clientWidth, maxH = Math.min(window.innerHeight*0.58, 640), a = v.videoWidth/v.videoHeight;
+  let w = maxW, h = w/a; if(h > maxH){ h = maxH; w = h*a; }
+  v.style.width = w + "px"; v.style.height = h + "px";
+  const wrap = $("cvFrame"); wrap.style.width = w + "px"; wrap.style.height = h + "px";
+  cvDrawCrop();
+}
+function cvSel(){ const s = CV.start ?? 0, e = CV.end ?? CV.dur; return [Math.max(0, Math.min(s, CV.dur)), Math.max(0, Math.min(e, CV.dur))]; }
+function cvSyncUI(){
+  if(!CV) return; const v = $("cvVideo"), d = CV.dur || v.duration || 0, [s, e] = cvSel();
+  const sc = $("cvScrub"); sc.max = d; sc.value = v.currentTime || 0;
+  const p = x => d ? (x/d*100).toFixed(2) + "%" : "0%";
+  sc.style.background = `linear-gradient(to right, #ddd3c4 ${p(s)}, var(--accent) ${p(s)}, var(--accent) ${p(e)}, #ddd3c4 ${p(e)})`;
+  $("cvTime").textContent = `${fmtD(v.currentTime)} / ${fmtD(d)}`;
+  $("cvSelTxt").textContent = (CV.start == null && CV.end == null) ? "Using the whole clip" : `Using ${fmtD(s)} → ${fmtD(e)} (${fmtD(e - s)})`;
+  $("cvPlay").textContent = v.paused ? "▶ Play" : "❚❚ Pause";
+  $("cvCropBox").style.display = CV.crop ? "" : "none";
+  $("cvRatios").style.opacity = CV.crop ? 1 : .45;
+  $("cvCropTxt").textContent = CV.crop ? `${Math.round(CV.crop.w*100)}% × ${Math.round(CV.crop.h*100)}% of the frame` : "Off: the whole frame is used";
+}
+function cvDrawCrop(){
+  const b = $("cvCropBox"); if(!CV || !CV.crop){ b.style.display = "none"; return; }
+  const c = CV.crop; b.style.display = ""; Object.assign(b.style, {left:c.x*100+"%", top:c.y*100+"%", width:c.w*100+"%", height:c.h*100+"%"});
+}
+function cvDefaultCrop(){
+  const v = $("cvVideo"), a = v.videoWidth && v.videoHeight ? v.videoWidth/v.videoHeight : 16/9, r = CROP_RATIOS[CV.ratio];
+  if(!r) return {x:.1, y:.1, w:.8, h:.8};
+  let w = .9, h = w*a/r; if(h > .9){ h = .9; w = h*r/a; } return {x:(1-w)/2, y:(1-h)/2, w, h};
+}
+function cvApplyRatio(){
+  if(!CV.crop) return; const r = CROP_RATIOS[CV.ratio]; if(!r) return;
+  const v = $("cvVideo"), a = v.videoWidth/v.videoHeight, c = CV.crop, cx = c.x + c.w/2, cy = c.y + c.h/2;
+  let w = c.w, h = w*a/r; if(h > 1){ h = 1; w = h*r/a; } if(w > 1){ w = 1; h = w*a/r; }
+  CV.crop = {x: clampN(cx - w/2, 0, 1 - w), y: clampN(cy - h/2, 0, 1 - h), w, h};
+}
+(function cvInit(){
+  const v = $("cvVideo");
+  v.addEventListener("loadedmetadata", () => { if(!CV) return; if(!CV.dur) CV.dur = v.duration; cvLayout(); const [s] = cvSel(); v.currentTime = s; cvSyncUI(); });
+  v.addEventListener("error", () => { if(CV) $("cvMsg").textContent = "Your browser can't play this video format here. You can still set the times by typing them in the reel order, and crop/stabilise will still work in the export."; });
+  v.addEventListener("timeupdate", () => { if(!CV) return; const [s, e] = cvSel();
+    if(CV.loopSel && !v.paused && (CV.start != null || CV.end != null) && v.currentTime >= e - 0.03){ v.currentTime = s; }
+    cvSyncUI(); });
+  v.addEventListener("play", cvSyncUI); v.addEventListener("pause", cvSyncUI);
+  window.addEventListener("resize", () => { if(CV) cvLayout(); });
+  $("cvPlay").onclick = () => { if(v.paused){ const [s, e] = cvSel(); if(CV.loopSel && (v.currentTime < s || v.currentTime >= e - 0.05)) v.currentTime = s; v.play(); } else v.pause(); };
+  $("cvScrub").oninput = () => { v.currentTime = +$("cvScrub").value; cvSyncUI(); };
+  const step = d => { v.pause(); v.currentTime = clampN(v.currentTime + d, 0, CV.dur); };
+  $("cvBack").onclick = () => step(-1/30); $("cvFwd").onclick = () => step(1/30);
+  $("cvSetStart").onclick = () => { CV.start = Math.round(v.currentTime*10)/10; if(CV.end != null && CV.end <= CV.start) CV.end = null; cvSyncUI(); };
+  $("cvSetEnd").onclick = () => { CV.end = Math.round(v.currentTime*10)/10; if(CV.start != null && CV.start >= CV.end) CV.start = null; cvSyncUI(); };
+  $("cvClearTrim").onclick = () => { CV.start = CV.end = null; cvSyncUI(); };
+  $("cvLoop").onchange = () => { CV.loopSel = $("cvLoop").checked; };
+  $("cvStab").onchange = () => { CV.stabilise = $("cvStab").checked; };
+  $("cvCropOn").onchange = () => { CV.crop = $("cvCropOn").checked ? cvDefaultCrop() : null; cvDrawCrop(); cvSyncUI(); };
+  document.querySelectorAll("#cvRatios .chip").forEach(c => c.onclick = () => { CV.ratio = c.dataset.r;
+    document.querySelectorAll("#cvRatios .chip").forEach(x => x.classList.toggle("on", x === c));
+    if(!CV.crop){ CV.crop = cvDefaultCrop(); $("cvCropOn").checked = true; } else cvApplyRatio(); cvDrawCrop(); cvSyncUI(); });
+  $("cvClose").onclick = closeClip; $("cvCancel").onclick = closeClip;
+  $("clipModal").addEventListener("pointerdown", e => { if(e.target.id === "clipModal") closeClip(); });
+  document.addEventListener("keydown", e => { if(!CV || e.target.closest("input,textarea,select")) return;
+    if(e.key === " "){ e.preventDefault(); $("cvPlay").click(); }
+    else if(e.key === "i" || e.key === "I") $("cvSetStart").click();
+    else if(e.key === "o" || e.key === "O") $("cvSetEnd").click();
+    else if(e.key === "ArrowLeft") step(-1/30); else if(e.key === "ArrowRight") step(1/30);
+    else if(e.key === "Escape") closeClip(); });
+  // crop box: drag to move, corners to resize
+  const box = $("cvCropBox"); let drag = null;
+  box.addEventListener("pointerdown", e => { if(!CV || !CV.crop) return; e.preventDefault(); e.stopPropagation();
+    const fr = $("cvFrame").getBoundingClientRect(); drag = {mode: e.target.dataset.h || "move", x:e.clientX, y:e.clientY, c:Object.assign({}, CV.crop), fw:fr.width, fh:fr.height};
+    box.setPointerCapture(e.pointerId); });
+  box.addEventListener("pointermove", e => { if(!drag) return;
+    const dx = (e.clientX - drag.x)/drag.fw, dy = (e.clientY - drag.y)/drag.fh, c = drag.c; let {x, y, w, h} = c;
+    if(drag.mode === "move"){ x = clampN(c.x + dx, 0, 1 - c.w); y = clampN(c.y + dy, 0, 1 - c.h); }
+    else {
+      const L = drag.mode.includes("l"), T = drag.mode.includes("t");
+      let x0 = c.x, y0 = c.y, x1 = c.x + c.w, y1 = c.y + c.h;
+      if(L) x0 = clampN(c.x + dx, 0, x1 - .05); else x1 = clampN(x1 + dx, x0 + .05, 1);
+      if(T) y0 = clampN(c.y + dy, 0, y1 - .05); else y1 = clampN(y1 + dy, y0 + .05, 1);
+      x = x0; y = y0; w = x1 - x0; h = y1 - y0;
+      const r = CROP_RATIOS[CV.ratio], v = $("cvVideo"), a = v.videoWidth/v.videoHeight;
+      if(r){ // keep the chosen shape: follow the width, adjust height from the fixed corner
+        h = w*a/r; if(T) y = (c.y + c.h) - h; if(y < 0 || y + h > 1){ h = T ? c.y + c.h : 1 - y; if(T) y = c.y + c.h - h; h = Math.max(.05, h); w = h*r/a; if(L) x = (c.x + c.w) - w; } }
+    }
+    CV.crop = {x, y, w, h}; cvDrawCrop(); cvSyncUI(); });
+  const end = () => { drag = null; }; box.addEventListener("pointerup", end); box.addEventListener("pointercancel", end);
+  $("cvSave").onclick = () => {
+    const [s, e] = cvSel();
+    const patch = {start: CV.start == null ? "" : fmtD(s), end: CV.end == null ? "" : fmtD(e),
+                   crop: CV.crop ? {x:+CV.crop.x.toFixed(4), y:+CV.crop.y.toFixed(4), w:+CV.crop.w.toFixed(4), h:+CV.crop.h.toFixed(4)} : null,
+                   stabilise: CV.stabilise};
+    if(CV.idx >= 0 && S.items[CV.idx]) Object.assign(S.items[CV.idx], patch);
+    else { S.items.push(Object.assign({file:CV.file, type:"video", fx:.5, fy:.5, fit:S.defFit}, patch)); }
+    save(); closeClip(); renderItems(); renderLib(); drawPreview();
+  };
+})();
+
+/* ---- crop-aware thumbnails in the reel order and the phone preview ---- */
+function croppedCanvas(im, c){
+  if(!c) return im; const cv = document.createElement("canvas");
+  cv.width = Math.max(1, Math.round(im.width*c.w)); cv.height = Math.max(1, Math.round(im.height*c.h));
+  cv.getContext("2d").drawImage(im, im.width*c.x, im.height*c.y, im.width*c.w, im.height*c.h, 0, 0, cv.width, cv.height); return cv;
+}
+const _cropBoxC = cropBox;
+cropBox = function(it){ // the focus frame works inside the cropped picture
+  if(!it.crop || !aspects[it.file]) return _cropBoxC(it);
+  const keep = aspects[it.file]; aspects[it.file] = keep*it.crop.w/it.crop.h;
+  try{ return _cropBoxC(it); } finally { aspects[it.file] = keep; }
+};
+const _renderItemsC = renderItems;
+renderItems = function(){
+  _renderItemsC();
+  document.querySelectorAll("#items .item").forEach(el => {
+    const i = +el.dataset.i, it = S.items[i]; if(!it || it.type !== "video") return;
+    const row = el.querySelector(".meta .row");
+    if(row && !el.querySelector(".cv-open")){
+      const b = document.createElement("button"); b.className = "btn small cv-open"; b.textContent = "▶ Watch, trim & crop";
+      b.onclick = e => { e.stopPropagation(); openClip(it.file, i); }; row.appendChild(b);
+      const tags = []; if(it.crop) tags.push("cropped"); if(it.stabilise) tags.push("stabilised");
+      if(tags.length){ const t = document.createElement("span"); t.className = "small-muted"; t.textContent = "· " + tags.join(" · "); row.appendChild(t); }
+    }
+    const w = el.querySelector(".thumbwrap"), img = w && w.querySelector("img");
+    if(it.crop && img && aspects[it.file]){ const c = it.crop, a = aspects[it.file]*c.w/c.h;
+      w.style.aspectRatio = String(a); Object.assign(img.style, {position:"absolute", width:(100/c.w)+"%", maxWidth:"none", left:(-c.x/c.w*100)+"%", top:(-c.y/c.h*100)+"%"}); }
+  });
+};
+// the phone preview: crop the first/last item's thumbnail the same way the export will
+const _drawPreviewC = drawPreview;
+drawPreview = async function(){
+  if(S.template === "spot" || S.template === "glide") return _drawPreviewC();
+  const n = S.items.length; const which = (document.querySelector("input[name=pvwhich]:checked")||{}).value;
+  const it = !n ? null : (which === "end" || S.template === "reveal") ? S.items[n-1] : S.items[0];
+  if(it && it.crop){ const url = thumbUrl(it.file), im = await loadImg(url);
+    if(im){ const key = url + "#crop" + JSON.stringify(it.crop); if(!imgCache[key]){ imgCache[key] = croppedCanvas(im, it.crop); }
+      const saved = imgCache[url]; imgCache[url] = imgCache[key]; try{ return await _drawPreviewC(); } finally { imgCache[url] = saved; } } }
+  return _drawPreviewC();
+};
+
+/* ---- media tab: watch button, clear all, removed media ---- */
+const _renderLibC = renderLib;
+renderLib = function(){
+  _renderLibC();
+  document.querySelectorAll("#lib .tile").forEach(t => { const e = LIB.find(x => x.file === t.dataset.file); if(!e || e.type !== "video") return;
+    const b = document.createElement("button"); b.className = "watch"; b.title = "Watch, trim & crop before adding"; b.textContent = "▶";
+    b.onclick = ev => { ev.stopPropagation(); openClip(e.file, -1); }; t.appendChild(b); });
+  const r = window.REMOVED || {count:0, bytes:0}, bar = $("removedBar");
+  if(bar) bar.innerHTML = r.count ? `Removed media: ${r.count} file${r.count>1?"s":""} (${(r.bytes/1e6).toFixed(r.bytes > 1e8 ? 0 : 1)} MB) ·
+      <a href="#" id="rmOpen">open folder</a> · <a href="#" id="rmEmpty">delete permanently…</a>` : "";
+  if($("rmOpen")) $("rmOpen").onclick = e => { e.preventDefault(); openFolder("removed"); };
+  if($("rmEmpty")) $("rmEmpty").onclick = e => { e.preventDefault(); emptyRemoved(); };
+  if($("clearAll")) $("clearAll").disabled = !LIB.length;
+};
+const _loadLibraryC = loadLibrary;
+loadLibrary = async function(){ try{ const r = await fetch("/api/library").then(r => r.json()); window.REMOVED = r.removed; }catch(e){} return _loadLibraryC(); };
+async function clearAllMedia(){
+  if(!LIB.length) return;
+  if(!confirm(`Remove all ${LIB.length} photos and videos from your library?\n\nThey are not deleted: they move to the "Removed from library" folder inside ReelsStudio, so you can put them back. Your reel order will be cleared too.`)) return;
+  const r = await fetch("/api/remove_all",{method:"POST", headers:{"X-Reels-Studio":"1"}, body:"{}"}).then(r => r.json());
+  if(r.error){ setStatus(r.error, true); return; }
+  S.items = []; save(); await loadLibrary(); renderItems(); drawPreview(); setStatus(`Moved ${r.moved} file${r.moved===1?"":"s"} to Removed media.`);
+}
+async function emptyRemoved(){
+  const r0 = window.REMOVED || {count:0}; if(!r0.count) return;
+  if(!confirm(`Permanently delete the ${r0.count} file${r0.count>1?"s":""} in "Removed from library"?\n\nThis can't be undone. Files still in your library are not touched.`)) return;
+  const r = await fetch("/api/empty_removed",{method:"POST", headers:{"X-Reels-Studio":"1"}, body:"{}"}).then(r => r.json());
+  if(r.error){ setStatus(r.error, true); return; }
+  await loadLibrary(); setStatus(`Permanently deleted ${r.deleted} removed file${r.deleted===1?"":"s"}.`);
+}
 
 (async function init(){
   renderSettings(); renderItems();
